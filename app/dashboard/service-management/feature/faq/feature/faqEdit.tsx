@@ -2,6 +2,7 @@
 
 import type React from "react";
 
+import EditNestedServiceForm from "@/components/EditNestedServiceForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,18 +14,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { FaqDto } from "@/dtos/faq.dto";
 import { ServiceDto } from "@/dtos/service.dto";
 import { editFaq } from "@/lib/api-client/faq";
 import { IFaq, IFormInitialState } from "@/type/faq.type";
+import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -35,15 +30,18 @@ type PropsType = {
   serviceList: ServiceDto[];
   onOpenChange: (open: boolean) => void;
   onUpdateFaqList: (faq: IFaq) => void;
+  nestedServices: NestedService[];
 };
 export function EditFaqDialog({
   faq,
   open,
   serviceList,
   onOpenChange,
+  nestedServices,
   onUpdateFaqList,
 }: PropsType) {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedService, setSelectedService] = useState<number | null>(null);
   const [formData, setFormData] = useState<IFormInitialState>({
     child_service_id: "",
     parent_service_id: "",
@@ -58,32 +56,8 @@ export function EditFaqDialog({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (value: string, chngFor: "parent" | "child") => {
-    if (chngFor === "parent") {
-      setFormData((prev) => ({
-        ...prev,
-        parent_service_id: value ?? "",
-        child_service_id: "", // Reset child service when parent changes
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        child_service_id: value ?? "",
-      }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.parent_service_id) {
-      alert("Please select both parent and child services.");
-      return;
-    }
-    if (!formData.question || !formData.answer) {
-      alert("Please fill in both question and answer fields.");
-      return;
-    }
 
     setIsLoading(true);
     try {
@@ -91,9 +65,7 @@ export function EditFaqDialog({
       const dataNeedToUpdate = new FaqDto({
         ...formData,
         id: faq.id,
-        service_id: Number(formData.child_service_id)
-          ? formData.child_service_id
-          : formData?.parent_service_id,
+        service_id: selectedService,
       });
 
       const response = await editFaq(dataNeedToUpdate);
@@ -102,7 +74,7 @@ export function EditFaqDialog({
       // Close dialog
       onUpdateFaqList(response.data);
       onOpenChange(false);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.response?.data.error || "Failed to update FAQ");
       console.error("Error updating FAQ:", error);
@@ -141,52 +113,14 @@ export function EditFaqDialog({
               Make changes to the FAQ details.
             </DialogDescription>
           </DialogHeader>
+          <div>
+            <EditNestedServiceForm
+              serviceId={faq.service.id}
+              services={nestedServices}
+              onServiceSelect={setSelectedService}
+            />
+          </div>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="parent_service_id">Parent Service</Label>
-              <Select
-                value={formData.parent_service_id}
-                onValueChange={(value) => handleSelectChange(value, "parent")}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceList
-                    .filter((service) => !service.parent_id)
-                    .map((service) => (
-                      <SelectItem key={service.id} value={String(service.id)}>
-                        {service.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="child_service_id">Child Service</Label>
-              <Select
-                value={formData.child_service_id}
-                onValueChange={(value) => handleSelectChange(value, "child")}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceList
-                    .filter(
-                      (service) =>
-                        Number(formData.parent_service_id) === service.parent_id
-                    )
-                    .map((service) => (
-                      <SelectItem key={service.id} value={String(service.id)}>
-                        {service.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
             <div className="grid gap-2">
               <Label htmlFor="question">Question</Label>
               <Input

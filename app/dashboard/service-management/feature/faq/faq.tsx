@@ -1,19 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
 import { deleteFaq, getAllFaq } from "@/lib/api-client/faq";
-import { getAllServiceBasicInfo } from "@/lib/api-client/service";
+import {
+  getAllServiceBasicInfo,
+  getServicesNestedInfo,
+} from "@/lib/api-client/service";
 import { IFaq } from "@/type/faq.type";
+import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { AddFaqDialog } from "./feature/faqAdd";
-import { FaqsList } from "./feature/faqList";
-import { EditFaqDialog } from "./feature/faqEdit";
-import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
 import { toast } from "react-toastify";
+import { AddFaqDialog } from "./feature/faqAdd";
+import { EditFaqDialog } from "./feature/faqEdit";
+import { FaqsList } from "./feature/faqList";
 
 export default function Faq() {
   const [addFaqOpen, setAddFaqOpen] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [serviceList, setServiceList] = useState([]);
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
   const [faqList, setFaqList] = useState<IFaq[]>([]);
   const [selectedId, setSelectedId] = useState<{
     edit: number | null;
@@ -28,6 +33,9 @@ export default function Faq() {
     setServiceList(response);
 
     console.log("Fetched Services:", response);
+
+    const nestedInfo = await getServicesNestedInfo();
+    setNestedServices(nestedInfo);
   };
 
   const fetchFaqData = async () => {
@@ -82,7 +90,7 @@ export default function Faq() {
       <AddFaqDialog
         open={addFaqOpen}
         onOpenChange={setAddFaqOpen}
-        serviceList={serviceList}
+        nestedServices={nestedServices}
         onUpdateFaqList={(newFaq: IFaq) => {
           setFaqList((prev) => [...prev, newFaq]);
         }}
@@ -92,6 +100,7 @@ export default function Faq() {
         <EditFaqDialog
           faq={faqList.find((faq) => faq.id === selectedId.edit)!}
           serviceList={serviceList}
+          nestedServices={nestedServices}
           open={!!selectedId.edit}
           onUpdateFaqList={(newFaq: IFaq) => {
             const updatedFaqList = faqList.map((faq) =>
