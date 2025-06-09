@@ -1,18 +1,23 @@
 import { Button } from "@/components/ui/button";
+import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
+import { deleteFeature, getAllFeature } from "@/lib/api-client/feature";
+import {
+  getAllServiceBasicInfo,
+  getServicesNestedInfo,
+} from "@/lib/api-client/service";
+import { IFeature } from "@/type/feature.type";
+import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { FeaturesList } from "./feature/FeatureList";
-import { AddFeatureDialog } from "./feature/FeatureAdd";
-import { deleteFeature, getAllFeature } from "@/lib/api-client/feature";
-import { IFeature } from "@/type/feature.type";
-import { getAllServiceBasicInfo } from "@/lib/api-client/service";
-import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
 import { toast } from "react-toastify";
+import { AddFeatureDialog } from "./feature/FeatureAdd";
 import { EditFeatureDialog } from "./feature/FeatureEdit";
+import { FeaturesList } from "./feature/FeatureList";
 
 export default function ServiceFeature() {
   const [addFeatureOpen, setAddFeatureOpen] = useState(false);
   const [featureList, setFeatureList] = useState<IFeature[]>([]);
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
   const [serviceList, setServiceList] = useState([]);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<{
@@ -24,8 +29,11 @@ export default function ServiceFeature() {
   });
 
   const fetchServiceData = async () => {
+    const nestedInfo = await getServicesNestedInfo();
     const response = await getAllServiceBasicInfo();
+
     setServiceList(response);
+    setNestedServices(nestedInfo);
   };
 
   const fetchFeatureData = async () => {
@@ -79,11 +87,10 @@ export default function ServiceFeature() {
           setSelectedId((prev) => ({ ...prev, [action]: id }))
         }
       />
-      <>{console.log(featureList, " features in AddFeatureDialog")}</>
       <AddFeatureDialog
         open={addFeatureOpen}
         onOpenChange={setAddFeatureOpen}
-        serviceList={serviceList}
+        nestedServices={nestedServices}
         onUpdateFeatureList={(newFeature: IFeature) => {
           setFeatureList((prev) => [...prev, newFeature]);
         }}

@@ -5,6 +5,7 @@ import { ServiceDetailDto } from "@/dtos/service_detail.dto";
 import { ClientError } from "@/errors/error";
 import { Service } from "@/generated/prisma";
 import * as detailService from "./detail_service_crud_service";
+import { NestedService } from "@/type/service.type";
 
 // // Initialize Prisma Client
 // const prisma = new PrismaClient();
@@ -288,57 +289,65 @@ export const deleteAndReassignChildren = async (
   return { deleted, updated: updatedChildren };
 };
 
-/**
- * Check for circular references when moving a service
- */
-const checkCircularReference = async (
-  serviceId: string,
-  newParentId: string
-): Promise<void> => {
-  let currentParent = newParentId;
-  while (currentParent) {
-    if (currentParent === serviceId) {
-      throw new Error("Cannot move a service to its own descendant");
-    }
 
-    const parent = await prisma.service.findUnique({
-      where: { id: currentParent },
-      select: { parentId: true },
+function buildNestedStructure(services: Partial<Service>[]) {
+  // Create a map for quick lookup
+  const serviceMap = new Map();
+  const rootServices: NestedService[] = [];
+
+  // First pass: Create map of all services
+  services.forEach((service) => {
+    serviceMap.set(service.id, {
+      id: service.id,
+      name: service.name,
+      parent_id: service.parent_id,
+      subcategory: [],
     });
-
-    currentParent = parent?.parentId || null;
-  }
-};
-
-/**
- * Move a service to a new parent
- */
-export const moveService = async (
-  id: string,
-  newParentId: string | null
-): Promise<Service> => {
-  const service = await prisma.service.findUnique({
-    where: { id },
   });
 
-  if (!service) {
-    throw new Error("Service not found");
-  }
+  // Second pass: Build the hierarchy
+  services.forEach((service) => {
+    const currentService = serviceMap.get(service.id);
 
-  if (newParentId) {
-    const parent = await prisma.service.findUnique({
-      where: { id: newParentId },
+    if (service.parent_id === null) {
+      // Root level service
+      rootServices.push(currentService);
+    } else {
+      // Child service - add to parent's subcategory
+      const parentService = serviceMap.get(service.parent_id);
+      if (parentService) {
+        parentService.subcategory.push(currentService);
+      }
+    }
+  });
+
+  return rootServices;
+}
+
+
+export async function getNestedServices(): Promise<NestedService[]> {
+  try {
+    // Step 1: Fetch all services from database
+    const allServices = await prisma.service.findMany({
+      select: {
+        id: true,
+        name: true,
+        parent_id: true,
+      },
+      orderBy: [
+        { parent_id: "asc" }, // Root services first
+        { id: "asc" },
+      ],
     });
 
-    if (!parent) {
-      throw new Error("Parent service not found");
-    }
+    console.log("Total services fetched:", allServices.length);
 
-    await checkCircularReference(id, newParentId);
+    // Step 2: Build nested structure using JavaScript
+    const nestedServices = buildNestedStructure(allServices);
+
+    return nestedServices;
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    throw error;
   }
-
-  return prisma.service.update({
-    where: { id },
-    data: { parentId: newParentId },
-  });
-};
+}

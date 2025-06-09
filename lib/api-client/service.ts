@@ -23,6 +23,12 @@ const getAllServiceBasicInfo = async () => {
   return response.data.map((service: any) => new ServiceDto(service));
 };
 
+const getServicesNestedInfo = async () => {
+  const response = await axios.get("/api/services?type=nested");
+
+  return response.data;
+};
+
 const getParentServicesBasicInfo = async () => {
   const response = await axios.get("/api/services?type=basic&parentId=0");
 
@@ -47,5 +53,6 @@ export {
   editService,
   getAllServiceBasicInfo,
   getAllServiceDetails,
+  getServicesNestedInfo,
   getParentServicesBasicInfo,
 };

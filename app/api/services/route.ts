@@ -34,6 +34,12 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(services);
     }
+
+    if (type === "nested") {
+      console.log("Fetching nested service info with params:");
+      const services = await serviceService.getNestedServices();
+      return NextResponse.json(services);
+    }
   } catch (error: unknown) {
     const errorMessage =
       error instanceof ClientError ? error.message : "Failed to create service";
