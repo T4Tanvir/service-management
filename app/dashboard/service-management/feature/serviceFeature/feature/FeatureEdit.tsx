@@ -25,7 +25,6 @@ import EditNestedServiceForm from "@/components/EditNestedServiceForm";
 type PropsType = {
   feature: IFeature;
   open: boolean;
-  serviceList: NestedService[];
   onOpenChange: (open: boolean) => void;
   onUpdateFeatureList: (feature: IFeature) => void;
   nestedServices: NestedService[];
@@ -33,7 +32,7 @@ type PropsType = {
 
 export function EditFeatureDialog({
   feature,
-  serviceList,
+  nestedServices,
   open,
   onOpenChange,
   onUpdateFeatureList,
@@ -96,7 +95,7 @@ export function EditFeatureDialog({
           <div>
             <EditNestedServiceForm
               serviceId={feature.service.id}
-              services={serviceList}
+              services={nestedServices}
               onServiceSelect={setSelectedService}
             />
           </div>

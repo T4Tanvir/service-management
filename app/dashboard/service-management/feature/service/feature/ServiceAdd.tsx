@@ -13,21 +13,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ServiceDetailDto } from "@/dtos/service_detail.dto";
 import { addService } from "@/lib/api-client/service";
 import { useState } from "react";
 
+import NestedServiceForm from "@/components/NestedServiceForm";
 import { ServiceDto } from "@/dtos/service.dto";
-import { toast } from "react-toastify";
+import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
+import { toast } from "react-toastify";
 
 const formInitData = {
   name: "",
@@ -40,16 +35,17 @@ const formInitData = {
 export function AddServiceDialog({
   open,
   onOpenChange,
-  parentServices = [],
+  nestedServices,
   onAddService,
 }: {
   open: boolean;
-  parentServices?: ServiceDto[];
+  nestedServices: NestedService[];
   onOpenChange: (open: boolean) => void;
 
   onAddService: (service: ServiceDto) => void;
 }) {
   const [formData, setFormData] = useState(formInitData);
+  const [selectedService, setSelectedService] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (
@@ -57,10 +53,6 @@ export function AddServiceDialog({
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, parent_id: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -71,6 +63,7 @@ export function AddServiceDialog({
       // Create data to send
       const dataNeedToSend = new ServiceDto({
         ...formData,
+        parent_id: selectedService,
         active: true,
         details: new ServiceDetailDto({
           short_description: formData.short_description,
@@ -148,26 +141,12 @@ export function AddServiceDialog({
                 rows={4}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="parent_id">Parent Service (Optional)</Label>
-              <Select
-                name="parent_id"
-                value={formData.parent_id}
-                onValueChange={handleSelectChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a parent service" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  {parentServices.map((service) => (
-                    <SelectItem key={service.id} value={String(service.id)}>
-                      {service.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          </div>
+          <div className="pb-2">
+            <NestedServiceForm
+              services={nestedServices}
+              onServiceSelect={setSelectedService}
+            />
           </div>
           <DialogFooter>
             <Button

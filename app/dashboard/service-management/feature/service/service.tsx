@@ -4,8 +4,9 @@ import { ServiceDto } from "@/dtos/service.dto";
 import {
   deleteService,
   getAllServiceDetails,
-  getParentServicesBasicInfo,
+  getServicesNestedInfo,
 } from "@/lib/api-client/service";
+import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,8 +16,8 @@ import { ServicesList } from "./feature/ServiceList";
 
 export default function Service() {
   const [addServiceOpen, setAddServiceOpen] = useState(false);
-  const [parentServices, setParentServices] = useState([]);
   const [services, setServices] = useState<ServiceDto[]>([]);
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
 
   const [actionId, setActionId] = useState<{
     edit: number | null;
@@ -56,11 +57,11 @@ export default function Service() {
   useEffect(() => {
     const loadServices = async () => {
       try {
+        const nestedInfo = await getServicesNestedInfo();
         const fetchedServices = await getAllServiceDetails();
-        const parentServ = await getParentServicesBasicInfo();
 
+        setNestedServices(nestedInfo);
         setServices(fetchedServices);
-        setParentServices(parentServ);
       } catch (error) {
         console.error("Error fetching services:", error);
       }
@@ -87,7 +88,7 @@ export default function Service() {
       <AddServiceDialog
         open={addServiceOpen}
         onOpenChange={setAddServiceOpen}
-        parentServices={parentServices}
+        nestedServices={nestedServices}
         onAddService={(service) => {
           setServices((prev) => [...prev, service]);
         }}
@@ -107,6 +108,7 @@ export default function Service() {
       {actionId.edit && (
         <EditServiceDialog
           service={services.find((service) => service.id === actionId.edit)!}
+          nestedServices={nestedServices}
           open={!!actionId.edit}
           onOpenChange={() => {
             setActionId((prev) => ({ ...prev, edit: null }));
@@ -117,7 +119,6 @@ export default function Service() {
             );
             setServices(updatedServices);
           }}
-          parentServices={parentServices ?? []}
         />
       )}
     </>

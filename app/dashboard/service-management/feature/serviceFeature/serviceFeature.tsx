@@ -1,10 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
 import { deleteFeature, getAllFeature } from "@/lib/api-client/feature";
-import {
-  getAllServiceBasicInfo,
-  getServicesNestedInfo,
-} from "@/lib/api-client/service";
+import { getServicesNestedInfo } from "@/lib/api-client/service";
 import { IFeature } from "@/type/feature.type";
 import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
@@ -18,7 +15,6 @@ export default function ServiceFeature() {
   const [addFeatureOpen, setAddFeatureOpen] = useState(false);
   const [featureList, setFeatureList] = useState<IFeature[]>([]);
   const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
-  const [serviceList, setServiceList] = useState([]);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<{
     edit: number | null;
@@ -30,9 +26,7 @@ export default function ServiceFeature() {
 
   const fetchServiceData = async () => {
     const nestedInfo = await getServicesNestedInfo();
-    const response = await getAllServiceBasicInfo();
 
-    setServiceList(response);
     setNestedServices(nestedInfo);
   };
 
@@ -99,7 +93,6 @@ export default function ServiceFeature() {
       {selectedId.edit && (
         <EditFeatureDialog
           feature={featureList.find((f) => f.id === selectedId.edit)!}
-          serviceList={nestedServices}
           nestedServices={nestedServices}
           open={!!selectedId.edit}
           onUpdateFeatureList={(newFeature: IFeature) => {

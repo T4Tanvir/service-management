@@ -20,7 +20,7 @@ import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import NestedServiceForm from "./NestedServiceForm";
+import NestedServiceForm from "@/components/NestedServiceForm";
 
 const formInitialState: IFormInitialState = {
   parent_service_id: "",

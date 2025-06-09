@@ -2,7 +2,8 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import EditNestedServiceForm from "@/components/EditNestedServiceForm";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,34 +12,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ServiceDto } from "@/dtos/service.dto";
 import { editService } from "@/lib/api-client/service";
+import { NestedService } from "@/type/service.type";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export function EditServiceDialog({
   service,
   open,
-  parentServices,
+  nestedServices,
   onOpenChange,
   onEditService,
 }: {
   service: ServiceDto;
   open: boolean;
-  parentServices?: ServiceDto[];
+  nestedServices: NestedService[];
   onOpenChange: () => void;
   onEditService: (service: ServiceDto) => void;
 }) {
+  const [selectedService, setSelectedService] = useState<number | null>(null);
+
   const [formData, setFormData] = useState<{
     name: string;
     short_description: string;
@@ -60,20 +57,16 @@ export function EditServiceDialog({
         image_url: service.image_url,
         short_description: service.short_description || "",
         long_description: service.details?.long_description || "",
-        parent_id: service.parent_id || null,
+        parent_id: selectedService || null,
       });
     }
-  }, [service]);
+  }, [service, selectedService]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, parentService: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -153,28 +146,12 @@ export function EditServiceDialog({
                 rows={4}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="parentService">Parent Service (Optional)</Label>
-              <Select
-                value={
-                  formData.parent_id !== null
-                    ? String(formData.parent_id)
-                    : undefined
-                }
-                onValueChange={handleSelectChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a parent service" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="null">None</SelectItem>
-                  {parentServices?.map((service) => (
-                    <SelectItem key={service.id} value={String(service.id)}>
-                      {service.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div>
+              <EditNestedServiceForm
+                serviceId={service.parent_id}
+                services={nestedServices}
+                onServiceSelect={setSelectedService}
+              />
             </div>
           </div>
           <DialogFooter>

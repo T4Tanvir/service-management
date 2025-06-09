@@ -161,7 +161,7 @@ const EditNestedServiceForm = ({
   services,
 }: {
   services: NestedService[];
-  serviceId: number;
+  serviceId: number | null;
   onServiceSelect: (id: number | null) => void;
 }) => {
   const [selectedPath, setSelectedPath] = useState<number[]>([]);
