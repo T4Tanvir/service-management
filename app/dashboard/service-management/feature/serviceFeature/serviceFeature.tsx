@@ -99,7 +99,8 @@ export default function ServiceFeature() {
       {selectedId.edit && (
         <EditFeatureDialog
           feature={featureList.find((f) => f.id === selectedId.edit)!}
-          serviceList={serviceList}
+          serviceList={nestedServices}
+          nestedServices={nestedServices}
           open={!!selectedId.edit}
           onUpdateFeatureList={(newFeature: IFeature) => {
             const updatedFaqList = featureList.map((faq) =>

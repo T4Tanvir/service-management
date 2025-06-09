@@ -2,6 +2,7 @@
 
 import type React from "react";
 
+import EditNestedServiceForm from "@/components/EditNestedServiceForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,27 +14,21 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FeatureDto } from "@/dtos/feature.dto";
-import { ServiceDto } from "@/dtos/service.dto";
 import { editFeature } from "@/lib/api-client/feature";
 import { IFeature, IFormInitialState } from "@/type/feature.type";
+import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 type PropsType = {
   feature: IFeature;
   open: boolean;
-  serviceList: ServiceDto[];
+  serviceList: NestedService[];
   onOpenChange: (open: boolean) => void;
   onUpdateFeatureList: (feature: IFeature) => void;
+  nestedServices: NestedService[];
 };
 
 export function EditFeatureDialog({
@@ -44,6 +39,8 @@ export function EditFeatureDialog({
   onUpdateFeatureList,
 }: PropsType) {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedService, setSelectedService] = useState<number | null>(null);
+
   const [formData, setFormData] = useState<IFormInitialState>({
     child_service_id: "",
     parent_service_id: "",
@@ -55,23 +52,12 @@ export function EditFeatureDialog({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (value: string, chngFor: "parent" | "child") => {
-    if (chngFor === "parent") {
-      setFormData((prev) => ({
-        ...prev,
-        parent_service_id: value ?? "",
-        child_service_id: "", // Reset child service when parent changes
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        child_service_id: value ?? "",
-      }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!selectedService) {
+      toast.error("Please Selece a Service");
+    }
 
     setIsLoading(true);
     try {
@@ -79,9 +65,7 @@ export function EditFeatureDialog({
       const dataNeedToUpdate = new FeatureDto({
         ...formData,
         id: feature.id,
-        service_id: Number(formData.child_service_id)
-          ? formData.child_service_id
-          : formData?.parent_service_id,
+        service_id: selectedService,
       });
 
       const response = await editFeature(dataNeedToUpdate);
@@ -99,25 +83,6 @@ export function EditFeatureDialog({
     }
   };
 
-  useEffect(() => {
-    let parentService = serviceList.find(
-      (service) => service.id === feature.service.id
-    );
-    let childService = null;
-    if (parentService?.parent_id) {
-      childService = JSON.parse(JSON.stringify(parentService));
-      parentService = serviceList.find(
-        (service) => service.id === parentService?.parent_id
-      );
-    }
-
-    setFormData({
-      child_service_id: String(childService?.id) || "",
-      parent_service_id: String(parentService?.id) || "",
-      feature_text: feature.feature_text || "",
-    });
-  }, [feature, serviceList]);
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -128,55 +93,14 @@ export function EditFeatureDialog({
               Make changes to the feature details.
             </DialogDescription>
           </DialogHeader>
+          <div>
+            <EditNestedServiceForm
+              serviceId={feature.service.id}
+              services={serviceList}
+              onServiceSelect={setSelectedService}
+            />
+          </div>
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="parent_service_id">Parent Service</Label>
-              <Select
-                value={
-                  formData.parent_service_id.length
-                    ? formData.parent_service_id
-                    : undefined
-                }
-                onValueChange={(value) => handleSelectChange(value, "parent")}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceList
-                    .filter((service) => !service.parent_id)
-                    .map((service) => (
-                      <SelectItem key={service.id} value={String(service.id)}>
-                        {service.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="child_service_id">Child Service</Label>
-              <Select
-                value={formData.child_service_id}
-                onValueChange={(value) => handleSelectChange(value, "child")}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {serviceList
-                    .filter(
-                      (service) =>
-                        Number(formData.parent_service_id) === service.parent_id
-                    )
-                    .map((service) => (
-                      <SelectItem key={service.id} value={String(service.id)}>
-                        {service.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
             <div className="grid gap-2">
               <Label htmlFor="feature_text">Feature Description</Label>
               <Input
