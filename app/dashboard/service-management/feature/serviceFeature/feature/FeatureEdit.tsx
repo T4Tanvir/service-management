@@ -2,7 +2,6 @@
 
 import type React from "react";
 
-import EditNestedServiceForm from "@/components/EditNestedServiceForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,6 +20,7 @@ import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import EditNestedServiceForm from "@/components/EditNestedServiceForm";
 
 type PropsType = {
   feature: IFeature;
