@@ -18,15 +18,14 @@ model User {
   id           Int      @id @default(autoincrement())
   full_name    String   @map("full_name")
   phone_number String   @unique @map("phone_number")
-  password     String
-  city         String
-  address_line String   @map("address_line")
+  address      String   @map("address_line")
   role         Role     @default(CLIENT)
   created_at   DateTime @default(now()) @map("created_at")
 
   // Relations
   tasks   Task[]
   reviews Review[]
+  Order   Order[]
 
   @@map("users")
 }
@@ -67,6 +66,42 @@ model Task {
   @@map("tasks")
 }
 
+enum OrderStatus {
+  REQUESTED   @map("0")
+  ACCEPTED    @map("10")
+  CANCELLED   @map("20")
+  PENDING     @map("30")
+  IN_PROGRESS @map("40")
+  COMPLETED   @map("50")
+}
+
+model Order {
+  id      Int         @id @default(autoincrement())
+  uuid    String      @unique @default(uuid())
+  status  OrderStatus @default(REQUESTED)
+  user_id Int         @map("user_id")
+
+  // Relations
+  user       User        @relation(fields: [user_id], references: [id])
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         Int   @id @default(autoincrement())
+  order_id   Int   @map("order_id")
+  service_id Int   @map("service_id")
+  quantity   Int   @default(1)
+  unit_price      Float @default(0.0)
+
+  // Relations
+  order   Order   @relation(fields: [order_id], references: [id])
+  service Service @relation(fields: [service_id], references: [id])
+
+  @@map("order_items")
+}
+
 model Service {
   id                Int      @id @default(autoincrement())
   name              String   @unique @db.VarChar(100)
@@ -85,6 +120,7 @@ model Service {
   faqs           Faq[]
   reviews        Review[]
   ServiceFeature ServiceFeature[]
+  OrderItem      OrderItem[]
 
   @@map("services")
 }
@@ -103,8 +139,8 @@ model ServiceDetail {
 }
 
 model ServiceFeature {
-  id          Int    @id @default(autoincrement())
-  service_id  Int    @map("service_id")
+  id           Int    @id @default(autoincrement())
+  service_id   Int    @map("service_id")
   feature_text String @db.VarChar(255)
 
   service Service @relation(fields: [service_id], references: [id])

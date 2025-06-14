@@ -121,9 +121,7 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   full_name: 'full_name',
   phone_number: 'phone_number',
-  password: 'password',
-  city: 'city',
-  address_line: 'address_line',
+  address: 'address',
   role: 'role',
   created_at: 'created_at'
 };
@@ -141,6 +139,21 @@ exports.Prisma.TaskScalarFieldEnum = {
   total_price: 'total_price',
   comment: 'comment',
   created_at: 'created_at'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  status: 'status',
+  user_id: 'user_id'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  order_id: 'order_id',
+  service_id: 'service_id',
+  quantity: 'quantity',
+  unit_price: 'unit_price'
 };
 
 exports.Prisma.ServiceScalarFieldEnum = {
@@ -213,9 +226,20 @@ exports.TaskStatus = exports.$Enums.TaskStatus = {
   COMPLETED: 'COMPLETED'
 };
 
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  REQUESTED: 'REQUESTED',
+  ACCEPTED: 'ACCEPTED',
+  CANCELLED: 'CANCELLED',
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Task: 'Task',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   Service: 'Service',
   ServiceDetail: 'ServiceDetail',
   ServiceFeature: 'ServiceFeature',
