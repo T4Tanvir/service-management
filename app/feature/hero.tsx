@@ -1,3 +1,5 @@
+import ServiceBooking from "@/components/service-booking/ServicingBook";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 
@@ -28,12 +30,10 @@ const Hero: React.FC = () => {
             emergencies.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="w-full sm:w-auto bg-accent-500 hover:bg-accent-600 text-white px-8 py-3 rounded-md font-medium text-lg transition-all duration-300 transform hover:scale-105">
-              Get Free Quote
-            </button>
-            <button className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-md font-medium text-lg transition-all duration-300">
+            <ServiceBooking />
+            <Button className="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-md font-medium text-lg transition-all duration-300">
               Our Services
-            </button>
+            </Button>
           </div>
           <div className="mt-12 flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
             <div className="flex -space-x-4">
