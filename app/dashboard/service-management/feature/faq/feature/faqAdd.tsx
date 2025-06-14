@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { FaqDto } from "@/dtos/faq.dto";
-import { ServiceDto } from "@/dtos/service.dto";
 import { addFaq } from "@/lib/api-client/faq";
 import { IFaq, IFormInitialState } from "@/type/faq.type";
 import { NestedService } from "@/type/service.type";
