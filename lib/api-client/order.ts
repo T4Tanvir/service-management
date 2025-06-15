@@ -7,4 +7,9 @@ const addOrder = async (data: OrderDto) => {
   return response.data;
 };
 
-export { addOrder };
+const getAllOrders = async () => {
+  const response = await axios.get("/api/order");
+  return response.data;
+};
+
+export { addOrder, getAllOrders };

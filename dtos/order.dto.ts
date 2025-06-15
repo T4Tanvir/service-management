@@ -6,7 +6,7 @@ import { UserDto } from "./user.dto";
 export class OrderDto extends BaseDto {
   id: number;
   uuid: string;
-  status: OrderStatus; // Or use an enum if you have OrderStatus defined
+  status: OrderStatus;
   user_id: number;
 
   user?: UserDto;

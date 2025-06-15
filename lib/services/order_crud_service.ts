@@ -80,3 +80,30 @@ export const create = async (data: OrderDto): Promise<OrderDto> => {
     });
   });
 };
+
+export const getAll = async (): Promise<OrderDto[]> => {
+  const orders = await prisma.order.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          full_name: true,
+          phone_number: true,
+          address: true,
+        },
+      },
+      orderItems: {
+        include: {
+          service: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return orders.map((order) => new OrderDto(order));
+};
