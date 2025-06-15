@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -8,48 +7,33 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { OrderDto } from "@/dtos/order.dto";
 import { Edit, Eye } from "lucide-react";
 import { Order } from "../../../../type/order.type";
-
-type OrderStatus = "pending" | "processing" | "completed" | "cancelled";
-
-interface StatusBadgeProps {
-  status: OrderStatus;
-}
-
-export function StatusBadge({ status }: StatusBadgeProps) {
-  const statusConfig: Record<
-    OrderStatus,
-    { label: string; variant: "secondary" | "default" | "destructive" }
-  > = {
-    pending: { label: "Pending", variant: "secondary" },
-    processing: { label: "Processing", variant: "default" },
-    completed: { label: "Completed", variant: "default" },
-    cancelled: { label: "Cancelled", variant: "destructive" },
-  };
-
-  const config = statusConfig[status];
-  return (
-    <Badge
-      variant={config.variant}
-      className={
-        status === "completed"
-          ? "bg-green-100 text-green-800 hover:bg-green-200"
-          : ""
-      }
-    >
-      {config.label}
-    </Badge>
-  );
-}
+import { StatusBadge } from "./StatusBadge";
 
 interface OrderTableProps {
-  orders: Order[];
-  onViewDetails: (order: Order) => void;
+  orders: OrderDto[];
+  onViewDetails: (order: OrderDto) => void;
   onEdit: (order: Order) => void;
 }
 
 export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
+  const getTotallOrder = (orderId: number) => {
+    const order = orders.find((o) => o.id === orderId);
+    if (!order || !order.orderItems) return 0;
+    return order.orderItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getTotallPrice = (orderId: number) => {
+    const order = orders.find((o) => o.id === orderId);
+    if (!order || !order.orderItems) return 0;
+    return order.orderItems.reduce(
+      (total, item) => total + item.total_price,
+      0
+    );
+  };
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -75,17 +59,17 @@ export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
               </TableCell>
             </TableRow>
           ) : (
-            orders.map((order) => (
-              <TableRow key={order.order_id} className="hover:bg-muted/50">
-                <TableCell className="font-medium">{order.order_id}</TableCell>
-                <TableCell>{order.name}</TableCell>
-                <TableCell>{order.phone}</TableCell>
+            orders.map((order, index) => (
+              <TableRow key={index} className="hover:bg-muted/50">
+                <TableCell className="font-medium">{1000 + order.id}</TableCell>
+                <TableCell>{order.user?.full_name}</TableCell>
+                <TableCell>{order.user?.phone_number}</TableCell>
                 <TableCell>
                   <StatusBadge status={order.status} />
                 </TableCell>
-                <TableCell>{order.qty}</TableCell>
+                <TableCell>{getTotallOrder(order.id)}</TableCell>
                 <TableCell className="font-medium">
-                  ৳{order.price.toLocaleString()}
+                  {getTotallPrice(order.id).toLocaleString()}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center justify-center gap-2">
@@ -101,7 +85,7 @@ export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onEdit(order)}
+                      //onClick={() => onEdit(order)}
                       className="flex items-center gap-1"
                     >
                       <Edit className="h-3 w-3" />

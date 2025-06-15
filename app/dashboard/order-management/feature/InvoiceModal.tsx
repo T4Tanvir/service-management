@@ -2,17 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { Order } from "../../../../type/order.type";
+import { OrderDto } from "@/dtos/order.dto";
 import { StatusBadge } from "./StatusBadge";
 
 interface InvoiceModalProps {
-  order: Order | null;
+  order: OrderDto | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -20,20 +20,29 @@ interface InvoiceModalProps {
 export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
   if (!order) return null;
 
-  const totalAmount = order.price + (order.tax || 0) - (order.discount || 0);
+  const getTotallPrice = () => {
+    if (!order || !order.orderItems) return 0;
+
+    return order.orderItems.reduce(
+      (total, item) => total + item.total_price,
+      0
+    );
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Invoice</DialogTitle>
-          <DialogDescription>Order ID: {order.order_id}</DialogDescription>
+          <DialogDescription>Order ID: {1000 + order.id}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 p-6 bg-white">
           {/* Company Header */}
           <div className="text-center border-b pb-4">
-            <h1 className="text-3xl font-bold text-gray-800">Akta Company</h1>
+            <h1 className="text-3xl font-bold text-gray-800">
+              Peace Home Empire
+            </h1>
             <p className="text-gray-600">123 Business Area, Dhaka-1000</p>
             <p className="text-gray-600">
               Phone: +880 2-1234567 | Email: info@akta.com
@@ -45,11 +54,11 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
             <div>
               <h2 className="text-xl font-semibold mb-3">Bill To:</h2>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="font-medium">{order.name}</p>
-                <p className="text-gray-600">{order.phone}</p>
-                {order.email && <p className="text-gray-600">{order.email}</p>}
-                {order.address && (
-                  <p className="text-gray-600">{order.address}</p>
+                <p className="font-medium">{order.user?.full_name}</p>
+                <p className="text-gray-600">{order.user?.phone_number}</p>
+                {/* {order.user.email && <p className="text-gray-600">{order.email}</p>} */}
+                {order.user?.address && (
+                  <p className="text-gray-600">{order.user?.address}</p>
                 )}
               </div>
             </div>
@@ -59,22 +68,22 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
               <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Invoice No:</span>
-                  <span className="font-medium">{order.order_id}</span>
+                  <span className="font-medium">{1000 + order.id}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Order Date:</span>
                   <span className="font-medium">
-                    {new Date(order.order_date).toLocaleDateString("en-US")}
+                    {new Date(order.created_at!).toLocaleDateString("en-US")}
                   </span>
                 </div>
-                {order.due_date && (
+                {/* {order.due_date && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Payment Date:</span>
                     <span className="font-medium">
                       {new Date(order.due_date).toLocaleDateString("en-US")}
                     </span>
                   </div>
-                )}
+                )} */}
                 <div className="flex justify-between">
                   <span className="text-gray-600">Status:</span>
                   <StatusBadge status={order.status} />
@@ -99,16 +108,18 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t">
-                    <td className="p-4">{order.product_name}</td>
-                    <td className="p-4 text-center">{order.qty}</td>
-                    <td className="p-4 text-right">
-                      ৳{order.unit_price.toLocaleString()}
-                    </td>
-                    <td className="p-4 text-right font-medium">
-                      ৳{order.price.toLocaleString()}
-                    </td>
-                  </tr>
+                  {order.orderItems!.map((item, index) => (
+                    <tr key={index} className="border-t hover:bg-gray-50">
+                      <td className="p-4">{item.service!.name}</td>
+                      <td className="p-4 text-center">{item.quantity}</td>
+                      <td className="p-4 text-right">
+                        ৳{item.unit_price.toLocaleString()}
+                      </td>
+                      <td className="p-4 text-right font-medium">
+                        ৳{(item.quantity * item.unit_price).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -120,24 +131,22 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
               <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal:</span>
-                  <span>৳{order.price.toLocaleString()}</span>
+                  <span>{getTotallPrice().toLocaleString()}</span>
                 </div>
-                {order.discount && order.discount > 0 && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Discount:</span>
-                    <span>-৳{order.discount.toLocaleString()}</span>
-                  </div>
-                )}
-                {order.tax && order.tax > 0 && (
-                  <div className="flex justify-between">
-                    <span>Tax:</span>
-                    <span>৳{order.tax.toLocaleString()}</span>
-                  </div>
-                )}
+
+                <div className="flex justify-between text-green-600">
+                  <span>Discount:</span>
+                  <span>-{0}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Tax:</span>
+                  <span>{0}</span>
+                </div>
                 <hr className="my-2" />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total Amount:</span>
-                  <span>৳{totalAmount.toLocaleString()}</span>
+                  <span>{getTotallPrice().toLocaleString()}</span>
                 </div>
               </div>
             </div>

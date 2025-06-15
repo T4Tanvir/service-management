@@ -1,16 +1,16 @@
+import { OrderDto } from "@/dtos/order.dto";
 import { useMemo } from "react";
-import { Order } from "../type/order.type";
 
-export function useOrderFilter(orders: Order[], searchTerm: string) {
+export function useOrderFilter(orders: OrderDto[], searchTerm: string) {
   return useMemo(() => {
     if (!searchTerm) return orders;
-    
+
     const lowercaseSearch = searchTerm.toLowerCase();
     return orders.filter(
       (order) =>
-        order.name.toLowerCase().includes(lowercaseSearch) ||
-        order.order_id.toLowerCase().includes(lowercaseSearch) ||
-        order.phone.includes(searchTerm)
+        order.user?.full_name.toLowerCase().includes(lowercaseSearch) ||
+        //order.id.(lowercaseSearch) ||
+        order.user?.phone_number.includes(searchTerm)
     );
   }, [orders, searchTerm]);
 }
