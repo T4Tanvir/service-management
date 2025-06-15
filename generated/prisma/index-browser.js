@@ -145,7 +145,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
   uuid: 'uuid',
   status: 'status',
-  user_id: 'user_id'
+  user_id: 'user_id',
+  created_at: 'created_at'
 };
 
 exports.Prisma.OrderItemScalarFieldEnum = {
@@ -153,7 +154,8 @@ exports.Prisma.OrderItemScalarFieldEnum = {
   order_id: 'order_id',
   service_id: 'service_id',
   quantity: 'quantity',
-  unit_price: 'unit_price'
+  unit_price: 'unit_price',
+  total_price: 'total_price'
 };
 
 exports.Prisma.ServiceScalarFieldEnum = {
