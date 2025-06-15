@@ -1,7 +1,7 @@
 "use client";
 import React, { ReactNode } from "react";
-import DashboardSidebar from "./service-management/component/dahsboardSidebar";
-import DashboardHeader from "./service-management/component/dashboardHeader";
+import DashboardSidebar from "./component/dahsboardSidebar";
+import DashboardHeader from "./component/dashboardHeader";
 
 interface LayoutProps {
   children: ReactNode;

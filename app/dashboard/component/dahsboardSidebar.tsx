@@ -4,6 +4,7 @@ import {
   FileText,
   Home,
   LayoutDashboard,
+  ListOrdered,
   Settings,
   Users,
 } from "lucide-react";
@@ -27,11 +28,15 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
 }) => {
   const sidebarItems: SidebarItem[] = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: LayoutDashboard, label: "Overview" },
     { icon: Users, label: "Customers" },
     { icon: Calendar, label: "Appointments" },
     { icon: FileText, label: "Reports" },
     { icon: Settings, label: "Settings" },
+    {
+      icon: ListOrdered,
+      label: "Order Management",
+      path: "/dashboard/order-management",
+    },
     {
       icon: Settings,
       label: "Service Management",
