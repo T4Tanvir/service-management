@@ -1,19 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { OrderDto } from "@/dtos/order.dto";
+import { OrderItemDto } from "@/dtos/order_item.dto";
+import { addOrder } from "@/lib/api-client/order";
+import { getServicesNestedInfo } from "@/lib/api-client/service";
+import { useEffect, useState } from "react";
+import { servicePrices } from "../consttant/mock";
 import {
-  NestedService,
   CartItem,
   NavigationPath,
-  UserInfo,
+  NestedService,
   OrderStep,
+  UserInfo,
 } from "../type/service.type";
-import { mockNestedServices, servicePrices } from "../consttant/mock";
 
 export const useServiceBooking = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [currentServices, setCurrentServices] =
-    useState<NestedService[]>(mockNestedServices);
+  const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
   const [navigationPath, setNavigationPath] = useState<NavigationPath[]>([]);
   const [currentStep, setCurrentStep] = useState<OrderStep>("services");
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -24,6 +27,8 @@ export const useServiceBooking = () => {
     notes: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
 
   const addToCart = (service: NestedService) => {
     const price = servicePrices[service.id] || 50;
@@ -114,7 +119,7 @@ export const useServiceBooking = () => {
     newPath.pop();
     setNavigationPath(newPath);
 
-    let services = mockNestedServices;
+    let services = nestedServices;
     for (const pathItem of newPath) {
       const foundService = services.find((s) => s.id === pathItem.id);
       if (foundService) {
@@ -125,7 +130,7 @@ export const useServiceBooking = () => {
   };
 
   const navigateToRoot = () => {
-    setCurrentServices(mockNestedServices);
+    setCurrentServices(nestedServices);
     setNavigationPath([]);
   };
 
@@ -133,7 +138,7 @@ export const useServiceBooking = () => {
     const newPath = navigationPath.slice(0, index + 1);
     setNavigationPath(newPath);
 
-    let services = mockNestedServices;
+    let services = nestedServices;
     for (const pathItem of newPath) {
       const foundService = services.find((s) => s.id === pathItem.id);
       if (foundService) {
@@ -173,8 +178,25 @@ export const useServiceBooking = () => {
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    const orderData = new OrderDto({
+      user: {
+        full_name: userInfo.name,
+        phone_number: userInfo.phone,
+        email: userInfo.email,
+        address: userInfo.address,
+        additional_info: userInfo.notes,
+      },
+      orderItems: cartItems.map(
+        (item) =>
+          new OrderItemDto({
+            service_id: item.id,
+            quantity: item.quantity,
+            unit_price: 0,
+          })
+      ),
+    });
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await addOrder(orderData);
 
     setIsSubmitting(false);
     setCurrentStep("confirmation");
@@ -194,9 +216,21 @@ export const useServiceBooking = () => {
       address: "",
       notes: "",
     });
-    setCurrentServices(mockNestedServices);
+    setCurrentServices(nestedServices);
     setNavigationPath([]);
   };
+
+  useEffect(() => {
+    const fetchNestedServices = async () => {
+      const services = await getServicesNestedInfo();
+
+      setNestedServices(services);
+      setCurrentServices(services);
+      setIsLoading(false);
+    };
+
+    fetchNestedServices();
+  }, []);
 
   return {
     cartItems,
@@ -205,6 +239,8 @@ export const useServiceBooking = () => {
     currentStep,
     userInfo,
     isSubmitting,
+    isLoading,
+    nestedServices,
     addToCart,
     removeFromCart, //single function to remove an item from the cart
     removeServiceFromCart, // function to remove a service from the cart

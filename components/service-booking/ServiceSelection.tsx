@@ -25,7 +25,7 @@ interface ServiceSelectionProps {
   onConfirmOrder: () => void;
   getItemQuantity: (serviceId: number) => number;
   getTotalQuantity: () => number;
-  countTotalServices: (services: NestedService[]) => number;
+  countTotalServices: (services: NestedService[]) => number
 }
 
 export const ServiceSelection: React.FC<ServiceSelectionProps> = ({

@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,10 +8,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useState } from "react";
+import { useServiceBooking } from "../../hooks/useServiceBooking";
+import { OrderConfirmation } from "./OrderConfirmation";
 import { ServiceSelection } from "./ServiceSelection";
 import { UserInfoForm } from "./UserInfoForm";
-import { OrderConfirmation } from "./OrderConfirmation";
-import { useServiceBooking } from "../../hooks/useServiceBooking";
 
 export default function ServiceBooking() {
   const [isOpen, setIsOpen] = useState(false);
