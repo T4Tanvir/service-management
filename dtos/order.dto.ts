@@ -11,6 +11,7 @@ export class OrderDto extends BaseDto {
 
   user?: UserDto;
   orderItems?: OrderItemDto[];
+  created_at?: Date;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(json: any) {
@@ -23,5 +24,6 @@ export class OrderDto extends BaseDto {
     this.orderItems = json.orderItems
       ? json.orderItems.map((item: unknown) => new OrderItemDto(item))
       : undefined;
+    this.created_at = json?.created_at ? new Date(json.created_at) : new Date();
   }
 }
