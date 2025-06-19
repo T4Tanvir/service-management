@@ -1,20 +1,21 @@
-"use client";
-
+// hooks/useServiceBookingState.ts
 import { OrderDto } from "@/dtos/order.dto";
 import { OrderItemDto } from "@/dtos/order_item.dto";
+import { UserDto } from "@/dtos/user.dto";
 import { addOrder } from "@/lib/api-client/order";
 import { getServicesNestedInfo } from "@/lib/api-client/service";
-import { useEffect, useState } from "react";
-import { servicePrices } from "../consttant/mock";
 import {
   CartItem,
   NavigationPath,
   NestedService,
   OrderStep,
   UserInfo,
-} from "../type/service.type";
+} from "@/type/service.type";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const useServiceBooking = () => {
+  // State
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
   const [navigationPath, setNavigationPath] = useState<NavigationPath[]>([]);
@@ -30,183 +31,344 @@ export const useServiceBooking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
 
-  const addToCart = (service: NestedService) => {
-    const price = servicePrices[service.id] || 50;
-    const fullPath = [...navigationPath, { id: service.id, name: service.name }]
-      .map((item) => item.name)
-      .join(" > ");
+  /**
+   * ===============================================================
+   *                   Cart utilities
+   * ===============================================================
+   */
+  const findCartItem = useCallback(
+    (serviceId: number) => cartItems.find((item) => item.id === serviceId),
+    [cartItems]
+  );
 
-    const existingItem = cartItems.find((item) => item.id === service.id);
+  const createCartItem = useCallback(
+    (service: NestedService): CartItem => {
+      const fullPath = [
+        ...navigationPath,
+        { id: service.id, name: service.name },
+      ]
+        .map((item) => item.name)
+        .join(" > ");
 
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === service.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      setCartItems([
-        ...cartItems,
-        {
-          id: service.id,
-          name: service.name,
-          price: price,
-          quantity: 1,
-          fullPath: fullPath,
-        },
-      ]);
-    }
-  };
+      return {
+        id: service.id,
+        name: service.name,
+        price: 0,
+        quantity: 1,
+        fullPath,
+      };
+    },
+    [navigationPath]
+  );
 
-  const removeFromCart = (serviceId: number) => {
-    const existingItem = cartItems.find((item) => item.id === serviceId);
+  /**
+   * ===============================================================
+   *                   Navigation utilities
+   * ===============================================================
+   */
+  const findServiceById = useCallback(
+    (services: NestedService[], id: number): NestedService | null => {
+      for (const service of services) {
+        if (service.id === id) return service;
+        if (service.subcategory?.length > 0) {
+          const found = findServiceById(service.subcategory, id);
+          if (found) return found;
+        }
+      }
+      return null;
+    },
+    []
+  );
 
-    if (existingItem && existingItem.quantity > 1) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === serviceId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-      );
-    } else {
-      setCartItems(cartItems.filter((item) => item.id !== serviceId));
-    }
-  };
+  const getFullPath = useCallback(
+    (
+      targetId: number,
+      categories: NestedService[] = nestedServices
+    ): string => {
+      const buildPath = (
+        categories: NestedService[],
+        targetId: number,
+        currentPath: string[] = []
+      ): string[] | null => {
+        for (const category of categories) {
+          const newPath = [...currentPath, category.name];
 
-  const removeServiceFromCart = (serviceId: number) => {
-    setCartItems(cartItems.filter((item) => item.id !== serviceId));
-  };
+          if (category.id === targetId) {
+            return newPath;
+          }
 
-  const increaseQuantity = (serviceId: number) => {
-    setCartItems(
-      cartItems.map((item) =>
+          if (category.subcategory?.length > 0) {
+            const result = buildPath(category.subcategory, targetId, newPath);
+            if (result) return result;
+          }
+        }
+        return null;
+      };
+
+      const path = buildPath(categories, targetId);
+      return path ? path.join(" > ") : "";
+    },
+    [nestedServices]
+  );
+
+  const navigateToServices = useCallback(
+    (path: NavigationPath[]) => {
+      let services = nestedServices;
+      for (const pathItem of path) {
+        const foundService = findServiceById(services, pathItem.id);
+        if (foundService?.subcategory) {
+          services = foundService.subcategory;
+        }
+      }
+      setCurrentServices(services);
+    },
+    [nestedServices, findServiceById]
+  );
+
+  /**
+   * ===============================================================
+   *                   Cart Actions
+   * ===============================================================
+   *
+   */
+  const addToCart = useCallback(
+    (service: NestedService) => {
+      const existingItem = findCartItem(service.id);
+
+      if (existingItem) {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === service.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      } else {
+        const newItem = createCartItem(service);
+        setCartItems((prevItems) => [...prevItems, newItem]);
+      }
+    },
+    [findCartItem, createCartItem]
+  );
+
+  const removeFromCart = useCallback(
+    (serviceId: number) => {
+      const existingItem = findCartItem(serviceId);
+
+      if (existingItem && existingItem.quantity > 1) {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === serviceId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+        );
+      } else {
+        setCartItems((prevItems) =>
+          prevItems.filter((item) => item.id !== serviceId)
+        );
+      }
+    },
+    [findCartItem]
+  );
+
+  const removeServiceFromCart = useCallback((serviceId: number) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((item) => item.id !== serviceId)
+    );
+  }, []);
+
+  const increaseQuantity = useCallback((serviceId: number) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
         item.id === serviceId ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
-  };
+  }, []);
 
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
+  const handlePriceChange = useCallback(
+    (
+      serviceId: number,
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const newPrice = parseFloat(e.target.value) || 0;
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === serviceId ? { ...item, price: newPrice } : item
+        )
+      );
+    },
+    []
+  );
 
-  const getTotalQuantity = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
+  /**
+   * ================================================================
+   *                        Navigation Actions
+   * =================================================================
+   *
+   */
+  const navigateToSubcategory = useCallback((service: NestedService) => {
+    if (service.subcategory?.length > 0) {
+      setCurrentServices(service.subcategory);
+      setNavigationPath((prevPath) => [
+        ...prevPath,
+        { id: service.id, name: service.name },
+      ]);
+    }
+  }, []);
 
-  const getItemQuantity = (serviceId: number) => {
-    const item = cartItems.find((item) => item.id === serviceId);
-    return item ? item.quantity : 0;
-  };
-
-  const navigateToSubcategory = (service: NestedService) => {
-    setCurrentServices(service.subcategory);
-    setNavigationPath([
-      ...navigationPath,
-      { id: service.id, name: service.name },
-    ]);
-  };
-
-  const navigateBack = () => {
+  const navigateBack = useCallback(() => {
     if (navigationPath.length === 0) return;
 
-    const newPath = [...navigationPath];
-    newPath.pop();
+    const newPath = navigationPath.slice(0, -1);
     setNavigationPath(newPath);
+    navigateToServices(newPath);
+  }, [navigationPath, navigateToServices]);
 
-    let services = nestedServices;
-    for (const pathItem of newPath) {
-      const foundService = services.find((s) => s.id === pathItem.id);
-      if (foundService) {
-        services = foundService.subcategory;
-      }
-    }
-    setCurrentServices(services);
-  };
-
-  const navigateToRoot = () => {
+  const navigateToRoot = useCallback(() => {
     setCurrentServices(nestedServices);
     setNavigationPath([]);
-  };
+  }, [nestedServices]);
 
-  const navigateToBreadcrumb = (index: number) => {
-    const newPath = navigationPath.slice(0, index + 1);
-    setNavigationPath(newPath);
+  const navigateToBreadcrumb = useCallback(
+    (index: number) => {
+      const newPath = navigationPath.slice(0, index + 1);
+      setNavigationPath(newPath);
+      navigateToServices(newPath);
+    },
+    [navigationPath, navigateToServices]
+  );
 
-    let services = nestedServices;
-    for (const pathItem of newPath) {
-      const foundService = services.find((s) => s.id === pathItem.id);
-      if (foundService) {
-        services = foundService.subcategory;
+  // Order management
+  const handleDefaultvalue = useCallback(
+    async (cartItems: OrderItemDto[], userInfo: UserDto) => {
+      try {
+        const services = await getServicesNestedInfo();
+
+        const mappedCartItems = cartItems.map((item) => ({
+          id: item.service_id,
+          name: item.service?.name || "",
+          price: item.unit_price,
+          quantity: item.quantity,
+          fullPath: getFullPath(item.service_id, services),
+        }));
+
+        setCartItems(mappedCartItems);
+        setUserInfo({
+          name: userInfo.full_name || "",
+          phone: userInfo.phone_number || "",
+          email: "",
+          address: userInfo.address || "",
+          notes: userInfo.additional_info || "",
+        });
+      } catch (error) {
+        console.error("Error setting default values:", error);
+        toast.error("Failed to load order data");
       }
-    }
-    setCurrentServices(services);
-  };
+    },
+    [getFullPath]
+  );
 
-  const countTotalServices = (services: NestedService[]): number => {
-    let count = 0;
-    for (const service of services) {
-      if (service.subcategory.length === 0) {
-        count += 1;
-      } else {
-        count += countTotalServices(service.subcategory);
-      }
-    }
-    return count;
-  };
-
-  const handleUserInfoChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setUserInfo((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleOrderConfirm = () => {
-    setCurrentStep("user-info");
-  };
-
-  const handleBackToServices = () => {
-    setCurrentStep("services");
-  };
-
-  const handleSubmitOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    const orderData = new OrderDto({
-      user: {
-        full_name: userInfo.name,
-        phone_number: userInfo.phone,
-        email: userInfo.email,
-        address: userInfo.address,
-        additional_info: userInfo.notes,
-      },
-      orderItems: cartItems.map(
+  const createOrderData = useCallback(
+    (uuid?: string) => {
+      const orderItems = cartItems.map(
         (item) =>
           new OrderItemDto({
             service_id: item.id,
             quantity: item.quantity,
-            unit_price: 0,
+            unit_price: item.price,
           })
-      ),
-    });
+      );
 
-    await addOrder(orderData);
+      return new OrderDto({
+        ...(uuid && { uuid }),
+        user: {
+          full_name: userInfo.name,
+          phone_number: userInfo.phone,
+          email: userInfo.email,
+          address: userInfo.address,
+          additional_info: userInfo.notes,
+        },
+        orderItems,
+      });
+    },
+    [cartItems, userInfo]
+  );
 
-    setIsSubmitting(false);
-    setCurrentStep("confirmation");
+  const handleSubmitOrder = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-    setTimeout(() => {
-      resetBooking();
-    }, 3000);
-  };
+      try {
+        const orderData = createOrderData();
+        await addOrder(orderData);
+        setCurrentStep("confirmation");
 
-  const resetBooking = () => {
+        resetBooking();
+      } catch (error) {
+        console.error("Error submitting order:", error);
+        toast.error("Failed to submit order");
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [createOrderData]
+  );
+
+  // User info management
+  const handleUserInfoChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+    },
+    []
+  );
+
+  // Step management
+  const handleOrderConfirm = useCallback(() => {
+    setCurrentStep("user-info");
+  }, []);
+
+  const handleBackToServices = useCallback(() => {
+    setCurrentStep("services");
+  }, []);
+
+  // Utility functions
+  const getTotalPrice = useCallback(() => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  }, [cartItems]);
+
+  const getTotalQuantity = useCallback(() => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  }, [cartItems]);
+
+  const getItemQuantity = useCallback(
+    (serviceId: number) => {
+      const item = findCartItem(serviceId);
+      return item?.quantity || 0;
+    },
+    [findCartItem]
+  );
+
+  const countTotalServices = useCallback(
+    (services: NestedService[]): number => {
+      return services.reduce((count, service) => {
+        return (
+          count +
+          (service.subcategory?.length > 0
+            ? countTotalServices(service.subcategory)
+            : 1)
+        );
+      }, 0);
+    },
+    []
+  );
+
+  const resetBooking = useCallback(() => {
     setCartItems([]);
     setCurrentStep("services");
     setUserInfo({
@@ -218,21 +380,29 @@ export const useServiceBooking = () => {
     });
     setCurrentServices(nestedServices);
     setNavigationPath([]);
-  };
+  }, [nestedServices]);
 
+  // Initialize services
   useEffect(() => {
     const fetchNestedServices = async () => {
-      const services = await getServicesNestedInfo();
-
-      setNestedServices(services);
-      setCurrentServices(services);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const services = await getServicesNestedInfo();
+        setNestedServices(services);
+        setCurrentServices(services);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+        toast.error("Failed to load services");
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchNestedServices();
   }, []);
 
   return {
+    // State
     cartItems,
     currentServices,
     navigationPath,
@@ -241,22 +411,32 @@ export const useServiceBooking = () => {
     isSubmitting,
     isLoading,
     nestedServices,
+
+    // Cart actions
     addToCart,
-    removeFromCart, //single function to remove an item from the cart
-    removeServiceFromCart, // function to remove a service from the cart
+    removeFromCart,
+    removeServiceFromCart,
     increaseQuantity,
-    getTotalPrice,
-    getTotalQuantity,
-    getItemQuantity,
+    handlePriceChange,
+
+    // Navigation actions
     navigateToSubcategory,
     navigateBack,
     navigateToRoot,
     navigateToBreadcrumb,
-    countTotalServices,
-    handleUserInfoChange,
+
+    // Order actions
     handleOrderConfirm,
     handleBackToServices,
     handleSubmitOrder,
+    handleUserInfoChange,
+    handleDefaultvalue,
+
+    // Utility functions
+    getTotalPrice,
+    getTotalQuantity,
+    getItemQuantity,
+    countTotalServices,
     resetBooking,
   };
 };

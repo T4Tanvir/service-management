@@ -24,8 +24,14 @@ interface ServiceSelectionProps {
   onNavigateToBreadcrumb: (index: number) => void;
   onConfirmOrder: () => void;
   getItemQuantity: (serviceId: number) => number;
+  getTotalPrice?: () => number;
+  isAdmin?: boolean;
   getTotalQuantity: () => number;
-  countTotalServices: (services: NestedService[]) => number
+  countTotalServices: (services: NestedService[]) => number;
+  handlePriceChange: (
+    id: number,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 export const ServiceSelection: React.FC<ServiceSelectionProps> = ({
@@ -44,6 +50,9 @@ export const ServiceSelection: React.FC<ServiceSelectionProps> = ({
   getItemQuantity,
   getTotalQuantity,
   countTotalServices,
+  isAdmin,
+  getTotalPrice,
+  handlePriceChange,
 }) => {
   return (
     <div className="grid md:grid-cols-2 gap-6 h-[70vh]">
@@ -81,6 +90,9 @@ export const ServiceSelection: React.FC<ServiceSelectionProps> = ({
         onIncreaseQuantity={onIncreaseQuantity}
         onConfirmOrder={onConfirmOrder}
         getTotalQuantity={getTotalQuantity}
+        isAdmin={isAdmin}
+        getTotalPrice={getTotalPrice}
+        handlePriceChange={handlePriceChange}
       />
     </div>
   );

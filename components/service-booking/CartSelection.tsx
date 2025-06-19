@@ -14,6 +14,12 @@ interface CartSectionProps {
   onIncreaseQuantity: (serviceId: number) => void;
   onConfirmOrder: () => void;
   getTotalQuantity: () => number;
+  getTotalPrice?: () => number;
+  isAdmin?: boolean;
+  handlePriceChange?: (
+    id: number,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
 export const CartSection: React.FC<CartSectionProps> = ({
@@ -23,6 +29,9 @@ export const CartSection: React.FC<CartSectionProps> = ({
   onIncreaseQuantity,
   onConfirmOrder,
   getTotalQuantity,
+  getTotalPrice,
+  handlePriceChange,
+  isAdmin,
 }) => {
   return (
     <div className="border-l pl-6 flex flex-col">
@@ -57,6 +66,18 @@ export const CartSection: React.FC<CartSectionProps> = ({
                 </Button>
               </div>
 
+              {isAdmin && (
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">Unit Price</div>
+                  <input
+                    type="number"
+                    onChange={(e) => handlePriceChange!(item.id, e)}
+                    defaultValue={item.price}
+                    className="text-sm font-medium bg-transparent border border-gray-100 rounded px-1 py-0.5 outline-none text-right w-20 focus:border-gray-300 hover:border-gray-200"
+                    min="1"
+                  />
+                </div>
+              )}
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <Button
@@ -67,7 +88,6 @@ export const CartSection: React.FC<CartSectionProps> = ({
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
-                  {/* <span className="text-sm">{item.quantity}</span> */}
                   <Button
                     size="sm"
                     variant="outline"
@@ -87,9 +107,16 @@ export const CartSection: React.FC<CartSectionProps> = ({
       {cartItems.length > 0 && (
         <div className="mt-4 pt-4 border-t">
           <div className="flex justify-between items-center mb-4">
-            <span className="font-semibold">Total:</span>
+            <span className="font-semibold">Total Item:</span>
             <span className="font-bold text-lg">{getTotalQuantity()}</span>
           </div>
+
+          {isAdmin && (
+            <div className="flex justify-between items-center mb-4">
+              <span className="font-semibold">Total Price:</span>
+              <span className="font-bold text-lg">{getTotalPrice!()}</span>
+            </div>
+          )}
 
           <Button
             className="w-full bg-green-600 hover:bg-green-700"

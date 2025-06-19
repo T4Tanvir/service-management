@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Minus, Plus } from "lucide-react";
+import React from "react";
 import { NestedService } from "../../type/service.type";
-import { servicePrices } from "../../consttant/mock";
 
 interface ServiceCardProps {
   service: NestedService;
@@ -35,11 +34,6 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         <div className="flex justify-between items-start">
           <div>
             <CardTitle className="text-base">{service.name}</CardTitle>
-            {!hasSubcategories && (
-              <p className="text-sm text-gray-600 mt-1">
-                ৳{servicePrices[service.id] || 50}
-              </p>
-            )}
           </div>
           {hasSubcategories ? (
             <Badge variant="secondary" className="text-xs">

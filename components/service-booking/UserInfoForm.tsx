@@ -17,6 +17,8 @@ interface UserInfoFormProps {
   ) => void;
   onBackToServices: () => void;
   onSubmitOrder: (e: React.FormEvent) => void;
+  isAdmin?: boolean;
+  getTotalPrice?: () => number;
   getTotalQuantity: () => number;
 }
 
@@ -28,6 +30,8 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
   onBackToServices,
   onSubmitOrder,
   getTotalQuantity,
+  isAdmin,
+  getTotalPrice,
 }) => {
   return (
     <div className="h-[70vh] overflow-y-auto">
@@ -122,9 +126,15 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
               </div>
             ))}
             <div className="flex justify-between font-bold pt-2 border-t">
-              <span>Total</span>
+              <span>Total Item</span>
               <span>{getTotalQuantity()}</span>
             </div>
+            {isAdmin && (
+              <div className="flex justify-between font-bold pt-2 border-t">
+                <span>Total Price</span>
+                <span>{getTotalPrice!()}</span>
+              </div>
+            )}
           </div>
 
           <Button

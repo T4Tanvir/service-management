@@ -12,4 +12,18 @@ const getAllOrders = async () => {
   return response.data;
 };
 
-export { addOrder, getAllOrders };
+const editOrder = async (data: OrderDto) => {
+  console.log(data, "data in  editOrder");
+  const response = await axios.put(`/api/order/${data.uuid}?type=order`, data);
+  return response.data;
+};
+
+const editOrderStatus = async (uuid: string, status: number) => {
+  const response = await axios.put(`/api/order/${uuid}?type=status`, {
+    status,
+  });
+  return response.data;
+};
+
+export { addOrder, editOrder, editOrderStatus, getAllOrders };
+

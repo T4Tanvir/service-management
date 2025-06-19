@@ -3,9 +3,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { OrderDto } from "@/dtos/order.dto";
 import { useOrderFilter } from "@/hooks/useOrderFilter";
-import { getAllOrders } from "@/lib/api-client/order";
-import { Order } from "@/type/order.type";
+import { editOrderStatus, getAllOrders } from "@/lib/api-client/order";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { InvoiceModal } from "./feature/InvoiceModal";
 import { OrderManagementHeader } from "./feature/OrderManagementHeader";
 import { OrderTable } from "./feature/OrderTable";
@@ -24,9 +24,19 @@ export default function OrderManagementTable() {
     setIsInvoiceModalOpen(true);
   };
 
-  const handleEdit = (order: Order) => {
-    console.log("Edit order:", order);
-    // Edit functionality would be implemented here
+  const handleStatusChange = async (
+    orderUuid: string,
+    updatedStatus: number
+  ) => {
+    try {
+      const response = await editOrderStatus(orderUuid, updatedStatus);
+      toast.success("Order status updated successfully");
+      const updatedOrder = response.data as OrderDto;
+      updateOrderList(updatedOrder);
+    } catch (err) {
+      toast.error("Failed to update order status");
+      console.error(err);
+    }
   };
 
   const handleNewOrder = () => {
@@ -39,10 +49,17 @@ export default function OrderManagementTable() {
     setSelectedOrder(null);
   };
 
+  const updateOrderList = async (updatedOrder: OrderDto) => {
+    const updatedOrders = orders.map((order) =>
+      order.uuid === updatedOrder.uuid ? updatedOrder : order
+    );
+
+    setOrders(updatedOrders);
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await getAllOrders();
-      console.log(response);
       setOrders(response.data || []);
     };
     fetchOrders();
@@ -65,7 +82,8 @@ export default function OrderManagementTable() {
           <OrderTable
             orders={filteredOrders}
             onViewDetails={handleViewDetails}
-            onEdit={handleEdit}
+            onStatusChange={handleStatusChange}
+            onUpdateOrder={updateOrderList}
           />
         </CardContent>
       </Card>

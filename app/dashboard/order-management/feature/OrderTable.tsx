@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
 import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -7,18 +13,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { orderStatusNameValue } from "@/consttant/order";
 import { OrderDto } from "@/dtos/order.dto";
-import { Edit, Eye } from "lucide-react";
-import { Order } from "../../../../type/order.type";
+import { Select } from "@radix-ui/react-select";
+import { Eye } from "lucide-react";
+import EditOrder from "./EditOrder";
 import { StatusBadge } from "./StatusBadge";
 
 interface OrderTableProps {
   orders: OrderDto[];
   onViewDetails: (order: OrderDto) => void;
-  onEdit: (order: Order) => void;
+  onUpdateOrder: (updatedOrder: OrderDto) => void;
+  onStatusChange: (orderUuiD: string, updatedStatus: number) => void;
 }
 
-export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
+export function OrderTable({
+  orders,
+  onViewDetails,
+  onStatusChange,
+  onUpdateOrder,
+}: OrderTableProps) {
   const getTotallOrder = (orderId: number) => {
     const order = orders.find((o) => o.id === orderId);
     if (!order || !order.orderItems) return 0;
@@ -45,6 +59,7 @@ export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
             <TableHead className="font-semibold">Status</TableHead>
             <TableHead className="font-semibold">Quantity</TableHead>
             <TableHead className="font-semibold">Price</TableHead>
+            <TableHead className="font-semibold">Date</TableHead>
             <TableHead className="font-semibold text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -71,6 +86,15 @@ export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
                 <TableCell className="font-medium">
                   {getTotallPrice(order.id).toLocaleString()}
                 </TableCell>
+                <TableCell className="font-medium">
+                  {order.created_at
+                    ? new Date(order.created_at).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })
+                    : "N/A"}
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center justify-center gap-2">
                     <Button
@@ -82,15 +106,27 @@ export function OrderTable({ orders, onViewDetails, onEdit }: OrderTableProps) {
                       <Eye className="h-3 w-3" />
                       Details
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      //onClick={() => onEdit(order)}
-                      className="flex items-center gap-1"
+                    <EditOrder order={order} onUpdateOrder={onUpdateOrder} />
+                    <Select
+                      value={String(orderStatusNameValue[order.status])}
+                      onValueChange={(value: string) =>
+                        onStatusChange(order.uuid, Number(value))
+                      }
                     >
-                      <Edit className="h-3 w-3" />
-                      Edit
-                    </Button>
+                      <SelectTrigger className="w-32 h-8" aria-label="Status">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.keys(orderStatusNameValue).map((status) => (
+                          <SelectItem
+                            key={status}
+                            value={String(orderStatusNameValue[status])}
+                          >
+                            {status}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </TableCell>
               </TableRow>
