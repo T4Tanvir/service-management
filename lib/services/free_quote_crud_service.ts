@@ -1,10 +1,9 @@
 import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import { ClientError } from "@/errors/error";
-import { Role, User } from "@/generated/prisma";
+import { User } from "@/generated/prisma";
 import { prisma } from "@/uitls/db";
 
 export const create = async (data: FreeQuoteDto): Promise<string> => {
- 
   if (!data.user) {
     throw ClientError.invalidError("User data is required");
   }
@@ -51,11 +50,9 @@ export const create = async (data: FreeQuoteDto): Promise<string> => {
       data: userInfoNeedToInsert,
     });
   } else {
-    console.log(userInfoNeedToInsert, "==========Now i insert data===========");
     insertedUserInfo = await prisma.user.create({
       data: userInfoNeedToInsert,
     });
-    console.log(insertedUserInfo, "inserted user info");
   }
 
   const dataNeedToInsert = {
