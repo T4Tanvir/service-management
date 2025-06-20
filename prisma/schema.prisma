@@ -18,12 +18,14 @@ model User {
   id           Int      @id @default(autoincrement())
   full_name    String   @map("full_name")
   phone_number String   @unique @map("phone_number")
+  email        String?  @map("email")
+  city         String?  @map("city")
   address      String   @map("address_line")
   role         Role     @default(CLIENT)
   created_at   DateTime @default(now()) @map("created_at")
 
   // Relations
-  tasks   Task[]
+  tasks   FreeQuote[]
   reviews Review[]
   Order   Order[]
 
@@ -36,32 +38,23 @@ enum Role {
   ADMIN    @map("30")
 }
 
-enum TaskStatus {
-  REQUESTED   @map("0")
-  ACCEPTED    @map("10")
-  CANCELLED   @map("20")
-  PENDING     @map("30")
-  IN_PROGRESS @map("40")
-  COMPLETED   @map("50")
+enum QuoteStatus {
+  REQUESTED @map("0")
+  ACCEPTED  @map("10")
+  CANCELLED @map("20")
 }
 
-model Task {
-  id           Int        @id @default(autoincrement())
-  name         String
-  phone_number String     @map("phone_number")
-  city         String
-  address_line String     @map("address_line")
-  service_id   Int        @map("service_id")
-  status       TaskStatus @default(REQUESTED)
-  provider_id  Int?       @map("provider_id")
-  scheduled_at DateTime   @map("scheduled_at")
-  total_price  Float      @map("total_price")
-  comment      String?
-  created_at   DateTime   @default(now()) @map("created_at")
+model FreeQuote {
+  id               Int         @id @default(autoincrement())
+  user_id          Int         @map("user_id")
+  task_description String      @map("task_description")
+  status           QuoteStatus @default(REQUESTED)
+  created_at       DateTime    @default(now()) @map("created_at")
 
   // Relations
-  service  Service @relation(fields: [service_id], references: [id])
-  provider User?   @relation(fields: [provider_id], references: [id])
+  user      User     @relation(fields: [user_id], references: [id])
+  Service   Service? @relation(fields: [serviceId], references: [id])
+  serviceId Int?
 
   @@map("tasks")
 }
@@ -117,12 +110,12 @@ model Service {
   // Relations
   parent         Service?         @relation("ServiceToService", fields: [parent_id], references: [id])
   children       Service[]        @relation("ServiceToService")
-  tasks          Task[]
   details        ServiceDetail[]
   faqs           Faq[]
   reviews        Review[]
   ServiceFeature ServiceFeature[]
   OrderItem      OrderItem[]
+  FreeQuote      FreeQuote[]
 
   @@map("services")
 }

@@ -121,24 +121,20 @@ exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   full_name: 'full_name',
   phone_number: 'phone_number',
+  email: 'email',
+  city: 'city',
   address: 'address',
   role: 'role',
   created_at: 'created_at'
 };
 
-exports.Prisma.TaskScalarFieldEnum = {
+exports.Prisma.FreeQuoteScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  phone_number: 'phone_number',
-  city: 'city',
-  address_line: 'address_line',
-  service_id: 'service_id',
+  user_id: 'user_id',
+  task_description: 'task_description',
   status: 'status',
-  provider_id: 'provider_id',
-  scheduled_at: 'scheduled_at',
-  total_price: 'total_price',
-  comment: 'comment',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  serviceId: 'serviceId'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -219,13 +215,10 @@ exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN'
 };
 
-exports.TaskStatus = exports.$Enums.TaskStatus = {
+exports.QuoteStatus = exports.$Enums.QuoteStatus = {
   REQUESTED: 'REQUESTED',
   ACCEPTED: 'ACCEPTED',
-  CANCELLED: 'CANCELLED',
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
-  COMPLETED: 'COMPLETED'
+  CANCELLED: 'CANCELLED'
 };
 
 exports.OrderStatus = exports.$Enums.OrderStatus = {
@@ -239,7 +232,7 @@ exports.OrderStatus = exports.$Enums.OrderStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Task: 'Task',
+  FreeQuote: 'FreeQuote',
   Order: 'Order',
   OrderItem: 'OrderItem',
   Service: 'Service',

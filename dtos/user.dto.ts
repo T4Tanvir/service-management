@@ -4,6 +4,8 @@ import { BaseDto } from "./base.dto";
 export class UserDto extends BaseDto {
   id: number;
   full_name: string;
+  email?: string;
+  city?: string;
   phone_number: string;
   address: string;
   role: UserRole;
@@ -20,5 +22,7 @@ export class UserDto extends BaseDto {
     this.role = json?.role ?? UserRole.CLIENT;
     this.additional_info = json.additional_info;
     this.created_at = new Date(json.created_at);
+    this.city = json.city || "";
+    this.email = json.email || "";
   }
 }
