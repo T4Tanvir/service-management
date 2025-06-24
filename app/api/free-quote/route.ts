@@ -1,6 +1,24 @@
 import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import { NextRequest, NextResponse } from "next/server";
 import * as free_quote_service from "../../../lib/services/free_quote_crud_service";
+import { ClientError } from "@/errors/error";
+
+export async function GET() {
+  try {
+    const freeQuoteList = await free_quote_service.getAll();
+    return NextResponse.json({
+      success: true,
+      message: "Order Data Fetch successfully",
+      data: freeQuoteList,
+    });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof ClientError
+        ? error.message
+        : "Failed to Fetch free Quote List";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +29,7 @@ export async function POST(req: NextRequest) {
   } catch (error: unknown) {
     //console.log(error);
     const errorMessage =
-      error instanceof Error
+      error instanceof ClientError
         ? error.message
         : "Failed to submit free quote request";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

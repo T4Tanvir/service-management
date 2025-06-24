@@ -39,11 +39,6 @@ export default function OrderManagementTable() {
     }
   };
 
-  const handleNewOrder = () => {
-    console.log("Create new order");
-    // New order functionality would be implemented here
-  };
-
   const handleCloseInvoiceModal = () => {
     setIsInvoiceModalOpen(false);
     setSelectedOrder(null);
@@ -68,7 +63,7 @@ export default function OrderManagementTable() {
   return (
     <div className="container mx-auto p-6 space-y-6">
       <Card>
-        <OrderManagementHeader onNewOrder={handleNewOrder} />
+        <OrderManagementHeader />
 
         <CardContent>
           <div className="mb-4">

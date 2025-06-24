@@ -28,7 +28,7 @@ interface ServiceSelectionProps {
   isAdmin?: boolean;
   getTotalQuantity: () => number;
   countTotalServices: (services: NestedService[]) => number;
-  handlePriceChange: (
+  handlePriceChange?: (
     id: number,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;

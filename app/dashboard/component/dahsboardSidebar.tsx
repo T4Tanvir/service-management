@@ -3,7 +3,6 @@ import {
   Calendar,
   FileText,
   Home,
-  LayoutDashboard,
   ListOrdered,
   Settings,
   Users,
@@ -31,7 +30,11 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
     { icon: Users, label: "Customers" },
     { icon: Calendar, label: "Appointments" },
     { icon: FileText, label: "Reports" },
-    { icon: Settings, label: "Settings" },
+    {
+      icon: Settings,
+      label: "Free Quote",
+      path: "/dashboard/free-quote",
+    },
     {
       icon: ListOrdered,
       label: "Order Management",
