@@ -7,4 +7,16 @@ const addFreeQuote = async (data: FreeQuoteDto) => {
   return response.data;
 };
 
-export { addFreeQuote };
+const getAllFreeQuote = async () => {
+  const response = await axios.get("/api/free-quote");
+  return response.data;
+};
+
+const editFreeQuoteStatus = async (id: number, status: number) => {
+  const response = await axios.put(`/api/free-quote/${id}`, {
+    status,
+  });
+  return response.data;
+};
+
+export { addFreeQuote, getAllFreeQuote, editFreeQuoteStatus };

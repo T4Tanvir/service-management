@@ -1,6 +1,7 @@
+import { quoteStatus } from "@/consttant/quoteStatus";
 import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import { ClientError } from "@/errors/error";
-import { User } from "@/generated/prisma";
+import { QuoteStatus, User } from "@/generated/prisma";
 import { prisma } from "@/uitls/db";
 
 export const create = async (data: FreeQuoteDto): Promise<string> => {
@@ -68,4 +69,63 @@ export const create = async (data: FreeQuoteDto): Promise<string> => {
   });
 
   return "Free quote request created successfully";
+};
+
+export const getAll = async (): Promise<FreeQuoteDto[]> => {
+  const freeFaqList = await prisma.freeQuote.findMany({
+    include: {
+      user: true,
+    },
+    orderBy: { id: "asc" },
+  });
+
+  return freeFaqList.map((item) => new FreeQuoteDto(item));
+};
+
+const getOrderStatus = (status: number) => {
+  switch (status) {
+    case quoteStatus["REQUESTED"]:
+      return QuoteStatus.REQUESTED;
+    case quoteStatus["ACCEPTED"]:
+      return QuoteStatus.ACCEPTED;
+    case quoteStatus["CANCELLED"]:
+      return QuoteStatus.CANCELLED;
+    default:
+      return QuoteStatus.REQUESTED;
+  }
+};
+
+export const editStatus = async (
+  id: number,
+  data: FreeQuoteDto
+): Promise<FreeQuoteDto> => {
+  console.log("edit status method call");
+  if (!id) throw ClientError.invalidError("ID is required");
+  console.log(id);
+  if (typeof id !== "number" || isNaN(id)) {
+    throw ClientError.invalidError("ID must be a valid number");
+  }
+  const existingQuote = await prisma.freeQuote.findUnique({
+    where: { id },
+  });
+  console.log("2nd=========",id);
+  if (!existingQuote) {
+    throw ClientError.notExistsError("Free quote");
+  }
+  console.log(getOrderStatus(Number(data.status)));
+  await prisma.freeQuote.update({
+    where: { id },
+    data: {
+      status: getOrderStatus(Number(data.status)),
+    },
+  });
+
+  const updatedData = await prisma.freeQuote.findUnique({
+    where: { id: id },
+    include: {
+      user: true,
+    },
+  });
+
+  return new FreeQuoteDto(updatedData);
 };
