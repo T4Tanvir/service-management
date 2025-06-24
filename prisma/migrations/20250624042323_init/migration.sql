@@ -22,7 +22,7 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "tasks" (
+CREATE TABLE "FreeQuote" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
     "task_description" TEXT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE "tasks" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "serviceId" INTEGER,
 
-    CONSTRAINT "tasks_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "FreeQuote_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -122,10 +122,10 @@ CREATE UNIQUE INDEX "orders_uuid_key" ON "orders"("uuid");
 CREATE UNIQUE INDEX "services_name_key" ON "services"("name");
 
 -- AddForeignKey
-ALTER TABLE "tasks" ADD CONSTRAINT "tasks_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "FreeQuote" ADD CONSTRAINT "FreeQuote_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "tasks" ADD CONSTRAINT "tasks_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "FreeQuote" ADD CONSTRAINT "FreeQuote_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders" ADD CONSTRAINT "orders_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

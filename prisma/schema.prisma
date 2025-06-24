@@ -25,9 +25,9 @@ model User {
   created_at   DateTime @default(now()) @map("created_at")
 
   // Relations
-  tasks   FreeQuote[]
-  reviews Review[]
-  Order   Order[]
+  freeQuote FreeQuote[]
+  reviews   Review[]
+  Order     Order[]
 
   @@map("users")
 }
@@ -55,8 +55,6 @@ model FreeQuote {
   user      User     @relation(fields: [user_id], references: [id])
   Service   Service? @relation(fields: [serviceId], references: [id])
   serviceId Int?
-
-  @@map("tasks")
 }
 
 enum OrderStatus {

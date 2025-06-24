@@ -1644,13 +1644,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    tasks: number
+    freeQuote: number
     reviews: number
     Order: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tasks?: boolean | UserCountOutputTypeCountTasksArgs
+    freeQuote?: boolean | UserCountOutputTypeCountFreeQuoteArgs
     reviews?: boolean | UserCountOutputTypeCountReviewsArgs
     Order?: boolean | UserCountOutputTypeCountOrderArgs
   }
@@ -1669,7 +1669,7 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountFreeQuoteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: FreeQuoteWhereInput
   }
 
@@ -2030,7 +2030,7 @@ export namespace Prisma {
     address?: boolean
     role?: boolean
     created_at?: boolean
-    tasks?: boolean | User$tasksArgs<ExtArgs>
+    freeQuote?: boolean | User$freeQuoteArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     Order?: boolean | User$OrderArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2071,7 +2071,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "full_name" | "phone_number" | "email" | "city" | "address" | "role" | "created_at", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tasks?: boolean | User$tasksArgs<ExtArgs>
+    freeQuote?: boolean | User$freeQuoteArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     Order?: boolean | User$OrderArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2082,7 +2082,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      tasks: Prisma.$FreeQuotePayload<ExtArgs>[]
+      freeQuote: Prisma.$FreeQuotePayload<ExtArgs>[]
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       Order: Prisma.$OrderPayload<ExtArgs>[]
     }
@@ -2489,7 +2489,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FreeQuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    freeQuote<T extends User$freeQuoteArgs<ExtArgs> = {}>(args?: Subset<T, User$freeQuoteArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FreeQuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Order<T extends User$OrderArgs<ExtArgs> = {}>(args?: Subset<T, User$OrderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2917,9 +2917,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.tasks
+   * User.freeQuote
    */
-  export type User$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$freeQuoteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the FreeQuote
      */
@@ -12404,7 +12404,7 @@ export namespace Prisma {
     address?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     created_at?: DateTimeFilter<"User"> | Date | string
-    tasks?: FreeQuoteListRelationFilter
+    freeQuote?: FreeQuoteListRelationFilter
     reviews?: ReviewListRelationFilter
     Order?: OrderListRelationFilter
   }
@@ -12418,7 +12418,7 @@ export namespace Prisma {
     address?: SortOrder
     role?: SortOrder
     created_at?: SortOrder
-    tasks?: FreeQuoteOrderByRelationAggregateInput
+    freeQuote?: FreeQuoteOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
     Order?: OrderOrderByRelationAggregateInput
   }
@@ -12435,7 +12435,7 @@ export namespace Prisma {
     address?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     created_at?: DateTimeFilter<"User"> | Date | string
-    tasks?: FreeQuoteListRelationFilter
+    freeQuote?: FreeQuoteListRelationFilter
     reviews?: ReviewListRelationFilter
     Order?: OrderListRelationFilter
   }, "id" | "phone_number">
@@ -12982,7 +12982,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
     Order?: OrderCreateNestedManyWithoutUserInput
   }
@@ -12996,7 +12996,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     Order?: OrderUncheckedCreateNestedManyWithoutUserInput
   }
@@ -13009,7 +13009,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
     Order?: OrderUpdateManyWithoutUserNestedInput
   }
@@ -13023,7 +13023,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     Order?: OrderUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -13064,7 +13064,7 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    user: UserCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutFreeQuoteInput
     Service?: ServiceCreateNestedOneWithoutFreeQuoteInput
   }
 
@@ -13081,7 +13081,7 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutFreeQuoteNestedInput
     Service?: ServiceUpdateOneWithoutFreeQuoteNestedInput
   }
 
@@ -14355,9 +14355,9 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutTasksInput = {
-    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
+  export type UserCreateNestedOneWithoutFreeQuoteInput = {
+    create?: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFreeQuoteInput
     connect?: UserWhereUniqueInput
   }
 
@@ -14371,12 +14371,12 @@ export namespace Prisma {
     set?: $Enums.QuoteStatus
   }
 
-  export type UserUpdateOneRequiredWithoutTasksNestedInput = {
-    create?: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutTasksInput
-    upsert?: UserUpsertWithoutTasksInput
+  export type UserUpdateOneRequiredWithoutFreeQuoteNestedInput = {
+    create?: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFreeQuoteInput
+    upsert?: UserUpsertWithoutFreeQuoteInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTasksInput, UserUpdateWithoutTasksInput>, UserUncheckedUpdateWithoutTasksInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFreeQuoteInput, UserUpdateWithoutFreeQuoteInput>, UserUncheckedUpdateWithoutFreeQuoteInput>
   }
 
   export type ServiceUpdateOneWithoutFreeQuoteNestedInput = {
@@ -15278,7 +15278,7 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Order"> | Date | string
   }
 
-  export type UserCreateWithoutTasksInput = {
+  export type UserCreateWithoutFreeQuoteInput = {
     full_name: string
     phone_number: string
     email?: string | null
@@ -15290,7 +15290,7 @@ export namespace Prisma {
     Order?: OrderCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutTasksInput = {
+  export type UserUncheckedCreateWithoutFreeQuoteInput = {
     id?: number
     full_name: string
     phone_number: string
@@ -15303,9 +15303,9 @@ export namespace Prisma {
     Order?: OrderUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutTasksInput = {
+  export type UserCreateOrConnectWithoutFreeQuoteInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+    create: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
   }
 
   export type ServiceCreateWithoutFreeQuoteInput = {
@@ -15346,18 +15346,18 @@ export namespace Prisma {
     create: XOR<ServiceCreateWithoutFreeQuoteInput, ServiceUncheckedCreateWithoutFreeQuoteInput>
   }
 
-  export type UserUpsertWithoutTasksInput = {
-    update: XOR<UserUpdateWithoutTasksInput, UserUncheckedUpdateWithoutTasksInput>
-    create: XOR<UserCreateWithoutTasksInput, UserUncheckedCreateWithoutTasksInput>
+  export type UserUpsertWithoutFreeQuoteInput = {
+    update: XOR<UserUpdateWithoutFreeQuoteInput, UserUncheckedUpdateWithoutFreeQuoteInput>
+    create: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutTasksInput = {
+  export type UserUpdateToOneWithWhereWithoutFreeQuoteInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutTasksInput, UserUncheckedUpdateWithoutTasksInput>
+    data: XOR<UserUpdateWithoutFreeQuoteInput, UserUncheckedUpdateWithoutFreeQuoteInput>
   }
 
-  export type UserUpdateWithoutTasksInput = {
+  export type UserUpdateWithoutFreeQuoteInput = {
     full_name?: StringFieldUpdateOperationsInput | string
     phone_number?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15369,7 +15369,7 @@ export namespace Prisma {
     Order?: OrderUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutTasksInput = {
+  export type UserUncheckedUpdateWithoutFreeQuoteInput = {
     id?: IntFieldUpdateOperationsInput | number
     full_name?: StringFieldUpdateOperationsInput | string
     phone_number?: StringFieldUpdateOperationsInput | string
@@ -15434,7 +15434,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteCreateNestedManyWithoutUserInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
   }
 
@@ -15447,7 +15447,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -15500,7 +15500,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUpdateManyWithoutUserNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
   }
 
@@ -15513,7 +15513,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -15871,7 +15871,7 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    user: UserCreateNestedOneWithoutTasksInput
+    user: UserCreateNestedOneWithoutFreeQuoteInput
   }
 
   export type FreeQuoteUncheckedCreateWithoutServiceInput = {
@@ -16346,7 +16346,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteCreateNestedManyWithoutUserInput
     Order?: OrderCreateNestedManyWithoutUserInput
   }
 
@@ -16359,7 +16359,7 @@ export namespace Prisma {
     address: string
     role?: $Enums.Role
     created_at?: Date | string
-    tasks?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
+    freeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutUserInput
     Order?: OrderUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16425,7 +16425,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUpdateManyWithoutUserNestedInput
     Order?: OrderUpdateManyWithoutUserNestedInput
   }
 
@@ -16438,7 +16438,7 @@ export namespace Prisma {
     address?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tasks?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
+    freeQuote?: FreeQuoteUncheckedUpdateManyWithoutUserNestedInput
     Order?: OrderUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16804,7 +16804,7 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutTasksNestedInput
+    user?: UserUpdateOneRequiredWithoutFreeQuoteNestedInput
   }
 
   export type FreeQuoteUncheckedUpdateWithoutServiceInput = {
