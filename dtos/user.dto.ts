@@ -1,4 +1,4 @@
-import { UserRole } from "@/enums/user_role";
+import { Role } from "@/generated/prisma";
 import { BaseDto } from "./base.dto";
 
 export class UserDto extends BaseDto {
@@ -8,7 +8,7 @@ export class UserDto extends BaseDto {
   city?: string;
   phone_number: string;
   address: string;
-  role: UserRole;
+  role: Role;
   additional_info?: string;
   created_at: Date;
 
@@ -19,7 +19,7 @@ export class UserDto extends BaseDto {
     this.full_name = json.full_name;
     this.phone_number = json.phone_number;
     this.address = json.address;
-    this.role = json?.role ?? UserRole.CLIENT;
+    this.role = json?.role ?? Role.CLIENT;
     this.additional_info = json.additional_info;
     this.created_at = new Date(json.created_at);
     this.city = json.city || "";

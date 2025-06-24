@@ -20,7 +20,7 @@ model User {
   phone_number String   @unique @map("phone_number")
   email        String?  @map("email")
   city         String?  @map("city")
-  address      String   @map("address_line")
+  address      String   @map("address")
   role         Role     @default(CLIENT)
   created_at   DateTime @default(now()) @map("created_at")
 

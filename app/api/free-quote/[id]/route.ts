@@ -10,7 +10,7 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = new FreeQuoteDto(await request.json());
-    console.log(id, body, "===============");
+    
     if (!id) {
       return Response.json(
         { success: false, message: "ID is required" },

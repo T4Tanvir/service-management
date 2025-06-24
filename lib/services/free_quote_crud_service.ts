@@ -60,7 +60,7 @@ export const create = async (data: FreeQuoteDto): Promise<string> => {
     user_id: isUserExists ? isUserExists.id : insertedUserInfo!.id,
     task_description: data.task_description,
   };
-  console.log(dataNeedToInsert, "===============");
+  
   await prisma.freeQuote.create({
     data: {
       user_id: dataNeedToInsert.user_id!,

@@ -1,143 +1,143 @@
 // // lib/user.ts
 
-// import { UserRole } from "@/enums/user_role";
-// import { prisma } from "@/uitls/db";
-// import { compare, hash } from "bcrypt";
+import { userStatusNameValuePair } from "@/consttant/userStatus";
+import { UserDto } from "@/dtos/user.dto";
+import { ClientError } from "@/errors/error";
+import { Role } from "@/generated/prisma";
+import { prisma } from "@/uitls/db";
 
+const create = async (data: UserDto) => {
+  //const hashedPassword = await hash(data.password, 10);
+  console.log(data);
+  if (!data.phone_number || !data.address || !data.full_name) {
+    throw ClientError.invalidError(
+      "full_name, phone_number, and address are required"
+    );
+  }
 
-// // Types
-// export type UserCreateInput = {
-//   fullName: string;
-//   phoneNumber: string;
-//   password: string;
-//   city: string;
-//   addressLine: string;
-//   role?: UserRole;
-// };
+  const isUserExist = await prisma.user.findFirst({
+    where: { phone_number: data.phone_number },
+  });
 
-// export type UserUpdateInput = Partial<Omit<UserCreateInput, "password">> & {
-//   password?: string;
-// };
+  if (isUserExist)
+    throw ClientError.invalidError(
+      "User already exists with this phone number."
+    );
 
-// // CREATE
-// const createUser = async (data: UserCreateInput) => {
-//   const hashedPassword = await hash(data.password, 10);
+  // Create the user
+  const user = await prisma.user.create({
+    data: {
+      full_name: data.full_name,
+      phone_number: data.phone_number,
+      email: data.email,
+      city: data.city,
+      address: data.address,
+      created_at: data.created_at,
+    },
+  });
 
-//   // Create the user
-//   const user: UserCreateInput = await prisma.user.create({
-//     data: {
-//       ...data,
-//       password: hashedPassword,
-//     },
-//   });
+  return user;
+};
 
-//   // Return the user without the password
-//   const { password: _, ...userWithoutPassword } = user;
-//   return userWithoutPassword;
-// };
+const getAll = async () => {
+  const users = await prisma.user.findMany();
+  return users;
+};
 
-// // READ
-// const getAllUsers = async () => {
-//   const users = await prisma.user.findMany({
-//     select: {
-//       id: true,
-//       fullName: true,
-//       phoneNumber: true,
-//       city: true,
-//       addressLine: true,
-//       role: true,
-//       createdAt: true,
-//       // Exclude password for security
-//     },
-//   });
+const getUserRole = (role: number) => {
+  switch (role) {
+    case userStatusNameValuePair["CLIENT"]:
+      return Role.CLIENT;
+    case userStatusNameValuePair["EMPLOYEE"]:
+      return Role.EMPLOYEE;
+    case userStatusNameValuePair["ADMIN"]:
+      return Role.ADMIN;
+    default:
+      return null;
+  }
+};
 
-//   return users;
-// };
+const edit = async (id: number, data: Partial<UserDto>) => {
+  // Input validation
+  if (!id) {
+    throw ClientError.invalidError("Invalid user ID");
+  }
 
-// const getUserById = async (id: string) => {
-//   const user = await prisma.user.findUnique({
-//     where: { id },
-//     select: {
-//       id: true,
-//       fullName: true,
-//       phoneNumber: true,
-//       city: true,
-//       addressLine: true,
-//       role: true,
-//       createdAt: true,
-//       // Exclude password for security
-//       tasks: true,
-//       reviews: true,
-//     },
-//   });
+  // Fetch existing user
+  const existingUser = await prisma.user.findFirst({
+    where: { id },
+  });
 
-//   return user;
-// };
+  if (!existingUser) {
+    throw ClientError.notExistsError("User");
+  }
 
-// // UPDATE
-// const updateUser = async (id: string, data: UserUpdateInput) => {
-//   // If updating password, hash it first
-//   const updateData = { ...data };
+  data.role = getUserRole(Number(data.role)) || existingUser.role;
+  // Define updatable fields
+  const updatableFields = [
+    "full_name",
+    "phone_number",
+    "email",
+    "city",
+    "address",
+  ] as const;
 
-//   if (data.password) {
-//     updateData.password = await hash(data.password, 10);
-//   }
+  // Normalize empty strings to preserve existing values (except full_name which can be empty)
+  const normalizedData = { ...data };
+  updatableFields.forEach((field) => {
+    if (
+      normalizedData[field] !== undefined &&
+      normalizedData[field]?.trim() === ""
+    ) {
+      normalizedData[field] = existingUser[field] ?? undefined;
+    }
+  });
 
-//   const updatedUser = await prisma.user.update({
-//     where: { id },
-//     data: updateData,
-//     select: {
-//       id: true,
-//       fullName: true,
-//       phoneNumber: true,
-//       city: true,
-//       addressLine: true,
-//       role: true,
-//       createdAt: true,
-//       // Exclude password for security
-//     },
-//   });
+  // Build update object with only changed fields
+  const updateData: Partial<UserDto> = {};
+  let hasChanges = false;
 
-//   return updatedUser;
-// };
+  if (data.role !== existingUser.role) {
+    updateData.role = data.role;
+    hasChanges = true;
+  }
+  updatableFields.forEach((field) => {
+    const newValue = normalizedData[field];
+    const existingValue = existingUser[field];
 
-// // DELETE
-// const suspendUser = async (id: string) => {
-//   // Note: This might fail if there are related records that depend on this user
-//   // Consider implementing cascade delete in your schema or handling related records first
-//   await prisma.user.delete({
-//     where: { id },
-//   });
+    if (newValue !== undefined && newValue !== existingValue) {
+      updateData[field] = newValue;
+      hasChanges = true;
+    }
+  });
 
-//   return { success: true };
-// };
+  // Check if there are any changes
+  if (!hasChanges) {
+    throw ClientError.invalidError("No changes detected.");
+  }
 
-// // Authentication Helper
-// const verifyUserCredentials = async (phoneNumber: string, password: string) => {
-//   const user = await prisma.user.findUnique({
-//     where: { phoneNumber },
-//   });
+  // Validate phone number uniqueness if it's being updated
+  if (updateData.phone_number) {
+    const phoneExists = await prisma.user.findFirst({
+      where: {
+        phone_number: updateData.phone_number,
+        id: { not: id }, // Exclude current user
+      },
+    });
 
-//   if (!user) {
-//     return null;
-//   }
+    if (phoneExists) {
+      throw ClientError.invalidError(
+        "Another user exists with this phone number."
+      );
+    }
+  }
 
-//   const passwordMatch = await compare(password, user.password);
+  // Perform the update
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: updateData,
+  });
 
-//   if (!passwordMatch) {
-//     return null;
-//   }
-
-//   // Return user without password
-//   const { password: _, ...userWithoutPassword } = user;
-//   return userWithoutPassword;
-// };
-
-// export {
-//   createUser,
-//   suspendUser,
-//   getAllUsers,
-//   getUserById,
-//   updateUser,
-//   verifyUserCredentials,
-// };
+  return updatedUser;
+};
+export { create, getAll, edit };

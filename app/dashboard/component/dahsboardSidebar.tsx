@@ -27,7 +27,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
 }) => {
   const sidebarItems: SidebarItem[] = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: Users, label: "Customers" },
+    { icon: Users, label: "Users", path: "/dashboard/users" },
     { icon: Calendar, label: "Appointments" },
     { icon: FileText, label: "Reports" },
     {
