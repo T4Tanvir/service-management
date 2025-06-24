@@ -1,0 +1,164 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  full_name    String   @map("full_name")
+  phone_number String   @unique @map("phone_number")
+  email        String?  @map("email")
+  city         String?  @map("city")
+  address      String   @map("address_line")
+  role         Role     @default(CLIENT)
+  created_at   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  freeQuote FreeQuote[]
+  reviews   Review[]
+  Order     Order[]
+
+  @@map("users")
+}
+
+enum Role {
+  CLIENT   @map("10")
+  EMPLOYEE @map("20")
+  ADMIN    @map("30")
+}
+
+enum QuoteStatus {
+  REQUESTED @map("0")
+  ACCEPTED  @map("10")
+  CANCELLED @map("20")
+}
+
+model FreeQuote {
+  id               Int         @id @unique @default(autoincrement())
+  user_id          Int         @map("user_id")
+  task_description String      @map("task_description")
+  status           QuoteStatus @default(REQUESTED)
+  created_at       DateTime    @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id])
+}
+
+enum OrderStatus {
+  REQUESTED   @map("0")
+  ACCEPTED    @map("10")
+  CANCELLED   @map("20")
+  PENDING     @map("30")
+  IN_PROGRESS @map("40")
+  COMPLETED   @map("50")
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  uuid       String      @unique @default(uuid())
+  status     OrderStatus @default(REQUESTED)
+  user_id    Int         @map("user_id")
+  created_at DateTime    @default(now())
+
+  // Relations
+  user       User        @relation(fields: [user_id], references: [id])
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int   @id @default(autoincrement())
+  order_id    Int   @map("order_id")
+  service_id  Int   @map("service_id")
+  quantity    Int   @default(1)
+  unit_price  Float @default(0.0)
+  total_price Float @default(0.0)
+
+  // Relations
+  order   Order   @relation(fields: [order_id], references: [id])
+  service Service @relation(fields: [service_id], references: [id])
+
+  @@map("order_items")
+}
+
+model Service {
+  id                Int      @id @default(autoincrement())
+  name              String   @unique @db.VarChar(100)
+  parent_id         Int?     @map("parent_id")
+  short_description String?  @db.VarChar(255)
+  image_url         String?  @db.VarChar(255)
+  active            Boolean  @default(true)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  // Relations
+  parent         Service?         @relation("ServiceToService", fields: [parent_id], references: [id])
+  children       Service[]        @relation("ServiceToService")
+  details        ServiceDetail[]
+  faqs           Faq[]
+  reviews        Review[]
+  ServiceFeature ServiceFeature[]
+  OrderItem      OrderItem[]
+
+  @@map("services")
+}
+
+model ServiceDetail {
+  id                Int    @id @default(autoincrement())
+  service_id        Int    @map("service_id")
+  price             Float
+  short_description String @map("short_description")
+  long_description  String @map("long_description")
+
+  // Relations
+  service Service @relation(fields: [service_id], references: [id])
+
+  @@map("service_details")
+}
+
+model ServiceFeature {
+  id           Int    @id @default(autoincrement())
+  service_id   Int    @map("service_id")
+  feature_text String @db.VarChar(255)
+
+  service Service @relation(fields: [service_id], references: [id])
+}
+
+model Faq {
+  id         Int    @id @default(autoincrement())
+  service_id Int    @map("service_id")
+  question   String
+  answer     String
+
+  // Relations
+  service Service @relation(fields: [service_id], references: [id])
+
+  @@map("faqs")
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @map("user_id")
+  service_id Int      @map("service_id")
+  comment    String
+  rating     Int
+  created_at DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user    User    @relation(fields: [user_id], references: [id])
+  service Service @relation(fields: [service_id], references: [id])
+
+  @@map("reviews")
+}

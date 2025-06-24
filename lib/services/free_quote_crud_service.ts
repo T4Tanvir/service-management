@@ -60,7 +60,7 @@ export const create = async (data: FreeQuoteDto): Promise<string> => {
     user_id: isUserExists ? isUserExists.id : insertedUserInfo!.id,
     task_description: data.task_description,
   };
-
+  console.log(dataNeedToInsert, "===============");
   await prisma.freeQuote.create({
     data: {
       user_id: dataNeedToInsert.user_id!,
@@ -105,23 +105,23 @@ export const editStatus = async (
   if (typeof id !== "number" || isNaN(id)) {
     throw ClientError.invalidError("ID must be a valid number");
   }
-  const existingQuote = await prisma.freeQuote.findUnique({
-    where: { id },
+  const existingQuote = await prisma.freeQuote.findFirst({
+    where: { id: Number(id) },
   });
-  console.log("2nd=========",id);
+  
   if (!existingQuote) {
     throw ClientError.notExistsError("Free quote");
   }
-  console.log(getOrderStatus(Number(data.status)));
+
   await prisma.freeQuote.update({
-    where: { id },
+    where: { id: Number(id) },
     data: {
       status: getOrderStatus(Number(data.status)),
     },
   });
 
   const updatedData = await prisma.freeQuote.findUnique({
-    where: { id: id },
+    where: { id: Number(id) },
     include: {
       user: true,
     },

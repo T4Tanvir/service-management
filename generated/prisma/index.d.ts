@@ -378,8 +378,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 6.10.1
+   * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
    */
   export type PrismaVersion = {
     client: string
@@ -1730,7 +1730,6 @@ export namespace Prisma {
     reviews: number
     ServiceFeature: number
     OrderItem: number
-    FreeQuote: number
   }
 
   export type ServiceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1740,7 +1739,6 @@ export namespace Prisma {
     reviews?: boolean | ServiceCountOutputTypeCountReviewsArgs
     ServiceFeature?: boolean | ServiceCountOutputTypeCountServiceFeatureArgs
     OrderItem?: boolean | ServiceCountOutputTypeCountOrderItemArgs
-    FreeQuote?: boolean | ServiceCountOutputTypeCountFreeQuoteArgs
   }
 
   // Custom InputTypes
@@ -1794,13 +1792,6 @@ export namespace Prisma {
    */
   export type ServiceCountOutputTypeCountOrderItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
-  }
-
-  /**
-   * ServiceCountOutputType without action
-   */
-  export type ServiceCountOutputTypeCountFreeQuoteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FreeQuoteWhereInput
   }
 
 
@@ -3022,13 +3013,11 @@ export namespace Prisma {
   export type FreeQuoteAvgAggregateOutputType = {
     id: number | null
     user_id: number | null
-    serviceId: number | null
   }
 
   export type FreeQuoteSumAggregateOutputType = {
     id: number | null
     user_id: number | null
-    serviceId: number | null
   }
 
   export type FreeQuoteMinAggregateOutputType = {
@@ -3037,7 +3026,6 @@ export namespace Prisma {
     task_description: string | null
     status: $Enums.QuoteStatus | null
     created_at: Date | null
-    serviceId: number | null
   }
 
   export type FreeQuoteMaxAggregateOutputType = {
@@ -3046,7 +3034,6 @@ export namespace Prisma {
     task_description: string | null
     status: $Enums.QuoteStatus | null
     created_at: Date | null
-    serviceId: number | null
   }
 
   export type FreeQuoteCountAggregateOutputType = {
@@ -3055,7 +3042,6 @@ export namespace Prisma {
     task_description: number
     status: number
     created_at: number
-    serviceId: number
     _all: number
   }
 
@@ -3063,13 +3049,11 @@ export namespace Prisma {
   export type FreeQuoteAvgAggregateInputType = {
     id?: true
     user_id?: true
-    serviceId?: true
   }
 
   export type FreeQuoteSumAggregateInputType = {
     id?: true
     user_id?: true
-    serviceId?: true
   }
 
   export type FreeQuoteMinAggregateInputType = {
@@ -3078,7 +3062,6 @@ export namespace Prisma {
     task_description?: true
     status?: true
     created_at?: true
-    serviceId?: true
   }
 
   export type FreeQuoteMaxAggregateInputType = {
@@ -3087,7 +3070,6 @@ export namespace Prisma {
     task_description?: true
     status?: true
     created_at?: true
-    serviceId?: true
   }
 
   export type FreeQuoteCountAggregateInputType = {
@@ -3096,7 +3078,6 @@ export namespace Prisma {
     task_description?: true
     status?: true
     created_at?: true
-    serviceId?: true
     _all?: true
   }
 
@@ -3192,7 +3173,6 @@ export namespace Prisma {
     task_description: string
     status: $Enums.QuoteStatus
     created_at: Date
-    serviceId: number | null
     _count: FreeQuoteCountAggregateOutputType | null
     _avg: FreeQuoteAvgAggregateOutputType | null
     _sum: FreeQuoteSumAggregateOutputType | null
@@ -3220,9 +3200,7 @@ export namespace Prisma {
     task_description?: boolean
     status?: boolean
     created_at?: boolean
-    serviceId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }, ExtArgs["result"]["freeQuote"]>
 
   export type FreeQuoteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3231,9 +3209,7 @@ export namespace Prisma {
     task_description?: boolean
     status?: boolean
     created_at?: boolean
-    serviceId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }, ExtArgs["result"]["freeQuote"]>
 
   export type FreeQuoteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3242,9 +3218,7 @@ export namespace Prisma {
     task_description?: boolean
     status?: boolean
     created_at?: boolean
-    serviceId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }, ExtArgs["result"]["freeQuote"]>
 
   export type FreeQuoteSelectScalar = {
@@ -3253,28 +3227,23 @@ export namespace Prisma {
     task_description?: boolean
     status?: boolean
     created_at?: boolean
-    serviceId?: boolean
   }
 
-  export type FreeQuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "task_description" | "status" | "created_at" | "serviceId", ExtArgs["result"]["freeQuote"]>
+  export type FreeQuoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "task_description" | "status" | "created_at", ExtArgs["result"]["freeQuote"]>
   export type FreeQuoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }
   export type FreeQuoteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }
   export type FreeQuoteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    Service?: boolean | FreeQuote$ServiceArgs<ExtArgs>
   }
 
   export type $FreeQuotePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FreeQuote"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      Service: Prisma.$ServicePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3282,7 +3251,6 @@ export namespace Prisma {
       task_description: string
       status: $Enums.QuoteStatus
       created_at: Date
-      serviceId: number | null
     }, ExtArgs["result"]["freeQuote"]>
     composites: {}
   }
@@ -3678,7 +3646,6 @@ export namespace Prisma {
   export interface Prisma__FreeQuoteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Service<T extends FreeQuote$ServiceArgs<ExtArgs> = {}>(args?: Subset<T, FreeQuote$ServiceArgs<ExtArgs>>): Prisma__ServiceClient<$Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3713,7 +3680,6 @@ export namespace Prisma {
     readonly task_description: FieldRef<"FreeQuote", 'String'>
     readonly status: FieldRef<"FreeQuote", 'QuoteStatus'>
     readonly created_at: FieldRef<"FreeQuote", 'DateTime'>
-    readonly serviceId: FieldRef<"FreeQuote", 'Int'>
   }
     
 
@@ -4107,25 +4073,6 @@ export namespace Prisma {
      * Limit how many FreeQuotes to delete.
      */
     limit?: number
-  }
-
-  /**
-   * FreeQuote.Service
-   */
-  export type FreeQuote$ServiceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Service
-     */
-    select?: ServiceSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Service
-     */
-    omit?: ServiceOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ServiceInclude<ExtArgs> | null
-    where?: ServiceWhereInput
   }
 
   /**
@@ -6639,7 +6586,6 @@ export namespace Prisma {
     reviews?: boolean | Service$reviewsArgs<ExtArgs>
     ServiceFeature?: boolean | Service$ServiceFeatureArgs<ExtArgs>
     OrderItem?: boolean | Service$OrderItemArgs<ExtArgs>
-    FreeQuote?: boolean | Service$FreeQuoteArgs<ExtArgs>
     _count?: boolean | ServiceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["service"]>
 
@@ -6687,7 +6633,6 @@ export namespace Prisma {
     reviews?: boolean | Service$reviewsArgs<ExtArgs>
     ServiceFeature?: boolean | Service$ServiceFeatureArgs<ExtArgs>
     OrderItem?: boolean | Service$OrderItemArgs<ExtArgs>
-    FreeQuote?: boolean | Service$FreeQuoteArgs<ExtArgs>
     _count?: boolean | ServiceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ServiceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6707,7 +6652,6 @@ export namespace Prisma {
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       ServiceFeature: Prisma.$ServiceFeaturePayload<ExtArgs>[]
       OrderItem: Prisma.$OrderItemPayload<ExtArgs>[]
-      FreeQuote: Prisma.$FreeQuotePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7119,7 +7063,6 @@ export namespace Prisma {
     reviews<T extends Service$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, Service$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ServiceFeature<T extends Service$ServiceFeatureArgs<ExtArgs> = {}>(args?: Subset<T, Service$ServiceFeatureArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServiceFeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     OrderItem<T extends Service$OrderItemArgs<ExtArgs> = {}>(args?: Subset<T, Service$OrderItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    FreeQuote<T extends Service$FreeQuoteArgs<ExtArgs> = {}>(args?: Subset<T, Service$FreeQuoteArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FreeQuotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7713,30 +7656,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: OrderItemScalarFieldEnum | OrderItemScalarFieldEnum[]
-  }
-
-  /**
-   * Service.FreeQuote
-   */
-  export type Service$FreeQuoteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FreeQuote
-     */
-    select?: FreeQuoteSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the FreeQuote
-     */
-    omit?: FreeQuoteOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FreeQuoteInclude<ExtArgs> | null
-    where?: FreeQuoteWhereInput
-    orderBy?: FreeQuoteOrderByWithRelationInput | FreeQuoteOrderByWithRelationInput[]
-    cursor?: FreeQuoteWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FreeQuoteScalarFieldEnum | FreeQuoteScalarFieldEnum[]
   }
 
   /**
@@ -12169,8 +12088,7 @@ export namespace Prisma {
     user_id: 'user_id',
     task_description: 'task_description',
     status: 'status',
-    created_at: 'created_at',
-    serviceId: 'serviceId'
+    created_at: 'created_at'
   };
 
   export type FreeQuoteScalarFieldEnum = (typeof FreeQuoteScalarFieldEnum)[keyof typeof FreeQuoteScalarFieldEnum]
@@ -12479,9 +12397,7 @@ export namespace Prisma {
     task_description?: StringFilter<"FreeQuote"> | string
     status?: EnumQuoteStatusFilter<"FreeQuote"> | $Enums.QuoteStatus
     created_at?: DateTimeFilter<"FreeQuote"> | Date | string
-    serviceId?: IntNullableFilter<"FreeQuote"> | number | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    Service?: XOR<ServiceNullableScalarRelationFilter, ServiceWhereInput> | null
   }
 
   export type FreeQuoteOrderByWithRelationInput = {
@@ -12490,9 +12406,7 @@ export namespace Prisma {
     task_description?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
-    serviceId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
-    Service?: ServiceOrderByWithRelationInput
   }
 
   export type FreeQuoteWhereUniqueInput = Prisma.AtLeast<{
@@ -12504,10 +12418,8 @@ export namespace Prisma {
     task_description?: StringFilter<"FreeQuote"> | string
     status?: EnumQuoteStatusFilter<"FreeQuote"> | $Enums.QuoteStatus
     created_at?: DateTimeFilter<"FreeQuote"> | Date | string
-    serviceId?: IntNullableFilter<"FreeQuote"> | number | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    Service?: XOR<ServiceNullableScalarRelationFilter, ServiceWhereInput> | null
-  }, "id">
+  }, "id" | "id">
 
   export type FreeQuoteOrderByWithAggregationInput = {
     id?: SortOrder
@@ -12515,7 +12427,6 @@ export namespace Prisma {
     task_description?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
-    serviceId?: SortOrderInput | SortOrder
     _count?: FreeQuoteCountOrderByAggregateInput
     _avg?: FreeQuoteAvgOrderByAggregateInput
     _max?: FreeQuoteMaxOrderByAggregateInput
@@ -12532,7 +12443,6 @@ export namespace Prisma {
     task_description?: StringWithAggregatesFilter<"FreeQuote"> | string
     status?: EnumQuoteStatusWithAggregatesFilter<"FreeQuote"> | $Enums.QuoteStatus
     created_at?: DateTimeWithAggregatesFilter<"FreeQuote"> | Date | string
-    serviceId?: IntNullableWithAggregatesFilter<"FreeQuote"> | number | null
   }
 
   export type OrderWhereInput = {
@@ -12679,7 +12589,6 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     ServiceFeature?: ServiceFeatureListRelationFilter
     OrderItem?: OrderItemListRelationFilter
-    FreeQuote?: FreeQuoteListRelationFilter
   }
 
   export type ServiceOrderByWithRelationInput = {
@@ -12698,7 +12607,6 @@ export namespace Prisma {
     reviews?: ReviewOrderByRelationAggregateInput
     ServiceFeature?: ServiceFeatureOrderByRelationAggregateInput
     OrderItem?: OrderItemOrderByRelationAggregateInput
-    FreeQuote?: FreeQuoteOrderByRelationAggregateInput
   }
 
   export type ServiceWhereUniqueInput = Prisma.AtLeast<{
@@ -12720,7 +12628,6 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     ServiceFeature?: ServiceFeatureListRelationFilter
     OrderItem?: OrderItemListRelationFilter
-    FreeQuote?: FreeQuoteListRelationFilter
   }, "id" | "name">
 
   export type ServiceOrderByWithAggregationInput = {
@@ -13065,7 +12972,6 @@ export namespace Prisma {
     status?: $Enums.QuoteStatus
     created_at?: Date | string
     user: UserCreateNestedOneWithoutFreeQuoteInput
-    Service?: ServiceCreateNestedOneWithoutFreeQuoteInput
   }
 
   export type FreeQuoteUncheckedCreateInput = {
@@ -13074,7 +12980,6 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    serviceId?: number | null
   }
 
   export type FreeQuoteUpdateInput = {
@@ -13082,7 +12987,6 @@ export namespace Prisma {
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutFreeQuoteNestedInput
-    Service?: ServiceUpdateOneWithoutFreeQuoteNestedInput
   }
 
   export type FreeQuoteUncheckedUpdateInput = {
@@ -13091,7 +12995,6 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    serviceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type FreeQuoteCreateManyInput = {
@@ -13100,7 +13003,6 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    serviceId?: number | null
   }
 
   export type FreeQuoteUpdateManyMutationInput = {
@@ -13115,7 +13017,6 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    serviceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type OrderCreateInput = {
@@ -13246,7 +13147,6 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateInput = {
@@ -13264,7 +13164,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUpdateInput = {
@@ -13281,7 +13180,6 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateInput = {
@@ -13299,7 +13197,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceCreateManyInput = {
@@ -13744,25 +13641,9 @@ export namespace Prisma {
     not?: NestedEnumQuoteStatusFilter<$PrismaModel> | $Enums.QuoteStatus
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type ServiceNullableScalarRelationFilter = {
-    is?: ServiceWhereInput | null
-    isNot?: ServiceWhereInput | null
   }
 
   export type FreeQuoteCountOrderByAggregateInput = {
@@ -13771,13 +13652,11 @@ export namespace Prisma {
     task_description?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type FreeQuoteAvgOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type FreeQuoteMaxOrderByAggregateInput = {
@@ -13786,7 +13665,6 @@ export namespace Prisma {
     task_description?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type FreeQuoteMinOrderByAggregateInput = {
@@ -13795,13 +13673,11 @@ export namespace Prisma {
     task_description?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type FreeQuoteSumOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
-    serviceId?: SortOrder
   }
 
   export type EnumQuoteStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -13812,22 +13688,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuoteStatusFilter<$PrismaModel>
     _max?: NestedEnumQuoteStatusFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumOrderStatusFilter<$PrismaModel = never> = {
@@ -13973,9 +13833,25 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type ServiceNullableScalarRelationFilter = {
+    is?: ServiceWhereInput | null
+    isNot?: ServiceWhereInput | null
   }
 
   export type ServiceListRelationFilter = {
@@ -14059,6 +13935,22 @@ export namespace Prisma {
   export type ServiceSumOrderByAggregateInput = {
     id?: SortOrder
     parent_id?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -14361,12 +14253,6 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type ServiceCreateNestedOneWithoutFreeQuoteInput = {
-    create?: XOR<ServiceCreateWithoutFreeQuoteInput, ServiceUncheckedCreateWithoutFreeQuoteInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutFreeQuoteInput
-    connect?: ServiceWhereUniqueInput
-  }
-
   export type EnumQuoteStatusFieldUpdateOperationsInput = {
     set?: $Enums.QuoteStatus
   }
@@ -14377,24 +14263,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutFreeQuoteInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFreeQuoteInput, UserUpdateWithoutFreeQuoteInput>, UserUncheckedUpdateWithoutFreeQuoteInput>
-  }
-
-  export type ServiceUpdateOneWithoutFreeQuoteNestedInput = {
-    create?: XOR<ServiceCreateWithoutFreeQuoteInput, ServiceUncheckedCreateWithoutFreeQuoteInput>
-    connectOrCreate?: ServiceCreateOrConnectWithoutFreeQuoteInput
-    upsert?: ServiceUpsertWithoutFreeQuoteInput
-    disconnect?: ServiceWhereInput | boolean
-    delete?: ServiceWhereInput | boolean
-    connect?: ServiceWhereUniqueInput
-    update?: XOR<XOR<ServiceUpdateToOneWithWhereWithoutFreeQuoteInput, ServiceUpdateWithoutFreeQuoteInput>, ServiceUncheckedUpdateWithoutFreeQuoteInput>
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserCreateNestedOneWithoutOrderInput = {
@@ -14541,13 +14409,6 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
-  export type FreeQuoteCreateNestedManyWithoutServiceInput = {
-    create?: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput> | FreeQuoteCreateWithoutServiceInput[] | FreeQuoteUncheckedCreateWithoutServiceInput[]
-    connectOrCreate?: FreeQuoteCreateOrConnectWithoutServiceInput | FreeQuoteCreateOrConnectWithoutServiceInput[]
-    createMany?: FreeQuoteCreateManyServiceInputEnvelope
-    connect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-  }
-
   export type ServiceUncheckedCreateNestedManyWithoutParentInput = {
     create?: XOR<ServiceCreateWithoutParentInput, ServiceUncheckedCreateWithoutParentInput> | ServiceCreateWithoutParentInput[] | ServiceUncheckedCreateWithoutParentInput[]
     connectOrCreate?: ServiceCreateOrConnectWithoutParentInput | ServiceCreateOrConnectWithoutParentInput[]
@@ -14588,13 +14449,6 @@ export namespace Prisma {
     connectOrCreate?: OrderItemCreateOrConnectWithoutServiceInput | OrderItemCreateOrConnectWithoutServiceInput[]
     createMany?: OrderItemCreateManyServiceInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
-  }
-
-  export type FreeQuoteUncheckedCreateNestedManyWithoutServiceInput = {
-    create?: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput> | FreeQuoteCreateWithoutServiceInput[] | FreeQuoteUncheckedCreateWithoutServiceInput[]
-    connectOrCreate?: FreeQuoteCreateOrConnectWithoutServiceInput | FreeQuoteCreateOrConnectWithoutServiceInput[]
-    createMany?: FreeQuoteCreateManyServiceInputEnvelope
-    connect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -14695,18 +14549,12 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
-  export type FreeQuoteUpdateManyWithoutServiceNestedInput = {
-    create?: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput> | FreeQuoteCreateWithoutServiceInput[] | FreeQuoteUncheckedCreateWithoutServiceInput[]
-    connectOrCreate?: FreeQuoteCreateOrConnectWithoutServiceInput | FreeQuoteCreateOrConnectWithoutServiceInput[]
-    upsert?: FreeQuoteUpsertWithWhereUniqueWithoutServiceInput | FreeQuoteUpsertWithWhereUniqueWithoutServiceInput[]
-    createMany?: FreeQuoteCreateManyServiceInputEnvelope
-    set?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    disconnect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    delete?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    connect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    update?: FreeQuoteUpdateWithWhereUniqueWithoutServiceInput | FreeQuoteUpdateWithWhereUniqueWithoutServiceInput[]
-    updateMany?: FreeQuoteUpdateManyWithWhereWithoutServiceInput | FreeQuoteUpdateManyWithWhereWithoutServiceInput[]
-    deleteMany?: FreeQuoteScalarWhereInput | FreeQuoteScalarWhereInput[]
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type ServiceUncheckedUpdateManyWithoutParentNestedInput = {
@@ -14791,20 +14639,6 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutServiceInput | OrderItemUpdateWithWhereUniqueWithoutServiceInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutServiceInput | OrderItemUpdateManyWithWhereWithoutServiceInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
-  }
-
-  export type FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput = {
-    create?: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput> | FreeQuoteCreateWithoutServiceInput[] | FreeQuoteUncheckedCreateWithoutServiceInput[]
-    connectOrCreate?: FreeQuoteCreateOrConnectWithoutServiceInput | FreeQuoteCreateOrConnectWithoutServiceInput[]
-    upsert?: FreeQuoteUpsertWithWhereUniqueWithoutServiceInput | FreeQuoteUpsertWithWhereUniqueWithoutServiceInput[]
-    createMany?: FreeQuoteCreateManyServiceInputEnvelope
-    set?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    disconnect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    delete?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    connect?: FreeQuoteWhereUniqueInput | FreeQuoteWhereUniqueInput[]
-    update?: FreeQuoteUpdateWithWhereUniqueWithoutServiceInput | FreeQuoteUpdateWithWhereUniqueWithoutServiceInput[]
-    updateMany?: FreeQuoteUpdateManyWithWhereWithoutServiceInput | FreeQuoteUpdateManyWithWhereWithoutServiceInput[]
-    deleteMany?: FreeQuoteScalarWhereInput | FreeQuoteScalarWhereInput[]
   }
 
   export type ServiceCreateNestedOneWithoutDetailsInput = {
@@ -15047,33 +14881,6 @@ export namespace Prisma {
     _max?: NestedEnumQuoteStatusFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -15112,6 +14919,33 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -15124,7 +14958,6 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    Service?: ServiceCreateNestedOneWithoutFreeQuoteInput
   }
 
   export type FreeQuoteUncheckedCreateWithoutUserInput = {
@@ -15132,7 +14965,6 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    serviceId?: number | null
   }
 
   export type FreeQuoteCreateOrConnectWithoutUserInput = {
@@ -15220,7 +15052,6 @@ export namespace Prisma {
     task_description?: StringFilter<"FreeQuote"> | string
     status?: EnumQuoteStatusFilter<"FreeQuote"> | $Enums.QuoteStatus
     created_at?: DateTimeFilter<"FreeQuote"> | Date | string
-    serviceId?: IntNullableFilter<"FreeQuote"> | number | null
   }
 
   export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
@@ -15308,44 +15139,6 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
   }
 
-  export type ServiceCreateWithoutFreeQuoteInput = {
-    name: string
-    short_description?: string | null
-    image_url?: string | null
-    active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    parent?: ServiceCreateNestedOneWithoutChildrenInput
-    children?: ServiceCreateNestedManyWithoutParentInput
-    details?: ServiceDetailCreateNestedManyWithoutServiceInput
-    faqs?: FaqCreateNestedManyWithoutServiceInput
-    reviews?: ReviewCreateNestedManyWithoutServiceInput
-    ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
-    OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-  }
-
-  export type ServiceUncheckedCreateWithoutFreeQuoteInput = {
-    id?: number
-    name: string
-    parent_id?: number | null
-    short_description?: string | null
-    image_url?: string | null
-    active?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    children?: ServiceUncheckedCreateNestedManyWithoutParentInput
-    details?: ServiceDetailUncheckedCreateNestedManyWithoutServiceInput
-    faqs?: FaqUncheckedCreateNestedManyWithoutServiceInput
-    reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
-    ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
-    OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-  }
-
-  export type ServiceCreateOrConnectWithoutFreeQuoteInput = {
-    where: ServiceWhereUniqueInput
-    create: XOR<ServiceCreateWithoutFreeQuoteInput, ServiceUncheckedCreateWithoutFreeQuoteInput>
-  }
-
   export type UserUpsertWithoutFreeQuoteInput = {
     update: XOR<UserUpdateWithoutFreeQuoteInput, UserUncheckedUpdateWithoutFreeQuoteInput>
     create: XOR<UserCreateWithoutFreeQuoteInput, UserUncheckedCreateWithoutFreeQuoteInput>
@@ -15380,50 +15173,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     Order?: OrderUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ServiceUpsertWithoutFreeQuoteInput = {
-    update: XOR<ServiceUpdateWithoutFreeQuoteInput, ServiceUncheckedUpdateWithoutFreeQuoteInput>
-    create: XOR<ServiceCreateWithoutFreeQuoteInput, ServiceUncheckedCreateWithoutFreeQuoteInput>
-    where?: ServiceWhereInput
-  }
-
-  export type ServiceUpdateToOneWithWhereWithoutFreeQuoteInput = {
-    where?: ServiceWhereInput
-    data: XOR<ServiceUpdateWithoutFreeQuoteInput, ServiceUncheckedUpdateWithoutFreeQuoteInput>
-  }
-
-  export type ServiceUpdateWithoutFreeQuoteInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    short_description?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    parent?: ServiceUpdateOneWithoutChildrenNestedInput
-    children?: ServiceUpdateManyWithoutParentNestedInput
-    details?: ServiceDetailUpdateManyWithoutServiceNestedInput
-    faqs?: FaqUpdateManyWithoutServiceNestedInput
-    reviews?: ReviewUpdateManyWithoutServiceNestedInput
-    ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
-    OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-  }
-
-  export type ServiceUncheckedUpdateWithoutFreeQuoteInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    parent_id?: NullableIntFieldUpdateOperationsInput | number | null
-    short_description?: NullableStringFieldUpdateOperationsInput | string | null
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: ServiceUncheckedUpdateManyWithoutParentNestedInput
-    details?: ServiceDetailUncheckedUpdateManyWithoutServiceNestedInput
-    faqs?: FaqUncheckedUpdateManyWithoutServiceNestedInput
-    reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
-    ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
-    OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type UserCreateWithoutOrderInput = {
@@ -15578,7 +15327,6 @@ export namespace Prisma {
     faqs?: FaqCreateNestedManyWithoutServiceInput
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutOrderItemInput = {
@@ -15595,7 +15343,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedCreateNestedManyWithoutServiceInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutOrderItemInput = {
@@ -15653,7 +15400,6 @@ export namespace Prisma {
     faqs?: FaqUpdateManyWithoutServiceNestedInput
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutOrderItemInput = {
@@ -15670,7 +15416,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedUpdateManyWithoutServiceNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceCreateWithoutChildrenInput = {
@@ -15686,7 +15431,6 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutChildrenInput = {
@@ -15703,7 +15447,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutChildrenInput = {
@@ -15724,7 +15467,6 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutParentInput = {
@@ -15741,7 +15483,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutParentInput = {
@@ -15867,31 +15608,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type FreeQuoteCreateWithoutServiceInput = {
-    task_description: string
-    status?: $Enums.QuoteStatus
-    created_at?: Date | string
-    user: UserCreateNestedOneWithoutFreeQuoteInput
-  }
-
-  export type FreeQuoteUncheckedCreateWithoutServiceInput = {
-    id?: number
-    user_id: number
-    task_description: string
-    status?: $Enums.QuoteStatus
-    created_at?: Date | string
-  }
-
-  export type FreeQuoteCreateOrConnectWithoutServiceInput = {
-    where: FreeQuoteWhereUniqueInput
-    create: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput>
-  }
-
-  export type FreeQuoteCreateManyServiceInputEnvelope = {
-    data: FreeQuoteCreateManyServiceInput | FreeQuoteCreateManyServiceInput[]
-    skipDuplicates?: boolean
-  }
-
   export type ServiceUpsertWithoutChildrenInput = {
     update: XOR<ServiceUpdateWithoutChildrenInput, ServiceUncheckedUpdateWithoutChildrenInput>
     create: XOR<ServiceCreateWithoutChildrenInput, ServiceUncheckedCreateWithoutChildrenInput>
@@ -15916,7 +15632,6 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutChildrenInput = {
@@ -15933,7 +15648,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUpsertWithWhereUniqueWithoutParentInput = {
@@ -16076,22 +15790,6 @@ export namespace Prisma {
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutServiceInput>
   }
 
-  export type FreeQuoteUpsertWithWhereUniqueWithoutServiceInput = {
-    where: FreeQuoteWhereUniqueInput
-    update: XOR<FreeQuoteUpdateWithoutServiceInput, FreeQuoteUncheckedUpdateWithoutServiceInput>
-    create: XOR<FreeQuoteCreateWithoutServiceInput, FreeQuoteUncheckedCreateWithoutServiceInput>
-  }
-
-  export type FreeQuoteUpdateWithWhereUniqueWithoutServiceInput = {
-    where: FreeQuoteWhereUniqueInput
-    data: XOR<FreeQuoteUpdateWithoutServiceInput, FreeQuoteUncheckedUpdateWithoutServiceInput>
-  }
-
-  export type FreeQuoteUpdateManyWithWhereWithoutServiceInput = {
-    where: FreeQuoteScalarWhereInput
-    data: XOR<FreeQuoteUpdateManyMutationInput, FreeQuoteUncheckedUpdateManyWithoutServiceInput>
-  }
-
   export type ServiceCreateWithoutDetailsInput = {
     name: string
     short_description?: string | null
@@ -16105,7 +15803,6 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutDetailsInput = {
@@ -16122,7 +15819,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutDetailsInput = {
@@ -16154,7 +15850,6 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutDetailsInput = {
@@ -16171,7 +15866,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceCreateWithoutServiceFeatureInput = {
@@ -16187,7 +15881,6 @@ export namespace Prisma {
     faqs?: FaqCreateNestedManyWithoutServiceInput
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutServiceFeatureInput = {
@@ -16204,7 +15897,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedCreateNestedManyWithoutServiceInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutServiceFeatureInput = {
@@ -16236,7 +15928,6 @@ export namespace Prisma {
     faqs?: FaqUpdateManyWithoutServiceNestedInput
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutServiceFeatureInput = {
@@ -16253,7 +15944,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedUpdateManyWithoutServiceNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceCreateWithoutFaqsInput = {
@@ -16269,7 +15959,6 @@ export namespace Prisma {
     reviews?: ReviewCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutFaqsInput = {
@@ -16286,7 +15975,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutFaqsInput = {
@@ -16318,7 +16006,6 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutFaqsInput = {
@@ -16335,7 +16022,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type UserCreateWithoutReviewsInput = {
@@ -16381,7 +16067,6 @@ export namespace Prisma {
     faqs?: FaqCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceUncheckedCreateWithoutReviewsInput = {
@@ -16398,7 +16083,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedCreateNestedManyWithoutServiceInput
     ServiceFeature?: ServiceFeatureUncheckedCreateNestedManyWithoutServiceInput
     OrderItem?: OrderItemUncheckedCreateNestedManyWithoutServiceInput
-    FreeQuote?: FreeQuoteUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceCreateOrConnectWithoutReviewsInput = {
@@ -16466,7 +16150,6 @@ export namespace Prisma {
     faqs?: FaqUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutReviewsInput = {
@@ -16483,7 +16166,6 @@ export namespace Prisma {
     faqs?: FaqUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type FreeQuoteCreateManyUserInput = {
@@ -16491,7 +16173,6 @@ export namespace Prisma {
     task_description: string
     status?: $Enums.QuoteStatus
     created_at?: Date | string
-    serviceId?: number | null
   }
 
   export type ReviewCreateManyUserInput = {
@@ -16513,7 +16194,6 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    Service?: ServiceUpdateOneWithoutFreeQuoteNestedInput
   }
 
   export type FreeQuoteUncheckedUpdateWithoutUserInput = {
@@ -16521,7 +16201,6 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    serviceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type FreeQuoteUncheckedUpdateManyWithoutUserInput = {
@@ -16529,7 +16208,6 @@ export namespace Prisma {
     task_description?: StringFieldUpdateOperationsInput | string
     status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    serviceId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ReviewUpdateWithoutUserInput = {
@@ -16652,14 +16330,6 @@ export namespace Prisma {
     total_price?: number
   }
 
-  export type FreeQuoteCreateManyServiceInput = {
-    id?: number
-    user_id: number
-    task_description: string
-    status?: $Enums.QuoteStatus
-    created_at?: Date | string
-  }
-
   export type ServiceUpdateWithoutParentInput = {
     name?: StringFieldUpdateOperationsInput | string
     short_description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16673,7 +16343,6 @@ export namespace Prisma {
     reviews?: ReviewUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateWithoutParentInput = {
@@ -16690,7 +16359,6 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutServiceNestedInput
     ServiceFeature?: ServiceFeatureUncheckedUpdateManyWithoutServiceNestedInput
     OrderItem?: OrderItemUncheckedUpdateManyWithoutServiceNestedInput
-    FreeQuote?: FreeQuoteUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceUncheckedUpdateManyWithoutParentInput = {
@@ -16798,29 +16466,6 @@ export namespace Prisma {
     quantity?: IntFieldUpdateOperationsInput | number
     unit_price?: FloatFieldUpdateOperationsInput | number
     total_price?: FloatFieldUpdateOperationsInput | number
-  }
-
-  export type FreeQuoteUpdateWithoutServiceInput = {
-    task_description?: StringFieldUpdateOperationsInput | string
-    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutFreeQuoteNestedInput
-  }
-
-  export type FreeQuoteUncheckedUpdateWithoutServiceInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    user_id?: IntFieldUpdateOperationsInput | number
-    task_description?: StringFieldUpdateOperationsInput | string
-    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FreeQuoteUncheckedUpdateManyWithoutServiceInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    user_id?: IntFieldUpdateOperationsInput | number
-    task_description?: StringFieldUpdateOperationsInput | string
-    status?: EnumQuoteStatusFieldUpdateOperationsInput | $Enums.QuoteStatus
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

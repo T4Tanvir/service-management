@@ -45,7 +45,7 @@ enum QuoteStatus {
 }
 
 model FreeQuote {
-  id               Int         @id @default(autoincrement())
+  id               Int         @id @default(autoincrement()) @unique
   user_id          Int         @map("user_id")
   task_description String      @map("task_description")
   status           QuoteStatus @default(REQUESTED)
@@ -53,8 +53,6 @@ model FreeQuote {
 
   // Relations
   user      User     @relation(fields: [user_id], references: [id])
-  Service   Service? @relation(fields: [serviceId], references: [id])
-  serviceId Int?
 }
 
 enum OrderStatus {
@@ -113,7 +111,6 @@ model Service {
   reviews        Review[]
   ServiceFeature ServiceFeature[]
   OrderItem      OrderItem[]
-  FreeQuote      FreeQuote[]
 
   @@map("services")
 }

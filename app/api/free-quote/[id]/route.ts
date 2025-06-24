@@ -18,7 +18,10 @@ export async function PUT(
       );
     }
 
-    const updatedService = await free_quote_service.editStatus(id, body);
+    const updatedService = await free_quote_service.editStatus(
+      Number(id),
+      body
+    );
 
     return Response.json({
       success: true,
