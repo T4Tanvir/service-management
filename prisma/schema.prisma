@@ -45,14 +45,14 @@ enum QuoteStatus {
 }
 
 model FreeQuote {
-  id               Int         @id @default(autoincrement()) @unique
+  id               Int         @id @unique @default(autoincrement())
   user_id          Int         @map("user_id")
   task_description String      @map("task_description")
   status           QuoteStatus @default(REQUESTED)
   created_at       DateTime    @default(now()) @map("created_at")
 
   // Relations
-  user      User     @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 }
 
 enum OrderStatus {
@@ -149,16 +149,17 @@ model Faq {
 }
 
 model Review {
-  id         Int      @id @default(autoincrement())
-  user_id    Int      @map("user_id")
-  service_id Int      @map("service_id")
-  comment    String
-  rating     Int
-  created_at DateTime @default(now()) @map("created_at")
+  id           Int      @id @default(autoincrement())
+  uuid         String   @unique @default(uuid())
+  phone_number String   @map("phone_number")
+  service_id   Int?     @map("service_id")
+  comment      String?
+  rating       Int?
+  created_at   DateTime @default(now()) @map("created_at")
 
   // Relations
-  user    User    @relation(fields: [user_id], references: [id])
-  service Service @relation(fields: [service_id], references: [id])
+  user    User    @relation(fields: [phone_number], references: [phone_number])
+  service Service? @relation(fields: [service_id], references: [id])
 
   @@map("reviews")
 }
