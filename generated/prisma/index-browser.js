@@ -190,7 +190,8 @@ exports.Prisma.FaqScalarFieldEnum = {
 
 exports.Prisma.ReviewScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
+  uuid: 'uuid',
+  phone_number: 'phone_number',
   service_id: 'service_id',
   comment: 'comment',
   rating: 'rating',
