@@ -25,9 +25,10 @@ model User {
   created_at   DateTime @default(now()) @map("created_at")
 
   // Relations
-  freeQuote FreeQuote[]
-  reviews   Review[]
-  Order     Order[]
+  freeQuote        FreeQuote[]
+  reviews          Review[]
+  Order            Order[]
+  reviewPermission ReviewPermission[]
 
   @@map("users")
 }
@@ -162,4 +163,15 @@ model Review {
   service Service? @relation(fields: [service_id], references: [id])
 
   @@map("reviews")
+}
+
+model ReviewPermission {
+  id           Int      @id @default(autoincrement())
+  uuid         String   @unique @default(uuid())
+  phone_number String   @map("phone_number")
+  created_at   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [phone_number], references: [phone_number])
+
+  @@map("reviewPermission")
 }

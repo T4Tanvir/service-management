@@ -198,6 +198,13 @@ exports.Prisma.ReviewScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.ReviewPermissionScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  phone_number: 'phone_number',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -242,7 +249,8 @@ exports.Prisma.ModelName = {
   ServiceDetail: 'ServiceDetail',
   ServiceFeature: 'ServiceFeature',
   Faq: 'Faq',
-  Review: 'Review'
+  Review: 'Review',
+  ReviewPermission: 'ReviewPermission'
 };
 
 /**

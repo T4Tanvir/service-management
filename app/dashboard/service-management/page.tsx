@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Faq from "./feature/faq/faq";
 import Service from "./feature/service/service";
 import ServiceFeature from "./feature/serviceFeature/serviceFeature";
+import ReviewTable from "./feature/review/ReviewTable";
 
 export default function Dashboard() {
   return (
@@ -11,10 +12,11 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold mb-6">Service Management</h1>
 
       <Tabs defaultValue="services" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+        <TabsList className="flex w-full mb-10">
           <TabsTrigger value="services">Services</TabsTrigger>
           <TabsTrigger value="faqs">FAQs</TabsTrigger>
           <TabsTrigger value="features">Features</TabsTrigger>
+          <TabsTrigger value="review">Review</TabsTrigger>
         </TabsList>
 
         <TabsContent value="services" className="space-y-4">
@@ -28,8 +30,10 @@ export default function Dashboard() {
         <TabsContent value="features" className="space-y-4">
           <ServiceFeature />
         </TabsContent>
+        <TabsContent value="review" className="space-y-4">
+          <ReviewTable />
+        </TabsContent>
       </Tabs>
     </div>
   );
 }
-
