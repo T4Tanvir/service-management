@@ -49,9 +49,9 @@ export const create = async (data: ServiceDto): Promise<ServiceDto> => {
 /**
  * Get a service by ID
  */
-export const getServiceById = async (id: string): Promise<Service | null> =>
-  prisma.service.findUnique({
-    where: { id },
+export const getAllRootServices = async (): Promise<Service[]> =>
+  await prisma.service.findMany({
+    where: { parent_id: null },
     include: {
       parent: true,
       children: true,
@@ -61,6 +61,19 @@ export const getServiceById = async (id: string): Promise<Service | null> =>
     },
   });
 
+export const getChildServiceByParentIdId = async (
+  id: number | null
+): Promise<Service[]> =>
+  await prisma.service.findMany({
+    where: { parent_id: id },
+    include: {
+      parent: true,
+      children: true,
+      details: true,
+      faqs: true,
+      reviews: true,
+    },
+  });
 /**
  * Get all services with optional filtering
  */
@@ -254,41 +267,6 @@ export const deleteService = async (id: number): Promise<ServiceDto> => {
   return new ServiceDto({ ...deletedService, details: deletedServiceDetail });
 };
 
-/**
- * Delete a service and reassign its children to its parent
- */
-export const deleteAndReassignChildren = async (
-  id: string
-): Promise<{ deleted: Service; updated: Service[] }> => {
-  const serviceToDelete = await prisma.service.findUnique({
-    where: { id },
-    include: { parent: true },
-  });
-
-  if (!serviceToDelete) {
-    throw new Error("Service not found");
-  }
-
-  const children = await prisma.service.findMany({
-    where: { parentId: id },
-  });
-
-  const updatedChildren = await Promise.all(
-    children.map((child: any) =>
-      prisma.service.update({
-        where: { id: child.id },
-        data: { parentId: serviceToDelete.parentId },
-      })
-    )
-  );
-
-  const deleted = await prisma.service.delete({
-    where: { id },
-  });
-
-  return { deleted, updated: updatedChildren };
-};
-
 
 function buildNestedStructure(services: Partial<Service>[]) {
   // Create a map for quick lookup
@@ -323,7 +301,6 @@ function buildNestedStructure(services: Partial<Service>[]) {
 
   return rootServices;
 }
-
 
 export async function getNestedServices(): Promise<NestedService[]> {
   try {
