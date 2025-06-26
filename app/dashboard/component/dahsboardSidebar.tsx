@@ -2,7 +2,9 @@
 import {
   Calendar,
   FileText,
+  GalleryHorizontal,
   Home,
+  Image,
   ListOrdered,
   Settings,
   Users,
@@ -28,7 +30,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
   const sidebarItems: SidebarItem[] = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Users, label: "Users", path: "/dashboard/users" },
-    { icon: Calendar, label: "Appointments" },
+    { icon: Image, label: "Gallery", path: "/dashboard/gallery" },
     { icon: FileText, label: "Reports" },
     {
       icon: Settings,

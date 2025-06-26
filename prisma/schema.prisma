@@ -175,3 +175,13 @@ model ReviewPermission {
 
   @@map("reviewPermission")
 }
+
+model Gallery {
+  id         Int      @id @default(autoincrement())
+  label      String
+  key        String
+  url        String
+  created_at DateTime @default(now()) @map("created_at")
+
+  @@map("gallery")
+}

@@ -7,7 +7,12 @@ const nextConfig: NextConfig = {
     // Add other origins as needed
   ],
   images: {
-    domains: ["images.pexels.com", "i.pravatar.cc"], // Add all required domains
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*", // Allow images from all domains
+      },
+    ],
   },
 };
 

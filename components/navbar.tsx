@@ -47,6 +47,16 @@ const Navbar: React.FC<HeaderProps> = () => {
               ))}
               <li>
                 <Link
+                  href="/gallery"
+                  className={`font-medium hover:text-primary-500 transition-colors
+                      text-gray-800
+                    `}
+                >
+                  Gallery
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/dashboard"
                   className={`font-medium hover:text-primary-500 transition-colors
                       text-gray-800
