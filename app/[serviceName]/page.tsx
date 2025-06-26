@@ -1,8 +1,8 @@
 "use client";
 import { Clock, MapPin, ThumbsUp } from "lucide-react";
 
-import ServiceCard from "@/app/feature/allServices";
-import Hero from "@/app/feature/hero";
+import ServiceCard from "@/app/(public)/feature/allServices";
+import Hero from "@/app/(public)/feature/hero";
 import BookNow from "@/components/BookNow";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";

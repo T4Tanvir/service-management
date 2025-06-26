@@ -43,11 +43,11 @@ function Gallery() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 mt-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 ">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Section Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 mt-10">
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Grid3x3 className="w-6 h-6 text-amber-500" />
             <span className="text-amber-600 font-semibold text-sm uppercase tracking-wider">

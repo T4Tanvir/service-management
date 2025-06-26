@@ -3,8 +3,8 @@ import Footer from "@/components/footer";
 import Testimonial from "@/components/Testimonial";
 import { serviceList } from "@/data/services";
 import { Clock, MapPin, ThumbsUp } from "lucide-react";
-import ServiceCard from "../feature/allServices";
-import Hero from "../feature/hero";
+import ServiceCard from "../(public)/feature/allServices";
+import Hero from "../(public)/feature/hero";
 import Navbar from "@/components/navbar";
 
 interface ParamsType {

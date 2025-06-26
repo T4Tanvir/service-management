@@ -1,13 +1,11 @@
 "use client";
 import {
-  Calendar,
   FileText,
-  GalleryHorizontal,
   Home,
   Image,
   ListOrdered,
   Settings,
-  Users,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";

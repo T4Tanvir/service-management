@@ -3,18 +3,16 @@ import { Clock, MapPin, ThumbsUp } from "lucide-react";
 
 import BookNow from "@/components/BookNow";
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
 import Testimonial from "@/components/Testimonial";
-import ServiceCard from "./feature/allServices";
-import Hero from "./feature/hero";
 import { serviceList } from "@/data/services";
+import ServiceCard from "./(public)/feature/allServices";
+import Hero from "./(public)/feature/hero";
+import Navbar from "@/components/navbar";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header */}
-      <Navbar  />
-
+      <Navbar />
       <main className="flex-1">
         {/* Hero Section */}
         <Hero />
