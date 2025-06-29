@@ -13,8 +13,13 @@ import { useServiceBooking } from "../../hooks/useServiceBooking";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { ServiceSelection } from "./ServiceSelection";
 import { UserInfoForm } from "./UserInfoForm";
+import { NestedService } from "@/type/service.type";
 
-export default function ServiceBooking() {
+export default function ServiceBooking({
+  nestedService,
+}: {
+  nestedService: NestedService[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const {
     cartItems,
@@ -39,7 +44,7 @@ export default function ServiceBooking() {
     handleBackToServices,
     handleSubmitOrder,
     resetBooking,
-  } = useServiceBooking();
+  } = useServiceBooking(nestedService);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);

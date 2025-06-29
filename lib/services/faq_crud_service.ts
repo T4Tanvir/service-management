@@ -5,16 +5,19 @@ import { IFaq } from "@/type/faq.type";
 import { prisma } from "@/uitls/db";
 
 export const create = async (data: FaqDto): Promise<IFaq> => {
-  const isServiceExists = await prisma.service.findUnique({
-    where: { id: data.service_id },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
+  let isServiceExist;
+  if (data.service_id) {
+    isServiceExist = await prisma.service.findUnique({
+      where: { id: data.service_id },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
 
-  if (!isServiceExists) {
-    throw ClientError.invalidError("Service does not exist");
+    if (!isServiceExist) {
+      throw ClientError.invalidError("Service does not exist");
+    }
   }
 
   const insertedFaq = await prisma.faq.create({
@@ -28,8 +31,8 @@ export const create = async (data: FaqDto): Promise<IFaq> => {
   return {
     ...insertedFaq,
     service: {
-      id: isServiceExists?.id,
-      name: isServiceExists?.name,
+      id: isServiceExist?.id || 0,
+      name: isServiceExist?.name || "",
     },
   };
 };
@@ -61,16 +64,19 @@ export const edit = async (id: number, data: FaqDto): Promise<IFaq> => {
     throw ClientError.invalidError("Faq does not exist");
   }
 
-  const isServiceExists = await prisma.service.findUnique({
-    where: { id: data.service_id },
-    select: {
-      id: true,
-      name: true,
-    },
-  });
+  let isServiceExist;
+  if (data.service_id) {
+    isServiceExist = await prisma.service.findUnique({
+      where: { id: data.service_id! },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
 
-  if (!isServiceExists) {
-    throw ClientError.invalidError("Service does not exist");
+    if (!isServiceExist) {
+      throw ClientError.invalidError("Service does not exist");
+    }
   }
 
   const updatedFaq = await prisma.faq.update({
@@ -85,8 +91,8 @@ export const edit = async (id: number, data: FaqDto): Promise<IFaq> => {
   return {
     ...updatedFaq,
     service: {
-      id: isServiceExists?.id,
-      name: isServiceExists?.name,
+      id: isServiceExist?.id || 0,
+      name: isServiceExist?.name || "",
     },
   };
 };
@@ -103,4 +109,14 @@ export const deleteFaq = async (id: number): Promise<Faq> => {
   return await prisma.faq.delete({
     where: { id },
   });
+};
+
+export const getFaqByServiceId = async (
+  serviceId: number | null
+): Promise<Faq[]> => {
+  const faqs = await prisma.faq.findMany({
+    where: { service_id: serviceId },
+  });
+
+  return faqs;
 };

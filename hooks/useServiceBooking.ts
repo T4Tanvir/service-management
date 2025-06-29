@@ -14,7 +14,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useServiceBooking = () => {
+export const useServiceBooking = (nestedServicesS: NestedService[]) => {
   // State
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
@@ -388,6 +388,7 @@ export const useServiceBooking = () => {
       try {
         setIsLoading(true);
         const services = await getServicesNestedInfo();
+        console.log(services, "===============");
         setNestedServices(services);
         setCurrentServices(services);
       } catch (error) {
@@ -398,7 +399,12 @@ export const useServiceBooking = () => {
       }
     };
 
-    fetchNestedServices();
+    if (nestedServicesS && nestedServicesS.length) {
+      setNestedServices(nestedServicesS);
+      setCurrentServices(nestedServicesS);
+    } else {
+      fetchNestedServices();
+    }
   }, []);
 
   return {

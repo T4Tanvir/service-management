@@ -8,13 +8,20 @@ const addFaq = async (data: FaqDto) => {
 };
 
 const getAllFaq = async () => {
-  const response = await axios.get("/api/faq");
+  const response = await axios.get("/api/faq/type=all");
 
   return response.data;
 };
 
+const getFaqByServiceId = async (serviceId: number | null) => {
+  const response = await axios.get(
+    `/api/faq?type=filterByService&serviceId=${serviceId}`
+  );
+  return response.data.map((service: any) => new FaqDto(service));
+};
+
 const editFaq = async (data: FaqDto) => {
-    console.log(data, "data in editFaq");
+  console.log(data, "data in editFaq");
   const response = await axios.put(`/api/faq/${data.id}`, data);
   return response.data;
 };
@@ -24,4 +31,4 @@ const deleteFaq = async (id: number) => {
   return response.data;
 };
 
-export { addFaq, getAllFaq, editFaq, deleteFaq };
+export { addFaq, getAllFaq, editFaq, deleteFaq, getFaqByServiceId };

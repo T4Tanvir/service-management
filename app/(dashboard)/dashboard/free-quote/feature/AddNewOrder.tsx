@@ -47,7 +47,7 @@ export default function AddNewOrder({ userDetail }: AddNewOrderProps) {
     handlePriceChange,
     getTotalPrice,
     resetBooking,
-  } = useServiceBooking();
+  } = useServiceBooking([]);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);

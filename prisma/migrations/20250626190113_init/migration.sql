@@ -92,7 +92,7 @@ CREATE TABLE "ServiceFeature" (
 -- CreateTable
 CREATE TABLE "faqs" (
     "id" SERIAL NOT NULL,
-    "service_id" INTEGER NOT NULL,
+    "service_id" INTEGER,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
 
@@ -173,7 +173,7 @@ ALTER TABLE "service_details" ADD CONSTRAINT "service_details_service_id_fkey" F
 ALTER TABLE "ServiceFeature" ADD CONSTRAINT "ServiceFeature_service_id_fkey" FOREIGN KEY ("service_id") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "faqs" ADD CONSTRAINT "faqs_service_id_fkey" FOREIGN KEY ("service_id") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faqs" ADD CONSTRAINT "faqs_service_id_fkey" FOREIGN KEY ("service_id") REFERENCES "services"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_phone_number_fkey" FOREIGN KEY ("phone_number") REFERENCES "users"("phone_number") ON DELETE RESTRICT ON UPDATE CASCADE;

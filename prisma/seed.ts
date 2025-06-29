@@ -50,6 +50,19 @@ async function main() {
       skipDuplicates: true, // Prevent duplicate email/phone_number errors
     });
 
+    const imageUrls = [
+      "https://www.spectrumelectricinc.com/blog/admin/uploads/2022/electrical_panel_2_1668762979.jpg",
+      "https://images.unsplash.com/photo-1676210134188-4c05dd172f89?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1565608438257-fac3c27beb36?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1728663593731-0dc0280fd18b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGx1c3RlciUyMGNlbGxpbmd8ZW58MHx8MHx8fDA%3D",
+      "https://unsplash.com/photos/brown-wooden-framed-glass-window-JHpU4Wn2qKk",
+      "https://images.unsplash.com/photo-1610733374054-59454fe657cd?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1721544364147-bde956e843ce?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxvY2slMjBzbWl0aHxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1458682625221-3a45f8a844c7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    ];
+    const getRandomImage = () =>
+      imageUrls[Math.floor(Math.random() * imageUrls.length)];
+
     // Create Main Services
     console.log("Seeding Main Services...");
     await prisma.service.createMany({
@@ -58,51 +71,61 @@ async function main() {
           name: "Electrical",
           short_description: "Electrical installation and repair services",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Plumbing Services",
           short_description: "Professional plumbing solutions",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Plaster Ceiling and Partition",
           short_description: "Ceiling and partition work",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Sliding Doors and Windows",
           short_description: "Sliding door and window installation",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Painting",
           short_description: "Interior and exterior painting",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Cabinets",
           short_description: "Custom cabinets for home and office",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Locksmith",
           short_description: "Lock installation and repair",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Tiles Work",
           short_description: "Tile installation and repair",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Air-cond Service and Install",
           short_description: "AC installation and maintenance",
           active: true,
+          image_url: getRandomImage(),
         },
         {
           name: "Fridge and Washing Machine Repair",
           short_description: "Appliance repair services",
           active: true,
+          image_url: getRandomImage(),
         },
       ],
       skipDuplicates: true,
@@ -123,19 +146,6 @@ async function main() {
 
     // Create Sub-Services (5 per main service)
     console.log("Seeding Sub-Services...");
-    const imageUrls = [
-      "https://www.spectrumelectricinc.com/blog/admin/uploads/2022/electrical_panel_2_1668762979.jpg",
-      "https://images.unsplash.com/photo-1676210134188-4c05dd172f89?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1565608438257-fac3c27beb36?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1728663593731-0dc0280fd18b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGx1c3RlciUyMGNlbGxpbmd8ZW58MHx8MHx8fDA%3D",
-      "https://unsplash.com/photos/brown-wooden-framed-glass-window-JHpU4Wn2qKk",
-      "https://images.unsplash.com/photo-1610733374054-59454fe657cd?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1721544364147-bde956e843ce?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxvY2slMjBzbWl0aHxlbnwwfHwwfHx8MA%3D%3D",
-      "https://images.unsplash.com/photo-1458682625221-3a45f8a844c7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    ];
-
-    const getRandomImage = () =>
-      imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
     await prisma.service.createMany({
       data: [

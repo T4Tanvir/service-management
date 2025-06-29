@@ -50,7 +50,7 @@ export default function EditOrder({
     handleBackToServices,
     resetBooking,
     handlePriceChange,
-  } = useServiceBooking();
+  } = useServiceBooking([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

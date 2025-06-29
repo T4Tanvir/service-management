@@ -25,7 +25,7 @@ export function FaqsList({ faqs, onActionIdChange }: FaqsListProps) {
         <Card key={faq.id}>
           <CardHeader className="p-4 pb-0">
             <Badge variant="outline" className="w-fit mb-2">
-              {faq.service.name}
+              {faq.service?.name ?? "Home"}
             </Badge>
           </CardHeader>
           <CardContent className="">

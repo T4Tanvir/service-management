@@ -15,26 +15,19 @@ const DashboardLayout: React.FC<LayoutProps> = ({
   setActivePage,
 }) => {
   return (
-    <html lang="en">
-      <body>
-        <div className="h-screen bg-gray-50 flex overflow-hidden">
-          {/* Sidebar */}
-          <DashboardSidebar
-            activePage={activePage}
-            setActivePage={setActivePage}
-          />
+    <div className="h-screen bg-gray-50 flex overflow-hidden">
+      {/* Sidebar */}
+      <DashboardSidebar activePage={activePage} setActivePage={setActivePage} />
 
-          {/* Main Content Area */}
-          <div className="flex-1 flex flex-col">
-            {/* Header */}
-            <DashboardHeader activePage={activePage} />
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <DashboardHeader activePage={activePage} />
 
-            {/* Main Content - Scrollable */}
-            <main className="flex-1 p-6 overflow-y-auto">{children}</main>
-          </div>
-        </div>
-      </body>
-    </html>
+        {/* Main Content - Scrollable */}
+        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+      </div>
+    </div>
   );
 };
 

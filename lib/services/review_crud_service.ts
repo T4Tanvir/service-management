@@ -114,10 +114,58 @@ export const getAll = async () => {
 export const deleteReview = async (reviewId: number) => {
   if (!reviewId) throw ClientError.invalidError("Review ID is required");
 
-  const existingReview = await prisma.review.findUnique({ where: { id: reviewId } });
+  const existingReview = await prisma.review.findUnique({
+    where: { id: reviewId },
+  });
   if (!existingReview) throw ClientError.notExistsError("Review");
 
   await prisma.review.delete({ where: { id: reviewId } });
 
   return { success: true, message: "Review deleted successfully" };
+};
+
+export const getTopReview = async (
+  numberOfreview = 10
+): Promise<ReviewDto[]> => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      rating: {
+        gt: 4,
+      },
+    },
+    take: numberOfreview,
+    include: {
+      user: {
+        select: {
+          full_name: true,
+          city: true,
+        },
+      },
+    },
+  });
+  return reviews.map((item) => new ReviewDto(item));
+};
+
+export const getTopReviewByServiceId = async (
+  serviceId: number,
+  numberOfreview = 10
+): Promise<ReviewDto[]> => {
+  const reviews = await prisma.review.findMany({
+    where: {
+      service_id: serviceId,
+      rating: {
+        gt: 2,
+      },
+    },
+    take: numberOfreview,
+    include: {
+      user: {
+        select: {
+          full_name: true,
+          city: true,
+        },
+      },
+    },
+  });
+  return reviews.map((item) => new ReviewDto(item));
 };

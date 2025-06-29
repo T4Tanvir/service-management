@@ -20,12 +20,11 @@ type FilterParams = {
  * Create a new service
  */
 export const create = async (data: ServiceDto): Promise<ServiceDto> => {
-  console.log("create method called with data:", data);
   const { details, ...rest } = data;
 
   const dataNeedToInsert = {
     parent_id: rest?.parent_id ?? null,
-    name: rest.name,
+    name: rest.name.trim(),
     active: true,
     image_url: rest.image_url,
     short_description: rest.short_description,
@@ -267,7 +266,6 @@ export const deleteService = async (id: number): Promise<ServiceDto> => {
   return new ServiceDto({ ...deletedService, details: deletedServiceDetail });
 };
 
-
 function buildNestedStructure(services: Partial<Service>[]) {
   // Create a map for quick lookup
   const serviceMap = new Map();
@@ -279,6 +277,7 @@ function buildNestedStructure(services: Partial<Service>[]) {
       id: service.id,
       name: service.name,
       parent_id: service.parent_id,
+      image_url: service?.image_url ?? "",
       subcategory: [],
     });
   });
@@ -328,3 +327,58 @@ export async function getNestedServices(): Promise<NestedService[]> {
     throw error;
   }
 }
+
+// New method: Find service by ID and return with subcategories
+function getServiceWithSubcategories(
+  services: Partial<Service>[],
+  serviceId: number
+): NestedService | null {
+  // Build the complete nested structure first
+  const nestedStructure = buildNestedStructure(services);
+
+  // Helper function to search recursively
+  function findServiceInTree(
+    serviceTree: NestedService[],
+    targetId: string | number
+  ): NestedService | null {
+    for (const service of serviceTree) {
+      if (service.id === targetId) {
+        return service;
+      }
+
+      // Search in subcategories
+      const found = findServiceInTree(service.subcategory, targetId);
+      if (found) {
+        return found;
+      }
+    }
+    return null;
+  }
+
+  return findServiceInTree(nestedStructure, serviceId);
+}
+
+export const getServiceDetailByName = async (
+  name: string
+): Promise<NestedService[]> => {
+  console.log(name);
+  const allServices = await prisma.service.findMany({
+    select: {
+      id: true,
+      name: true,
+      parent_id: true,
+      image_url: true,
+    },
+    orderBy: [
+      { parent_id: "asc" }, // Root services first
+      { id: "asc" },
+    ],
+  });
+  const serviceInfo = allServices.find((item) => item.name === name);
+  console.log(serviceInfo, "===========");
+  if (!serviceInfo) {
+    return [];
+  }
+  const result = getServiceWithSubcategories(allServices, serviceInfo.id);
+  return result ? [result] : [];
+};

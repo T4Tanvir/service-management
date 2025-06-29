@@ -10231,7 +10231,7 @@ export namespace Prisma {
 
   export type FaqGroupByOutputType = {
     id: number
-    service_id: number
+    service_id: number | null
     question: string
     answer: string
     _count: FaqCountAggregateOutputType | null
@@ -10260,7 +10260,7 @@ export namespace Prisma {
     service_id?: boolean
     question?: boolean
     answer?: boolean
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }, ExtArgs["result"]["faq"]>
 
   export type FaqSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10268,7 +10268,7 @@ export namespace Prisma {
     service_id?: boolean
     question?: boolean
     answer?: boolean
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }, ExtArgs["result"]["faq"]>
 
   export type FaqSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10276,7 +10276,7 @@ export namespace Prisma {
     service_id?: boolean
     question?: boolean
     answer?: boolean
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }, ExtArgs["result"]["faq"]>
 
   export type FaqSelectScalar = {
@@ -10288,23 +10288,23 @@ export namespace Prisma {
 
   export type FaqOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "service_id" | "question" | "answer", ExtArgs["result"]["faq"]>
   export type FaqInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }
   export type FaqIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }
   export type FaqIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    service?: boolean | ServiceDefaultArgs<ExtArgs>
+    service?: boolean | Faq$serviceArgs<ExtArgs>
   }
 
   export type $FaqPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Faq"
     objects: {
-      service: Prisma.$ServicePayload<ExtArgs>
+      service: Prisma.$ServicePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      service_id: number
+      service_id: number | null
       question: string
       answer: string
     }, ExtArgs["result"]["faq"]>
@@ -10701,7 +10701,7 @@ export namespace Prisma {
    */
   export interface Prisma__FaqClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    service<T extends ServiceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServiceDefaultArgs<ExtArgs>>): Prisma__ServiceClient<$Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    service<T extends Faq$serviceArgs<ExtArgs> = {}>(args?: Subset<T, Faq$serviceArgs<ExtArgs>>): Prisma__ServiceClient<$Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11128,6 +11128,25 @@ export namespace Prisma {
      * Limit how many Faqs to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Faq.service
+   */
+  export type Faq$serviceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Service
+     */
+    select?: ServiceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Service
+     */
+    omit?: ServiceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceInclude<ExtArgs> | null
+    where?: ServiceWhereInput
   }
 
   /**
@@ -15149,15 +15168,15 @@ export namespace Prisma {
     OR?: FaqWhereInput[]
     NOT?: FaqWhereInput | FaqWhereInput[]
     id?: IntFilter<"Faq"> | number
-    service_id?: IntFilter<"Faq"> | number
+    service_id?: IntNullableFilter<"Faq"> | number | null
     question?: StringFilter<"Faq"> | string
     answer?: StringFilter<"Faq"> | string
-    service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
+    service?: XOR<ServiceNullableScalarRelationFilter, ServiceWhereInput> | null
   }
 
   export type FaqOrderByWithRelationInput = {
     id?: SortOrder
-    service_id?: SortOrder
+    service_id?: SortOrderInput | SortOrder
     question?: SortOrder
     answer?: SortOrder
     service?: ServiceOrderByWithRelationInput
@@ -15168,15 +15187,15 @@ export namespace Prisma {
     AND?: FaqWhereInput | FaqWhereInput[]
     OR?: FaqWhereInput[]
     NOT?: FaqWhereInput | FaqWhereInput[]
-    service_id?: IntFilter<"Faq"> | number
+    service_id?: IntNullableFilter<"Faq"> | number | null
     question?: StringFilter<"Faq"> | string
     answer?: StringFilter<"Faq"> | string
-    service?: XOR<ServiceScalarRelationFilter, ServiceWhereInput>
+    service?: XOR<ServiceNullableScalarRelationFilter, ServiceWhereInput> | null
   }, "id">
 
   export type FaqOrderByWithAggregationInput = {
     id?: SortOrder
-    service_id?: SortOrder
+    service_id?: SortOrderInput | SortOrder
     question?: SortOrder
     answer?: SortOrder
     _count?: FaqCountOrderByAggregateInput
@@ -15191,7 +15210,7 @@ export namespace Prisma {
     OR?: FaqScalarWhereWithAggregatesInput[]
     NOT?: FaqScalarWhereWithAggregatesInput | FaqScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Faq"> | number
-    service_id?: IntWithAggregatesFilter<"Faq"> | number
+    service_id?: IntNullableWithAggregatesFilter<"Faq"> | number | null
     question?: StringWithAggregatesFilter<"Faq"> | string
     answer?: StringWithAggregatesFilter<"Faq"> | string
   }
@@ -15818,12 +15837,12 @@ export namespace Prisma {
   export type FaqCreateInput = {
     question: string
     answer: string
-    service: ServiceCreateNestedOneWithoutFaqsInput
+    service?: ServiceCreateNestedOneWithoutFaqsInput
   }
 
   export type FaqUncheckedCreateInput = {
     id?: number
-    service_id: number
+    service_id?: number | null
     question: string
     answer: string
   }
@@ -15831,19 +15850,19 @@ export namespace Prisma {
   export type FaqUpdateInput = {
     question?: StringFieldUpdateOperationsInput | string
     answer?: StringFieldUpdateOperationsInput | string
-    service?: ServiceUpdateOneRequiredWithoutFaqsNestedInput
+    service?: ServiceUpdateOneWithoutFaqsNestedInput
   }
 
   export type FaqUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    service_id?: IntFieldUpdateOperationsInput | number
+    service_id?: NullableIntFieldUpdateOperationsInput | number | null
     question?: StringFieldUpdateOperationsInput | string
     answer?: StringFieldUpdateOperationsInput | string
   }
 
   export type FaqCreateManyInput = {
     id?: number
-    service_id: number
+    service_id?: number | null
     question: string
     answer: string
   }
@@ -15855,7 +15874,7 @@ export namespace Prisma {
 
   export type FaqUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    service_id?: IntFieldUpdateOperationsInput | number
+    service_id?: NullableIntFieldUpdateOperationsInput | number | null
     question?: StringFieldUpdateOperationsInput | string
     answer?: StringFieldUpdateOperationsInput | string
   }
@@ -17389,10 +17408,12 @@ export namespace Prisma {
     connect?: ServiceWhereUniqueInput
   }
 
-  export type ServiceUpdateOneRequiredWithoutFaqsNestedInput = {
+  export type ServiceUpdateOneWithoutFaqsNestedInput = {
     create?: XOR<ServiceCreateWithoutFaqsInput, ServiceUncheckedCreateWithoutFaqsInput>
     connectOrCreate?: ServiceCreateOrConnectWithoutFaqsInput
     upsert?: ServiceUpsertWithoutFaqsInput
+    disconnect?: ServiceWhereInput | boolean
+    delete?: ServiceWhereInput | boolean
     connect?: ServiceWhereUniqueInput
     update?: XOR<XOR<ServiceUpdateToOneWithWhereWithoutFaqsInput, ServiceUpdateWithoutFaqsInput>, ServiceUncheckedUpdateWithoutFaqsInput>
   }
@@ -18518,7 +18539,7 @@ export namespace Prisma {
     OR?: FaqScalarWhereInput[]
     NOT?: FaqScalarWhereInput | FaqScalarWhereInput[]
     id?: IntFilter<"Faq"> | number
-    service_id?: IntFilter<"Faq"> | number
+    service_id?: IntNullableFilter<"Faq"> | number | null
     question?: StringFilter<"Faq"> | string
     answer?: StringFilter<"Faq"> | string
   }

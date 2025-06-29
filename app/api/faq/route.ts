@@ -7,12 +7,27 @@ import * as faqService from "../../../lib/services/faq_crud_service";
  * GET /api/faq - List all Faqs
  */
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
+
   try {
-    const services = await faqService.getAll();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let faqList: any[] = [];
+    if (type === "all") {
+      faqList = await faqService.getAll();
+    } else if (type === "filterByService") {
+      const serviceIdParam = searchParams.get("serviceId");
+      const serviceId: number | null =
+        serviceIdParam !== null && !isNaN(Number(serviceIdParam))
+          ? Number(serviceIdParam)
+          : null;
+      faqList = await faqService.getFaqByServiceId(serviceId);
+    }
+
     return NextResponse.json({
       success: true,
       message: "Faq Data Fetch successfully",
-      data: services,
+      data: faqList.map((faq) => new FaqDto(faq)),
     });
   } catch (error: unknown) {
     const errorMessage =
@@ -27,7 +42,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = new FaqDto(await req.json());
-
+    console.log(body, "=============");
     //if (!body.isValid()) throw ClientError.invalidError();
 
     const service = await faqService.create(body);

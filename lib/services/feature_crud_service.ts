@@ -98,7 +98,17 @@ export const deleteFeature = async (id: number): Promise<ServiceFeature> => {
     throw ClientError.invalidError("Feature does not exist");
   }
   console.log(id, " id in delete feature=========");
-  return  prisma.serviceFeature.delete({
+  return prisma.serviceFeature.delete({
     where: { id },
   });
+};
+
+export const getFeatureListByServiceId = async (
+  serviceId: number
+): Promise<FeatureDto[]> => {
+  const featureList = await prisma.serviceFeature.findMany({
+    where: { service_id: serviceId },
+  });
+
+  return featureList.map((feature) => new FeatureDto(feature));
 };

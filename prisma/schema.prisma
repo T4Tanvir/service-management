@@ -139,12 +139,12 @@ model ServiceFeature {
 
 model Faq {
   id         Int    @id @default(autoincrement())
-  service_id Int    @map("service_id")
+  service_id Int?    @map("service_id")
   question   String
   answer     String
 
   // Relations
-  service Service @relation(fields: [service_id], references: [id])
+  service Service? @relation(fields: [service_id], references: [id])
 
   @@map("faqs")
 }
