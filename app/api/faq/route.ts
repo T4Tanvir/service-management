@@ -2,6 +2,7 @@ import { FaqDto } from "@/dtos/faq.dto";
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as faqService from "../../../lib/services/faq_crud_service";
+import { auth } from "@/auth";
 
 /**
  * GET /api/faq - List all Faqs
@@ -41,6 +42,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
+
+    if (!session) throw ClientError.accessDeniedError();
     const body = new FaqDto(await req.json());
     console.log(body, "=============");
     //if (!body.isValid()) throw ClientError.invalidError();

@@ -2,12 +2,16 @@ import { OrderDto } from "@/dtos/order.dto";
 import { NextRequest, NextResponse } from "next/server";
 import * as order_crud_service from "../../../../lib/services/order_crud_service";
 import { ClientError } from "@/errors/error";
+import { auth } from "@/auth";
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: { uuid: string } }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const { uuid } = await params;
     const body = new OrderDto(await request.json());
 

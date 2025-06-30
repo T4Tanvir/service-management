@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/navbar";
-
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Peace Home Empire",
@@ -17,22 +16,25 @@ export default function PublicLayout({
 }>) {
   return (
     <>
-      <Navbar />
-      {children}
+      <SessionProvider>
+        <Navbar />
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Zoom}
-      />
+        {children}
+
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Zoom}
+        />
+      </SessionProvider>
     </>
   );
 }

@@ -1,7 +1,11 @@
 import { S3Dto } from "@/dtos/s3.dto";
 import { ClientError } from "@/errors/error";
 import s3Client from "@/uitls/s3";
-import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export async function getPresignedUrl(
@@ -42,4 +46,18 @@ export async function putObjectUrl(
       process.env.S3_REGION
     }.amazonaws.com/${encodeURIComponent(data.key)}`,
   });
+}
+
+export async function deleteObject(key: string): Promise<void> {
+  if (!key) {
+    throw ClientError.invalidError();
+  }
+
+  const command = new DeleteObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: key,
+  });
+
+  const response = await s3Client.send(command);
+  console.log(response);
 }

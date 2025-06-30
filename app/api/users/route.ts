@@ -2,9 +2,13 @@ import { UserDto } from "@/dtos/user.dto";
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as user_service from "../../../lib/services/user_crud_service";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const freeQuoteList = await user_service.getAll();
     return NextResponse.json({
       success: true,

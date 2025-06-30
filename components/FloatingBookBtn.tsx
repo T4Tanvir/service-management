@@ -8,7 +8,7 @@ export function FloatingBookButton() {
       </div>
 
       {/* Mobile Floating Button - Bottom center */}
-      <div className="md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+      <div className="md:hidden  fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
         <ServiceBooking />
       </div>
     </>

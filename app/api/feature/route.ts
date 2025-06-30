@@ -2,6 +2,7 @@ import { FeatureDto } from "@/dtos/feature.dto";
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as featureService from "../../../lib/services/feature_crud_service";
+import { auth } from "@/auth";
 
 /**
  * GET /api/Feature - List all Features
@@ -28,6 +29,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const body = new FeatureDto(await req.json());
 
     //if (!body.isValid()) throw ClientError.invalidError();

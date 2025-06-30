@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { ServiceDto } from "@/dtos/service.dto";
 import { ClientError } from "@/errors/error";
 import {
@@ -11,6 +12,9 @@ export async function PUT(
   { params }: { params: { id: number } }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const { id } = params;
     const body = new ServiceDto(await request.json());
 
@@ -42,6 +46,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     // Await the params before destructuring
     const { id } = await params;
 

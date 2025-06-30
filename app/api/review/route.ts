@@ -2,9 +2,13 @@ import { ReviewDto } from "@/dtos/review.dto";
 import { NextRequest, NextResponse } from "next/server";
 import * as reviewService from "../../../lib/services/review_crud_service";
 import { ClientError } from "@/errors/error";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const services = await reviewService.getAll();
     return NextResponse.json({
       success: true,

@@ -57,7 +57,7 @@ export default function ServiceBooking({
     <div>
       <Dialog open={isOpen} onOpenChange={handleModalClose}>
         <DialogTrigger asChild>
-          <Button className="w-full sm:w-auto bg-accent-500 hover:bg-accent-600 text-white px-8 py-3 rounded-md font-medium text-lg transition-all duration-300 transform hover:scale-105">
+          <Button className="w-full cursor-pointer sm:w-auto bg-accent-500 hover:bg-accent-600 text-white px-8 py-3 rounded-md font-medium text-lg transition-all duration-300 transform hover:scale-105">
             Book Service
           </Button>
         </DialogTrigger>

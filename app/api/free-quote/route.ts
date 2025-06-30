@@ -2,9 +2,13 @@ import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import { NextRequest, NextResponse } from "next/server";
 import * as free_quote_service from "../../../lib/services/free_quote_crud_service";
 import { ClientError } from "@/errors/error";
+import { auth } from "@/auth";
 
 export async function GET() {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const freeQuoteList = await free_quote_service.getAll();
     return NextResponse.json({
       success: true,

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Upload } from "lucide-react";
+import { Plus, Upload, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { getObjectUrl, uploadImageToS3 } from "@/lib/api-client/s3/s3";
@@ -21,12 +21,12 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
   const [label, setLabel] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      console.log(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setPreviewUrl(e.target?.result as string);
@@ -46,7 +46,7 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
   };
 
   const handleAddImage = async () => {
-
+    setLoading(true);
     try {
       if (selectedFile && label.trim()) {
         const dataNeedToPassForUrl = new S3Dto({
@@ -83,8 +83,8 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
       }
     } catch (error) {
       console.error("Error adding image:", error);
-      // Optional: Show user-friendly error message
-      // alert("Failed to add image. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,6 +104,7 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
             placeholder="Enter image label..."
             value={label}
             onChange={(e) => setLabel(e.target.value)}
+            disabled={loading}
           />
         </div>
 
@@ -115,6 +116,7 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
             accept="image/*"
             onChange={handleFileSelect}
             className="cursor-pointer"
+            disabled={loading}
           />
         </div>
 
@@ -141,11 +143,20 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
 
         <Button
           onClick={handleAddImage}
-          disabled={!selectedFile || !label.trim()}
+          disabled={!selectedFile || !label.trim() || loading}
           className="w-full"
         >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Image
+          {loading ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Uploading...
+            </>
+          ) : (
+            <>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Image
+            </>
+          )}
         </Button>
       </CardContent>
     </Card>

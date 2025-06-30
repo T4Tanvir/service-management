@@ -2,15 +2,19 @@ import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as free_quote_service from "../../../../lib/services/free_quote_crud_service";
+import { auth } from "@/auth";
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: number } }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const { id } = await params;
     const body = new FreeQuoteDto(await request.json());
-    
+
     if (!id) {
       return Response.json(
         { success: false, message: "ID is required" },

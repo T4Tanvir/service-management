@@ -1,65 +1,115 @@
 "use client";
-import React, { useState } from "react";
-import { Wrench, Menu, X } from "lucide-react";
+import { Menu, Wrench, X } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+interface NavItem {
+  name: string;
+  path: string;
+  canSee?: boolean;
+}
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const [loginSession, setLoginSession] = useState<any>(null);
+
+  const navigationItems: NavItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/#services" },
+    { name: "Testimonial", path: "/#testimonials" },
+    { name: "FAQ", path: "/#faq" },
+    { name: "Contact", path: "/#contact" },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      canSee: !!loginSession,
+    },
+    { name: "Gallery", path: "/gallery" },
+  ];
+
+  const mobileNavigationItems = [
+    "Home",
+    "Services",
+    "About",
+    "Testimonials",
+    "FAQ",
+    "Contact",
+  ];
+
+  const visibleNavItems = navigationItems.filter(
+    (item) => item.canSee !== false
+  );
+
+  const handleCallNow = () => {
+    window.location.href = "tel:+8801712345678";
+  };
+
+  const handleMobileMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Logout function using AuthJS
+  const handleLogout = async () => {
+    try {
+      await signOut({
+        callbackUrl: "/", // Redirect to home page after logout
+        redirect: true,
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  // Alternative logout function (if you want to handle manually)
+  const handleLogoutManual = async () => {
+    try {
+      const result = await signOut({
+        redirect: false, // Don't redirect automatically
+      });
+
+      // You can add custom logic here after logout
+      console.log("Logged out successfully");
+
+      // Manual redirect if needed
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(session, "===========");
+    setLoginSession(session);
+  }, [session]);
 
   return (
-    <header
-      className={`fixed left-0 right-0 z-50 transition-all duration-300 bg-white shadow-md py-3`}
-    >
+    <header className="fixed left-0 right-0 z-50 transition-all duration-300 bg-white shadow-md py-3">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center">
-          <Link href="/">
-            <div className="flex items-center">
-              <Wrench size={32} className="text-primary-600 mr-2" />
-              <span className={`text-xl font-bold ${"text-primary-700"}`}>
-                Peace Home Empire
-              </span>
-            </div>
+          {/* Logo */}
+          <>{console.log(session, "session data")}</>
+
+          <Link href="/" className="flex items-center">
+            <Wrench size={32} className="text-primary-600 mr-2" />
+            <span className="text-xl font-bold text-primary-700">
+              Peace Home Empire
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:block">
             <ul className="flex space-x-8">
-              {[
-                {
-                  name: "Home",
-                  path: "/",
-                },
-                {
-                  name: "Services",
-                  path: "/#services",
-                },
-                {
-                  name: "Testimonial",
-                  path: "/#testimonials",
-                },
-                {
-                  name: "Faq",
-                  path: "/#faq",
-                },
-                {
-                  name: "Contact",
-                  path: "/#contact",
-                },
-                {
-                  name: "Dashboard",
-                  path: "/dashboard",
-                },
-                {
-                  name: "Gallery",
-                  path: "/gallery",
-                },
-              ].map((item) => (
+              {visibleNavItems.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.path}
-                    className={`font-medium hover:text-primary-500 transition-colors
-                      text-gray-800
-                    `}
+                    className="font-medium hover:text-primary-500 transition-colors text-gray-800"
                   >
                     {item.name}
                   </Link>
@@ -68,23 +118,36 @@ const Navbar = () => {
             </ul>
           </nav>
 
+          {/* Action Buttons */}
           <div className="flex items-center space-x-4">
             <button
-              className="hidden sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
-              onClick={() => {
-                window.location.href = "tel:+8801712345678";
-              }}
+              className="hidden cursor-pointer sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
+              onClick={handleCallNow}
             >
               Call Now
             </button>
-            <Link href="/auth">
-              <button className="hidden sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors">
-                Login
-              </button>
-            </Link>
+
+            {loginSession ? (
+              <div className="hidden sm:flex items-center space-x-2">
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link href="/auth">
+                <button className="hidden cursor-pointer sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors">
+                  Login
+                </button>
+              </Link>
+            )}
+
             <button
               className="lg:hidden text-primary-600"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={handleMobileMenuToggle}
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -92,45 +155,51 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"}`}>
-          <nav className="mt-4 pb-4">
+        {isMenuOpen && (
+          <nav className="lg:hidden mt-4 pb-4">
             <ul className="space-y-2">
-              {[
-                "Home",
-                "Services",
-                "About",
-                "Testimonials",
-                "FAQ",
-                "Contact",
-              ].map((item) => (
+              {mobileNavigationItems.map((item) => (
                 <li key={item}>
-                  <a
+                  <Link
                     href={`#${item.toLowerCase()}`}
-                    className={`block py-2 px-4 font-medium hover:bg-primary-50 rounded transition-colors ${"text-gray-800"}`}
-                    onClick={() => setIsMenuOpen(false)}
+                    className="block py-2 px-4 font-medium hover:bg-primary-50 rounded transition-colors text-gray-800"
+                    onClick={closeMobileMenu}
                   >
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
+
               <li className="pt-2">
-                <button className="w-full sm:hidden bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors">
+                <button
+                  className="w-full cursor-pointer  sm:hidden bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
+                  onClick={handleCallNow}
+                >
                   Call Now
                 </button>
               </li>
+
               <li className="pt-2">
-                <button
-                  className="hidden sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
-                  onClick={() => {
-                    window.location.href = "/login";
-                  }}
-                >
-                  Login
-                </button>
+                {loginSession ? (
+                  <div className="space-y-2">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full cursor-pointer sm:hidden bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link href="/auth">
+                    <button className="w-full cursor-pointer sm:hidden bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors">
+                      Login
+                    </button>
+                  </Link>
+                )}
               </li>
             </ul>
           </nav>
-        </div>
+        )}
       </div>
     </header>
   );

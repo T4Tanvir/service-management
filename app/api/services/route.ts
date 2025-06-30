@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import * as serviceService from "../../../lib/services/service_crud_service";
 import { ServiceDto } from "@/dtos/service.dto";
 import { ClientError } from "@/errors/error";
+import { auth } from "@/auth";
 
 /**
  * GET /api/services - List all services
@@ -52,6 +53,9 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const body = new ServiceDto(await req.json());
 
     //if (!body.isValid()) throw ClientError.invalidError();

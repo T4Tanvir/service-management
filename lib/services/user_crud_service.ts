@@ -4,7 +4,10 @@ import { userStatusNameValuePair } from "@/consttant/userStatus";
 import { UserDto } from "@/dtos/user.dto";
 import { ClientError } from "@/errors/error";
 import { Role } from "@/generated/prisma";
+import { ICredential } from "@/type/credentials.type";
 import { prisma } from "@/uitls/db";
+import { User } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const create = async (data: UserDto) => {
   //const hashedPassword = await hash(data.password, 10);
@@ -140,4 +143,41 @@ const edit = async (id: number, data: Partial<UserDto>) => {
 
   return updatedUser;
 };
-export { create, getAll, edit };
+
+const isValidUser = async (
+  credential: ICredential
+): Promise<{ success: boolean; data?: User }> => {
+  console.log(credential);
+  const isExist = await prisma.user.findUnique({
+    where: { phone_number: String(credential.phone_number) },
+    select: {
+      id: true,
+      full_name: true,
+      phone_number: true,
+      password: true,
+      role: true,
+      email: true,
+      city: true,
+      address: true,
+      created_at: true,
+    },
+  });
+  console.log(isExist, "====================");
+  if (!isExist)
+    return {
+      success: false,
+    };
+  const isMatch = await bcrypt.compare(credential.password, isExist.password);
+  if (!isMatch)
+    return {
+      success: false,
+    };
+
+  return {
+    success: true,
+    data: {
+      ...isExist,
+    },
+  };
+};
+export { create, getAll, edit, isValidUser };

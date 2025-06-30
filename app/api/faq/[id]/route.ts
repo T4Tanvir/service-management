@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { FaqDto } from "@/dtos/faq.dto";
 import { ClientError } from "@/errors/error";
 import * as faq_service from "@/lib/services/faq_crud_service";
@@ -8,6 +9,9 @@ export async function PUT(
   { params }: { params: { id: number } }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     const { id } = await params;
     const body = new FaqDto(await request.json());
 
@@ -40,6 +44,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session) throw ClientError.accessDeniedError();
+
     // Await the params before destructuring
     const { id } = await params;
 

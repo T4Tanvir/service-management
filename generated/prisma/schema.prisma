@@ -17,6 +17,7 @@ datasource db {
 model User {
   id           Int      @id @default(autoincrement())
   full_name    String   @map("full_name")
+  password     String   @default("$2b$10$/4wEYXWet21sSJYMsLKUyOnSZsvcNuRLxN7MVo9U/UXD3ayKQRHAC")
   phone_number String   @unique @map("phone_number")
   email        String?  @map("email")
   city         String?  @map("city")

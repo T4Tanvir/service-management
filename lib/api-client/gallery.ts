@@ -12,4 +12,9 @@ const getAllImages = async () => {
   return response.data;
 };
 
-export { addImage, getAllImages };
+const deleteImage = async (id: number) => {
+  const response = await axios.delete(`/api/gallery/${id}`);
+  return response.data;
+};
+
+export { addImage, getAllImages, deleteImage };
