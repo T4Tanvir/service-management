@@ -1,4 +1,3 @@
-// hooks/useServiceBookingState.ts
 import { OrderDto } from "@/dtos/order.dto";
 import { OrderItemDto } from "@/dtos/order_item.dto";
 import { UserDto } from "@/dtos/user.dto";
@@ -14,22 +13,35 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useServiceBooking = (nestedServicesS: NestedService[]) => {
-  // State
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
+  // Initialize state with localStorage values if available
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const storedCart = localStorage.getItem("cart");
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
+  const [userInfo, setUserInfo] = useState<UserInfo>(() => {
+    const storedUserInfo = localStorage.getItem("userInfo");
+    return storedUserInfo
+      ? JSON.parse(storedUserInfo)
+      : { name: "", phone: "", email: "", address: "", notes: "" };
+  });
   const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
   const [navigationPath, setNavigationPath] = useState<NavigationPath[]>([]);
   const [currentStep, setCurrentStep] = useState<OrderStep>("services");
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    notes: "",
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
+
+  /**
+   * Save cartItems and userInfo to localStorage whenever they change
+   */
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  }, [userInfo]);
 
   /**
    * ===============================================================
@@ -129,24 +141,24 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
    * ===============================================================
    *                   Cart Actions
    * ===============================================================
-   *
    */
   const addToCart = useCallback(
     (service: NestedService) => {
       const existingItem = findCartItem(service.id);
+      let updatedCart: CartItem[] = [];
 
       if (existingItem) {
-        setCartItems((prevItems) =>
-          prevItems.map((item) =>
-            item.id === service.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
+        updatedCart = cartItems.map((item) =>
+          item.id === service.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
         const newItem = createCartItem(service);
-        setCartItems((prevItems) => [...prevItems, newItem]);
+        updatedCart = [...cartItems, newItem];
       }
+
+      setCartItems(updatedCart);
     },
     [findCartItem, createCartItem]
   );
@@ -205,7 +217,6 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
    * ================================================================
    *                        Navigation Actions
    * =================================================================
-   *
    */
   const navigateToSubcategory = useCallback((service: NestedService) => {
     if (service.subcategory?.length > 0) {
@@ -304,8 +315,9 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
         const orderData = createOrderData();
         await addOrder(orderData);
         setCurrentStep("confirmation");
-
-        resetBooking();
+        setTimeout(() => {
+          resetBooking();
+        }, 3000);
       } catch (error) {
         console.error("Error submitting order:", error);
         toast.error("Failed to submit order");
@@ -380,6 +392,9 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
     });
     setCurrentServices(nestedServices);
     setNavigationPath([]);
+    // Clear localStorage
+    localStorage.removeItem("cart");
+    localStorage.removeItem("userInfo");
   }, [nestedServices]);
 
   // Initialize services
@@ -388,7 +403,6 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
       try {
         setIsLoading(true);
         const services = await getServicesNestedInfo();
-        console.log(services, "===============");
         setNestedServices(services);
         setCurrentServices(services);
       } catch (error) {
@@ -405,7 +419,7 @@ export const useServiceBooking = (nestedServicesS: NestedService[]) => {
     } else {
       fetchNestedServices();
     }
-  }, []);
+  }, [nestedServicesS]);
 
   return {
     // State

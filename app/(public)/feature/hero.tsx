@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
               "Peace Home Empire transformed our home with their reliable and
               professional service!"
               <span className="block mt-2 text-yellow-400 text-base">
-                — Satisfied Client, Dhaka
+                — Satisfied Client, Broga
               </span>
             </p>
           </div>

@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useServiceBooking } from "../../hooks/useServiceBooking";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { ServiceSelection } from "./ServiceSelection";
@@ -18,7 +18,7 @@ import { NestedService } from "@/type/service.type";
 export default function ServiceBooking({
   nestedService,
 }: {
-  nestedService: NestedService[];
+  nestedService?: NestedService[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -53,11 +53,22 @@ export default function ServiceBooking({
     }
   };
 
+  useEffect(() => {
+    const cartInfo = localStorage.getItem("cart");
+    const userInfo = localStorage.getItem("userinfo");
+    // handleDefaultvalue(
+    //   cartInfo ? JSON.parse(cartInfo) : [],
+    //   userInfo ? JSON.parse(userInfo) : {}
+    // );
+  }, []);
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={handleModalClose}>
         <DialogTrigger asChild>
-          <Button className="w-full cursor-pointer sm:w-auto bg-accent-500 hover:bg-accent-600 text-white px-8 py-3 rounded-md font-medium text-lg transition-all duration-300 transform hover:scale-105">
+          <Button
+            size="lg"
+            className="w-full cursor-pointer sm:w-auto bg-accent-500 hover:bg-accent-600 text-white px-8 py-3 rounded-md font-medium text-lg transition-all duration-300 transform hover:scale-105"
+          >
             Book Service
           </Button>
         </DialogTrigger>
@@ -69,6 +80,7 @@ export default function ServiceBooking({
               {currentStep === "confirmation" && "Order Confirmation"}
             </DialogTitle>
           </DialogHeader>
+          <>{console.log(currentStep)}</>
 
           {currentStep === "services" && (
             <ServiceSelection
