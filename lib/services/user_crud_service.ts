@@ -162,11 +162,14 @@ const isValidUser = async (
       created_at: true,
     },
   });
-  console.log(isExist, "====================");
+
   if (!isExist)
     return {
       success: false,
     };
+  // if (isExist.role !== Role.ADMIN) {
+  //   return { success: false };
+  // }
   const isMatch = await bcrypt.compare(credential.password, isExist.password);
   if (!isMatch)
     return {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
@@ -22,76 +22,40 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ReportData } from "@/type/report.type";
+import TableLoading from "@/components/TableLoading";
+import { getReport } from "@/lib/api-client/report";
 
 export type DateRange = {
   from: Date | undefined;
   to?: Date | undefined;
 };
 
-const serviceData: ReportData[] = [
-  {
-    service_id: 1,
-    service_name: "Web Development",
-    service_description: "Complete web development services",
-    total_orders: 15,
-    total_quantity: 25,
-    total_revenue: 125000.5,
-    average_unit_price: 5000.02,
-  },
-  {
-    service_id: 3,
-    service_name: "Mobile App Development",
-    service_description: "iOS and Android app development",
-    total_orders: 8,
-    total_quantity: 12,
-    total_revenue: 96000.0,
-    average_unit_price: 8000.0,
-  },
-  {
-    service_id: 5,
-    service_name: "UI/UX Design",
-    service_description: "User interface and experience design",
-    total_orders: 20,
-    total_quantity: 35,
-    total_revenue: 70000.0,
-    average_unit_price: 2000.0,
-  },
-  {
-    service_id: 2,
-    service_name: "SEO Optimization",
-    service_description: "Search engine optimization services",
-    total_orders: 12,
-    total_quantity: 18,
-    total_revenue: 36000.0,
-    average_unit_price: 2000.0,
-  },
-  {
-    service_id: 4,
-    service_name: "Digital Marketing",
-    service_description: "Complete digital marketing solutions",
-    total_orders: 6,
-    total_quantity: 10,
-    total_revenue: 25000.0,
-    average_unit_price: 2500.0,
-  },
-  {
-    service_id: 7,
-    service_name: "Content Writing",
-    service_description: "Professional content writing services",
-    total_orders: 25,
-    total_quantity: 50,
-    total_revenue: 15000.0,
-    average_unit_price: 300.0,
-  },
-];
-
 export default function ServiceAnalyticsTable() {
-  const [date, setDate] = useState <DateRange | undefined>({
-    from: new Date(2024, 0, 1),
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(new Date().getFullYear(), 0, 1),
     to: new Date(),
   });
+  const [data, setData] = useState<ReportData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Format currency
+  useEffect(() => {
+    const fetchData = async () => {
+      if (date?.from && date?.to) {
+        setLoading(true);
+        try {
+          const response = await getReport(date);
+          setData(response);
+        } catch (error) {
+          console.error("Failed to fetch report data:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [date]);
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -99,10 +63,20 @@ export default function ServiceAnalyticsTable() {
     }).format(amount);
   };
 
-  // Format number
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US").format(num);
   };
+
+  const totalServices = data.length;
+  const totalOrders = data.reduce(
+    (sum, service) => sum + service.total_orders,
+    0
+  );
+  const totalRevenue = data.reduce(
+    (sum, service) => sum + service.total_revenue,
+    0
+  );
+  const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -166,7 +140,7 @@ export default function ServiceAnalyticsTable() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{serviceData.length}</div>
+            <div className="text-2xl font-bold">{totalServices}</div>
           </CardContent>
         </Card>
         <Card>
@@ -175,12 +149,7 @@ export default function ServiceAnalyticsTable() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatNumber(
-                serviceData.reduce(
-                  (sum, service) => sum + service.total_orders,
-                  0
-                )
-              )}
+              {formatNumber(totalOrders)}
             </div>
           </CardContent>
         </Card>
@@ -190,12 +159,7 @@ export default function ServiceAnalyticsTable() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(
-                serviceData.reduce(
-                  (sum, service) => sum + service.total_revenue,
-                  0
-                )
-              )}
+              {formatCurrency(totalRevenue)}
             </div>
           </CardContent>
         </Card>
@@ -207,16 +171,7 @@ export default function ServiceAnalyticsTable() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(
-                serviceData.reduce(
-                  (sum, service) => sum + service.total_revenue,
-                  0
-                ) /
-                  serviceData.reduce(
-                    (sum, service) => sum + service.total_orders,
-                    0
-                  )
-              )}
+              {formatCurrency(avgOrderValue)}
             </div>
           </CardContent>
         </Card>
@@ -244,31 +199,37 @@ export default function ServiceAnalyticsTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {serviceData.map((service) => (
-                  <TableRow key={service.service_id}>
-                    <TableCell className="font-medium">
-                      #{service.service_id}
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium">{service.service_name}</div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell text-muted-foreground">
-                      {service.service_description}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {formatNumber(service.total_orders)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {formatNumber(service.total_quantity)}
-                    </TableCell>
-                    <TableCell className="text-right font-medium">
-                      {formatCurrency(service.total_revenue)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {formatCurrency(service.average_unit_price)}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {loading ? (
+                  <TableLoading title="Report" />
+                ) : (
+                  data.map((service) => (
+                    <TableRow key={service.service_id}>
+                      <TableCell className="font-medium">
+                        #{service.service_id}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">
+                          {service.service_name}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell text-muted-foreground">
+                        {service.service_description}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(service.total_orders)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatNumber(service.total_quantity)}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">
+                        {formatCurrency(service.total_revenue)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(service.average_unit_price)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>

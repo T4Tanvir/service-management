@@ -23,7 +23,7 @@ interface UserInfo {
   phone: string;
   email: string;
   address: string;
-  notes: string;
+  city: string;
 }
 
 export type OrderStep = "services" | "user-info" | "confirmation";

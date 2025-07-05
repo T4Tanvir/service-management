@@ -5,7 +5,7 @@ import {
   Image,
   ListOrdered,
   Settings,
-  Users
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -29,7 +29,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
     { icon: Home, label: "Home", path: "/" },
     { icon: Users, label: "Users", path: "/dashboard/users" },
     { icon: Image, label: "Gallery", path: "/dashboard/gallery" },
-    { icon: FileText, label: "Reports" },
+    { icon: FileText, label: "Reports", path: "/dashboard/report" },
     {
       icon: Settings,
       label: "Free Quote",
@@ -53,7 +53,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({
         {/* Logo Section */}
         <div className="p-4 border-b">
           <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-primary-600">ProPlumb</span>
+            <span className="text-xl font-bold text-primary-600">Peace Home Empire</span>
           </div>
         </div>
 

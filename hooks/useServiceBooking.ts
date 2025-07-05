@@ -270,7 +270,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
           phone: userInfo.phone_number || "",
           email: "",
           address: userInfo.address || "",
-          notes: userInfo.additional_info || "",
+          city: userInfo.city || "",
         });
       } catch (error) {
         console.error("Error setting default values:", error);
@@ -298,7 +298,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
           phone_number: userInfo.phone,
           email: userInfo.email,
           address: userInfo.address,
-          additional_info: userInfo.notes,
+          city: userInfo.city,
         },
         orderItems,
       });
@@ -388,7 +388,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
       phone: "",
       email: "",
       address: "",
-      notes: "",
+      city: "",
     });
     setCurrentServices(nestedServices);
     setNavigationPath([]);
