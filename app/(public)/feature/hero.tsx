@@ -39,15 +39,15 @@ const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <ServiceBooking />
             <Link href="/#services">
-              <Button className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-primary-900 border border-yellow-300 px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300">
+              <Button className="w-full cursor-pointer sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-primary-900 border border-yellow-300 px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300">
                 Explore Our Services
               </Button>
             </Link>
           </div>
           <div className="mt-14">
             <p className="text-white font-semibold text-lg text-center sm:text-left italic max-w-2xl">
-              "Peace Home Empire transformed our home with their reliable and
-              professional service!"
+              &quot;Peace Home Empire transformed our home with their reliable and
+              professional service!&quot;
               <span className="block mt-2 text-yellow-400 text-base">
                 — Satisfied Client, Broga
               </span>

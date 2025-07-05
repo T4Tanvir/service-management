@@ -4,6 +4,7 @@ import { ServiceDetailDto } from "./service_detail.dto";
 
 class ServiceDto extends BaseDto {
   name: string;
+  path: string;
   parent_id: number | null;
   short_description: string;
   image_url: string;
@@ -17,6 +18,7 @@ class ServiceDto extends BaseDto {
   constructor(json: any) {
     super(json);
     this.name = json.name || "";
+    this.path = json.path || "";
     this.short_description = json.short_description || "";
     this.image_url = json.image_url || "";
     this.parent_id = this.parseNumber(json?.parent_id, null);

@@ -2,6 +2,7 @@ import { orderStatusNameValue } from "@/consttant/order";
 import { OrderDto } from "@/dtos/order.dto";
 import { ClientError } from "@/errors/error";
 import { OrderStatus } from "@/generated/prisma";
+import { DateRange } from "@/type/order.type";
 import { prisma } from "@/uitls/db";
 import { v4 as uuidv4 } from "uuid";
 
@@ -82,8 +83,18 @@ export const create = async (data: OrderDto): Promise<OrderDto> => {
   });
 };
 
-export const getAll = async (): Promise<OrderDto[]> => {
+export const getAll = async (dateRange: DateRange): Promise<OrderDto[]> => {
+  if (!dateRange) return [];
+  const startDate = new Date(dateRange.from || 0);
+  const endDate = new Date(dateRange.to || 0);
+
   const orders = await prisma.order.findMany({
+    where: {
+      created_at: {
+        gte: startDate,
+        lt: endDate,
+      },
+    },
     include: {
       user: {
         select: {
@@ -103,6 +114,9 @@ export const getAll = async (): Promise<OrderDto[]> => {
           },
         },
       },
+    },
+    orderBy: {
+      id: "desc",
     },
   });
 

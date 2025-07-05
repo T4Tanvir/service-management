@@ -9,15 +9,17 @@ import { toast } from "react-toastify";
 import { InvoiceModal } from "./feature/InvoiceModal";
 import { OrderManagementHeader } from "./feature/OrderManagementHeader";
 import { OrderTable } from "./feature/OrderTable";
-import { SearchInput } from "./feature/SearchInput";
+
+export type DateRange = {
+  from: Date | undefined;
+  to?: Date | undefined;
+};
 
 export default function OrderManagementTable() {
   const [orders, setOrders] = useState<OrderDto[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<OrderDto | null>(null);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
-
-  const filteredOrders = useOrderFilter(orders, searchTerm);
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
 
   const handleViewDetails = (order: OrderDto) => {
     setSelectedOrder(order);
@@ -54,28 +56,31 @@ export default function OrderManagementTable() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await getAllOrders();
+      if (!date) return;
+      const response = await getAllOrders(date);
       setOrders(response.data || []);
     };
-    fetchOrders();
+    if (date) fetchOrders();
+  }, [date]);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();
+    const from = new Date(year, month, 1);
+    const to = new Date(year, month, 31);
+
+    setDate({ from, to });
   }, []);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
       <Card>
-        <OrderManagementHeader />
+        <OrderManagementHeader date={date} setDate={setDate} />
 
         <CardContent>
-          <div className="mb-4">
-            <SearchInput
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              placeholder="Search by name, order ID, or phone..."
-            />
-          </div>
-
           <OrderTable
-            orders={filteredOrders}
+            orders={orders}
             onViewDetails={handleViewDetails}
             onStatusChange={handleStatusChange}
             onUpdateOrder={updateOrderList}

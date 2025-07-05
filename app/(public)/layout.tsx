@@ -3,6 +3,7 @@ import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "@/components/navbar";
 import { SessionProvider } from "next-auth/react";
+import EmergencyBanner from "@/components/EmmergencyBanner";
 
 export const metadata: Metadata = {
   title: "Peace Home Empire",
@@ -17,6 +18,8 @@ export default function PublicLayout({
   return (
     <>
       <SessionProvider>
+        <EmergencyBanner />
+
         <Navbar />
 
         {children}

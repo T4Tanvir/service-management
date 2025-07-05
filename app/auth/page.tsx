@@ -2,7 +2,8 @@
 import { Eye, EyeOff, Lock, Smartphone, Wrench } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ceredntialLogin } from "../actions"; // Rename to credentialLogin
+import { credentialLogin } from "../actions"; // Rename to credentialLogin
+import Logo from "@/components/Logo";
 
 function Auth() {
   const router = useRouter();
@@ -30,13 +31,18 @@ function Auth() {
     setError(null);
     setIsLoading(true);
     try {
-      const response = await ceredntialLogin(formData);
-
+      const response = await credentialLogin(formData);
       if (response.success) {
         router.push("/");
+      } else {
+        setError(response?.error || "");
       }
-    } catch (error: any) {
-      setError(error.message || "Login failed. Please try again.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message || "Login failed. Please try again.");
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -50,9 +56,7 @@ function Auth() {
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 space-y-8">
           <div className="text-center space-y-4">
             <div className="flex justify-center">
-              <div className="bg-accent-600 p-4 rounded-2xl shadow-lg">
-                <Wrench className="w-8 h-8 text-white" />
-              </div>
+              <Logo />
             </div>
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-slate-800">
@@ -139,14 +143,6 @@ function Auth() {
                     <Eye className="w-5 h-5" />
                   )}
                 </button>
-              </div>
-              <div className="text-right">
-                <a
-                  href="/forgot-password"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  Forgot Password?
-                </a>
               </div>
             </div>
 

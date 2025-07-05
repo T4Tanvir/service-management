@@ -1,9 +1,11 @@
 import { BaseDto } from "./base.dto";
+import { ServiceDto } from "./service.dto";
 
 class FaqDto extends BaseDto {
   service_id: number | null;
   question: string;
   answer: string;
+  service: ServiceDto | null;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(json: any) {
@@ -13,6 +15,7 @@ class FaqDto extends BaseDto {
 
     this.question = json?.question || "";
     this.answer = json?.answer || "";
+    this.service = json?.service;
   }
 }
 

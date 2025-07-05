@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Upload, Loader2 } from "lucide-react";
+import { GalleryDto } from "@/dtos/gallery.dto";
+import { S3Dto } from "@/dtos/s3.dto";
+import { addImage } from "@/lib/api-client/gallery";
+import { uploadImageAndGetUrl } from "@/lib/api-client/s3/s3";
+import { Loader2, Plus, Upload } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { getObjectUrl, uploadImageToS3 } from "@/lib/api-client/s3/s3";
-import { S3Dto } from "@/dtos/s3.dto";
-import { GalleryDto } from "@/dtos/gallery.dto";
-import { addImage } from "@/lib/api-client/gallery";
 
 interface AddImageProps {
   onUpdateImageList: (Image: GalleryDto) => void;
@@ -54,12 +54,10 @@ const AddImage: React.FC<AddImageProps> = ({ onUpdateImageList }) => {
           contentType: selectedFile.type,
         });
 
-        const reponse = await getObjectUrl(dataNeedToPassForUrl);
-
-        const publicUrl = reponse.data.publicUrl;
-        const putUrl = reponse.data.putUrl;
-
-        await uploadImageToS3(putUrl, selectedFile);
+        const publicUrl = await uploadImageAndGetUrl(
+          dataNeedToPassForUrl,
+          selectedFile
+        );
 
         const dataNeedToUpload = new GalleryDto({
           key: dataNeedToPassForUrl.key,

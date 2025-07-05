@@ -4,8 +4,8 @@ import { prisma } from "@/uitls/db";
 import { ServiceDetailDto } from "@/dtos/service_detail.dto";
 import { ClientError } from "@/errors/error";
 import { Service } from "@/generated/prisma";
-import * as detailService from "./detail_service_crud_service";
 import { NestedService } from "@/type/service.type";
+import * as detailService from "./detail_service_crud_service";
 
 // // Initialize Prisma Client
 // const prisma = new PrismaClient();
@@ -15,6 +15,10 @@ type FilterParams = {
   name?: string;
   parentId?: number | null;
 };
+
+interface ServiceWithChildren extends ServiceDto {
+  children: ServiceDto[];
+}
 
 /**
  * Create a new service
@@ -73,6 +77,34 @@ export const getChildServiceByParentIdId = async (
       reviews: true,
     },
   });
+
+function flattenServicesForDisplay(
+  services: ServiceWithChildren[],
+  parentPath = ""
+) {
+  const flattened: ServiceDto[] = [];
+
+  services.forEach((service) => {
+    // Build the path
+    const currentPath = parentPath
+      ? `${parentPath} > ${service.name}`
+      : service.name;
+
+    flattened.push(new ServiceDto({ ...service, path: currentPath }));
+
+    // Recursively add children
+    if (service.children && service.children.length > 0) {
+      flattened.push(
+        ...flattenServicesForDisplay(
+          service.children as ServiceWithChildren[],
+          currentPath
+        )
+      );
+    }
+  });
+
+  return flattened;
+}
 /**
  * Get all services with optional filtering
  */
@@ -82,7 +114,6 @@ export const getAllServices = async (
   const where: any = {};
 
   if (params?.name) {
-    console.log("name is provided");
     where.name = {
       contains: params.name,
       mode: "insensitive",
@@ -90,11 +121,8 @@ export const getAllServices = async (
   }
 
   if (params?.parentId === null) {
-    console.log("Parent ID is null, setting where condition accordingly");
     where.parent_id = null;
   } else if (params?.parentId) {
-    console.log("Parent ID is provided, setting where condition accordingly");
-    console.log("Parent ID:", params.parentId);
     where.parent_id = params.parentId;
   }
 
@@ -108,16 +136,35 @@ export const getAllServices = async (
     orderBy: { id: "asc" },
   });
 
-  for (const data of serviceDetails) {
-    console.log(data.details);
-  }
-  return serviceDetails.map(
+  const updatedServiceDetail = serviceDetails.map(
     (service) =>
       new ServiceDto({
         ...service,
         details: new ServiceDetailDto(service.details[0] || {}),
       })
   );
+
+  const serviceMap = new Map();
+  const rootServices: ServiceWithChildren[] = [];
+  updatedServiceDetail.forEach((service) => {
+    serviceMap.set(service.id, { ...service, children: [] });
+  });
+
+  // Then, build the tree structure
+  updatedServiceDetail.forEach((service) => {
+    if (service.parent_id) {
+      const parent = serviceMap.get(service.parent_id);
+      if (parent) {
+        parent.children.push(serviceMap.get(service.id));
+      }
+    } else {
+      rootServices.push(serviceMap.get(service.id));
+    }
+  });
+
+  const flatData = flattenServicesForDisplay(rootServices);
+
+  return flatData;
 };
 
 /**
@@ -127,7 +174,7 @@ export const getAllServicesBasicInfo = async (
   params?: FilterParams
 ): Promise<Service[]> => {
   const where: any = {};
-  console.log(params, "params in getAllServicesBasicInfo");
+
   if (params?.name) {
     where.name = {
       contains: params.name,
@@ -174,7 +221,6 @@ export const updateService = async (
   id: number,
   data: ServiceDto
 ): Promise<ServiceDto> => {
-  console.log("updateService method called with id:", id, "and data:", data);
   return await prisma.$transaction(async (tx) => {
     // Service existence check
     const serviceInfo = await tx.service.findFirst({
@@ -361,7 +407,6 @@ function getServiceWithSubcategories(
 export const getServiceDetailByName = async (
   name: string
 ): Promise<NestedService[]> => {
-  console.log(name);
   const allServices = await prisma.service.findMany({
     select: {
       id: true,
@@ -375,10 +420,11 @@ export const getServiceDetailByName = async (
     ],
   });
   const serviceInfo = allServices.find((item) => item.name === name);
-  console.log(serviceInfo, "===========");
+
   if (!serviceInfo) {
     return [];
   }
+
   const result = getServiceWithSubcategories(allServices, serviceInfo.id);
   return result ? [result] : [];
 };

@@ -173,7 +173,7 @@ const FreeQuoteForm: React.FC<FreeQuoteFormProps> = () => {
 
           <Button
             type="submit"
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-medium transition-colors"
+            className="w-full cursor-pointer bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-md font-medium transition-colors"
           >
             {isSubmitting && <Loader className="mr-2 h-4 w-4 animate-spin" />}
             Submit

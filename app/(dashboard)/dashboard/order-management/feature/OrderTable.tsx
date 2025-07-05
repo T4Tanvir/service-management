@@ -19,6 +19,9 @@ import { Select } from "@radix-ui/react-select";
 import { Eye } from "lucide-react";
 import EditOrder from "./EditOrder";
 import { StatusBadge } from "./StatusBadge";
+import { NestedService } from "@/type/service.type";
+import { useEffect, useState } from "react";
+import { getServicesNestedInfo } from "@/lib/api-client/service";
 
 interface OrderTableProps {
   orders: OrderDto[];
@@ -33,6 +36,8 @@ export function OrderTable({
   onStatusChange,
   onUpdateOrder,
 }: OrderTableProps) {
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
+
   const getTotallOrder = (orderId: number) => {
     const order = orders.find((o) => o.id === orderId);
     if (!order || !order.orderItems) return 0;
@@ -47,6 +52,14 @@ export function OrderTable({
       0
     );
   };
+
+  useEffect(() => {
+    const nestedEffect = async () => {
+      const services = await getServicesNestedInfo();
+      setNestedServices(services);
+    };
+    nestedEffect();
+  }, []);
 
   return (
     <div className="rounded-md border">
@@ -106,7 +119,13 @@ export function OrderTable({
                       <Eye className="h-3 w-3" />
                       Details
                     </Button>
-                    <EditOrder order={order} onUpdateOrder={onUpdateOrder} />
+                    {nestedServices.length && (
+                      <EditOrder
+                        order={order}
+                        onUpdateOrder={onUpdateOrder}
+                        nestedServices={nestedServices}
+                      />
+                    )}
                     <Select
                       value={String(orderStatusNameValue[order.status])}
                       onValueChange={(value: string) =>

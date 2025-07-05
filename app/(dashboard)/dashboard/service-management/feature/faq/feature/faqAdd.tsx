@@ -83,7 +83,7 @@ export function AddFaqDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto print-content">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add New FAQ</DialogTitle>

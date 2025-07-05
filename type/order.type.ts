@@ -14,3 +14,8 @@ export interface Order {
   order_date: string;
   due_date?: string;
 }
+
+export type DateRange = {
+  from: Date | undefined;
+  to?: Date | undefined;
+};

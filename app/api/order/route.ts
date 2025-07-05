@@ -6,12 +6,16 @@ import { auth } from "@/auth";
 /**
  * GET /api/Order - List all Features
  */
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+
   try {
     const session = await auth();
     if (!session) throw ClientError.accessDeniedError();
 
-    const services = await orderService.getAll();
+    const services = await orderService.getAll({ from, to });
     return NextResponse.json({
       success: true,
       message: "Order Data Fetch successfully",
@@ -41,7 +45,6 @@ export async function POST(req: NextRequest) {
       data: service,
     });
   } catch (error: unknown) {
-    console.log(error);
     const errorMessage =
       error instanceof ClientError ? error.message : "Failed to create Order";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

@@ -23,7 +23,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
     const storedUserInfo = localStorage.getItem("userInfo");
     return storedUserInfo
       ? JSON.parse(storedUserInfo)
-      : { name: "", phone: "", email: "", address: "", notes: "" };
+      : { name: "", phone: "", email: "", address: "", city: "" };
   });
   const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
   const [navigationPath, setNavigationPath] = useState<NavigationPath[]>([]);

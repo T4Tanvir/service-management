@@ -43,7 +43,7 @@ const Navbar = () => {
   );
 
   const handleCallNow = () => {
-    window.location.href = "tel:+8801712345678";
+    window.location.href = "tel:+601139573908";
   };
 
   const handleMobileMenuToggle = () => {
@@ -66,35 +66,15 @@ const Navbar = () => {
     }
   };
 
-  // Alternative logout function (if you want to handle manually)
-  const handleLogoutManual = async () => {
-    try {
-      const result = await signOut({
-        redirect: false, // Don't redirect automatically
-      });
-
-      // You can add custom logic here after logout
-      console.log("Logged out successfully");
-
-      // Manual redirect if needed
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
   useEffect(() => {
-    console.log(session, "===========");
     setLoginSession(session);
   }, [session]);
 
   return (
-    <header className="fixed left-0 right-0 z-50 transition-all duration-300 bg-white shadow-md py-3">
+    <header className="fixed left-0 right-0 top-10 z-50 transition-all duration-300 bg-white shadow-md py-3">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <>{console.log(session, "session data")}</>
-
           <Link href="/" className="flex items-center">
             <Wrench size={32} className="text-primary-600 mr-2" />
             <span className="text-xl font-bold text-primary-700">

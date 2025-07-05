@@ -101,7 +101,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
           ) : (
             <Button
               size="sm"
-              variant="default"
+              variant="primary"
               onClick={() => onAddToCart(service)}
               className="ml-auto"
             >

@@ -15,9 +15,10 @@ import {
 import { orderStatusNameValue } from "@/consttant/order";
 import { quoteStatus } from "@/consttant/quoteStatus";
 import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
-import { OrderDto } from "@/dtos/order.dto";
-import { UserDto } from "@/dtos/user.dto";
+import { getServicesNestedInfo } from "@/lib/api-client/service";
+import { NestedService } from "@/type/service.type";
 import { Select } from "@radix-ui/react-select";
+import { useEffect, useState } from "react";
 import { StatusBadge } from "../../order-management/feature/StatusBadge";
 import AddNewOrder from "./AddNewOrder";
 
@@ -30,6 +31,14 @@ export function FreeQuoteTable({
   freeQuotes,
   onStatusChange,
 }: OrderTableProps) {
+  const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
+  useEffect(() => {
+    const nestedEffect = async () => {
+      const services = await getServicesNestedInfo();
+      setNestedServices(services);
+    };
+    nestedEffect();
+  }, []);
   return (
     <div className="rounded-md border">
       <Table>
@@ -76,7 +85,12 @@ export function FreeQuoteTable({
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center justify-center gap-2">
-                    <AddNewOrder userDetail={new UserDto(quotes.user)} />
+                    {nestedServices.length && (
+                      <AddNewOrder
+                        userDetail={quotes.user!}
+                        nestedServices={nestedServices}
+                      />
+                    )}
                     <Select
                       value={String(orderStatusNameValue[quotes.status])}
                       onValueChange={(value: string) =>

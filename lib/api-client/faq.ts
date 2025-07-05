@@ -8,7 +8,7 @@ const addFaq = async (data: FaqDto) => {
 };
 
 const getAllFaq = async () => {
-  const response = await axios.get("/api/faq/type=all");
+  const response = await axios.get("/api/faq?type=all");
 
   return response.data;
 };

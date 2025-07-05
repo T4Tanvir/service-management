@@ -1,10 +1,4 @@
-"use client";
-
 import { CardHeader, CardTitle } from "@/components/ui/card";
-
-// interface OrderManagementHeaderProps {
-//   onNewOrder: () => void;
-// }
 
 export function FreeQuoteHeader() {
   return (

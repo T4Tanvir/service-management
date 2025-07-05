@@ -96,7 +96,7 @@ export function ServicesList({
                               <div className="font-medium">{service.name}</div>
                               {service.parent_id && (
                                 <Badge variant="outline" className="text-xs">
-                                  Sub-service of #{service.parent_id}
+                                  {service.path}
                                 </Badge>
                               )}
                             </div>

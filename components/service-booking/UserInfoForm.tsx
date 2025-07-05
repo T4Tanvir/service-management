@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import React from "react";
 import { CartItem, UserInfo } from "../../type/service.type";
+import { selangorCities } from "@/consttant/selangorCities";
 
 interface UserInfoFormProps {
   userInfo: UserInfo;
@@ -33,6 +34,16 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
   isAdmin,
   getTotalPrice,
 }) => {
+  const handleSelectChange = (name: string, value: string) => {
+    const event = {
+      target: {
+        name,
+        value,
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
+    onUserInfoChange(event);
+  };
+  
   return (
     <div className="h-[70vh] overflow-y-auto">
       <div className="flex items-center gap-2 mb-6">
@@ -89,6 +100,23 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
           </div>
 
           <div className="space-y-4">
+            <div className="space-y-2 pr-2 ">
+              <Label htmlFor="service">City</Label>
+              <select
+                id="service"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none bg-white"
+                onChange={(e) => handleSelectChange("city", e.target.value)}
+                required
+              >
+                <option value="">Select a City</option>
+                {selangorCities.map((city) => (
+                  <option key={city} value={city} className="cursor-pointer">
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="address">Address *</Label>
               <Textarea
@@ -98,18 +126,6 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
                 onChange={onUserInfoChange}
                 placeholder="Your current address"
                 required
-                className="min-h-[100px]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="notes">Additional Information</Label>
-              <Textarea
-                id="notes"
-                name="notes"
-                value={userInfo.notes}
-                onChange={onUserInfoChange}
-                placeholder="Any additional information or instructions"
                 className="min-h-[100px]"
               />
             </div>

@@ -20,6 +20,8 @@ import { editService } from "@/lib/api-client/service";
 import { NestedService } from "@/type/service.type";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { uploadImageAndGetUrl } from "@/lib/api-client/s3/s3";
+import { S3Dto } from "@/dtos/s3.dto";
 
 export function EditServiceDialog({
   service,
@@ -35,6 +37,7 @@ export function EditServiceDialog({
   onEditService: (service: ServiceDto) => void;
 }) {
   const [selectedService, setSelectedService] = useState<number | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -50,17 +53,28 @@ export function EditServiceDialog({
     parent_id: null,
   });
 
-  useEffect(() => {
-    if (service) {
-      setFormData({
-        name: service.name || "",
-        image_url: service.image_url,
-        short_description: service.short_description || "",
-        long_description: service.details?.long_description || "",
-        parent_id: selectedService || null,
-      });
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
     }
-  }, [service, selectedService]);
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedFile) return null;
+
+    const dataNeedToPassForUrl = new S3Dto({
+      key: `service-${Date.now()}-${selectedFile.name}`,
+      contentType: selectedFile.type,
+    });
+
+    const publicUrl = await uploadImageAndGetUrl(
+      dataNeedToPassForUrl,
+      selectedFile
+    );
+
+    return publicUrl;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,11 +87,15 @@ export function EditServiceDialog({
     e.preventDefault();
 
     try {
+      let currentImgUrl = formData.image_url;
+      if (selectedFile) {
+        currentImgUrl = (await handleImageUpload()) || "";
+      }
       const response = await editService(
         new ServiceDto({
           id: service.id,
           name: formData.name,
-          image_url: formData.image_url,
+          image_url: currentImgUrl,
           short_description: formData.short_description,
           details: {
             long_description: formData.long_description,
@@ -95,9 +113,21 @@ export function EditServiceDialog({
     }
   };
 
+  useEffect(() => {
+    if (service) {
+      setFormData({
+        name: service.name || "",
+        image_url: service.image_url,
+        short_description: service.short_description || "",
+        long_description: service.details?.long_description || "",
+        parent_id: selectedService || null,
+      });
+    }
+  }, [service, selectedService]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto print-content">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Edit Service</DialogTitle>
@@ -117,13 +147,13 @@ export function EditServiceDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="image_url">Service Image</Label>
+              <Label htmlFor="image-upload">Select Service Image</Label>
               <Input
-                id="image_url"
-                name="image_url"
-                value={formData.image_url}
-                onChange={handleChange}
-                required
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="cursor-pointer"
               />
             </div>
             <div className="grid gap-2">

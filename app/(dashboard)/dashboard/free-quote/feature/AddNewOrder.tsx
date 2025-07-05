@@ -12,14 +12,19 @@ import {
 } from "@/components/ui/dialog";
 import { UserDto } from "@/dtos/user.dto";
 import { useServiceBooking } from "@/hooks/useServiceBooking";
+import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface AddNewOrderProps {
   userDetail: UserDto;
+  nestedServices: NestedService[];
 }
 
-export default function AddNewOrder({ userDetail }: AddNewOrderProps) {
+export default function AddNewOrder({
+  userDetail,
+  nestedServices,
+}: AddNewOrderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const {
     cartItems,
@@ -47,7 +52,7 @@ export default function AddNewOrder({ userDetail }: AddNewOrderProps) {
     handlePriceChange,
     getTotalPrice,
     resetBooking,
-  } = useServiceBooking([]);
+  } = useServiceBooking(nestedServices);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);
@@ -57,8 +62,8 @@ export default function AddNewOrder({ userDetail }: AddNewOrderProps) {
   };
 
   useEffect(() => {
-    handleDefaultvalue([], userDetail);
-  }, []);
+    if (isOpen) handleDefaultvalue([], userDetail);
+  }, [isOpen, handleDefaultvalue, userDetail]);
 
   return (
     <div>

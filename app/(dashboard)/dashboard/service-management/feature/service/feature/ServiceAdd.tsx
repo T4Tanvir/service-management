@@ -19,7 +19,9 @@ import { addService } from "@/lib/api-client/service";
 import { useState } from "react";
 
 import NestedServiceForm from "@/components/NestedServiceForm";
+import { S3Dto } from "@/dtos/s3.dto";
 import { ServiceDto } from "@/dtos/service.dto";
+import { uploadImageAndGetUrl } from "@/lib/api-client/s3/s3";
 import { NestedService } from "@/type/service.type";
 import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
@@ -45,6 +47,7 @@ export function AddServiceDialog({
   onAddService: (service: ServiceDto) => void;
 }) {
   const [formData, setFormData] = useState(formInitData);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedService, setSelectedService] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,14 +58,39 @@ export function AddServiceDialog({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedFile) return null;
+
+    const dataNeedToPassForUrl = new S3Dto({
+      key: `service-${Date.now()}-${selectedFile.name}`,
+      contentType: selectedFile.type,
+    });
+
+    const publicUrl = await uploadImageAndGetUrl(
+      dataNeedToPassForUrl,
+      selectedFile
+    );
+
+    return publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
+      const imageUrl = await handleImageUpload();
       // Create data to send
       const dataNeedToSend = new ServiceDto({
         ...formData,
+        image_url: imageUrl,
         parent_id: selectedService,
         active: true,
         details: new ServiceDetailDto({
@@ -91,7 +119,7 @@ export function AddServiceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto print-content">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add New Service</DialogTitle>
@@ -111,13 +139,13 @@ export function AddServiceDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="image_url">Service Image</Label>
+              <Label htmlFor="image-upload">Select Service Image</Label>
               <Input
-                id="image_url"
-                name="image_url"
-                value={formData.image_url}
-                onChange={handleChange}
-                required
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileSelect}
+                className="cursor-pointer"
               />
             </div>
 

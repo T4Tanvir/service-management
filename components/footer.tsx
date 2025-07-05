@@ -19,10 +19,10 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center mb-4">
               <Wrench size={28} className="text-accent-500 mr-2" />
-              <span className="text-xl font-bold">ProPlumb</span>
+              <span className="text-xl font-bold">Peace Home Empire</span>
             </div>
             <p className="text-gray-400 mb-6">
-              Professional plumbing services for residential and commercial
+              Professional home services for residential and commercial
               properties. Licensed, insured, and trusted by thousands of
               customers.
             </p>
@@ -59,7 +59,6 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               {[
                 { name: "Home", link: "#home" },
-                { name: "About Us", link: "#about" },
                 { name: "Services", link: "#services" },
                 { name: "Testimonials", link: "#testimonials" },
                 { name: "FAQ", link: "#faq" },
@@ -81,12 +80,16 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-bold mb-4">Our Services</h3>
             <ul className="space-y-2">
               {[
-                "Water Plumbing",
-                "Gas Line Services",
-                "Sewerage Services",
-                "Water Filtration",
-                "Fire Protection",
-                "Pool Plumbing",
+                "Electrical",
+                "Plumbing Services",
+                "Plaster Ceiling and Partition",
+                "Sliding Doors and Windows",
+                "Painting",
+                "Cabinets",
+                "Locksmith",
+                "Tiles Work",
+                "Air-cond Service and Install",
+                "Fridge and Washing Machine Repair",
               ].map((service) => (
                 <li key={service}>
                   <a
@@ -109,7 +112,7 @@ const Footer: React.FC = () => {
                   className="text-accent-500 mt-1 mr-3 flex-shrink-0"
                 />
                 <div>
-                  <p className="text-white">(555) 123-4567</p>
+                  <p className="text-white">(+60) 11-3957 3908</p>
                   <p className="text-gray-400 text-sm">
                     24/7 Emergency Service
                   </p>
@@ -120,7 +123,7 @@ const Footer: React.FC = () => {
                   size={18}
                   className="text-accent-500 mt-1 mr-3 flex-shrink-0"
                 />
-                <span className="text-gray-400">info@proplumb.com</span>
+                <span className="text-gray-400">peacehomeempire@gmail.com</span>
               </li>
               <li className="flex items-start">
                 <MapPin
@@ -128,7 +131,7 @@ const Footer: React.FC = () => {
                   className="text-accent-500 mt-1 mr-3 flex-shrink-0"
                 />
                 <span className="text-gray-400">
-                  123 Plumbing Way, Watertown, CA 90210
+                  Cyberia Crescent 1 Kondo, Cyberjaya, Selangor, Malaysia
                 </span>
               </li>
               <li className="flex items-start">
@@ -150,7 +153,8 @@ const Footer: React.FC = () => {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} ProPlumb. All rights reserved.
+              © {new Date().getFullYear()} Peace Home Empire. All rights
+              reserved.
             </p>
             <div className="flex space-x-6">
               <a

@@ -1,18 +1,15 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { OrderDto } from "@/dtos/order.dto";
-import { useOrderFilter } from "@/hooks/useOrderFilter";
-import { editOrderStatus, getAllOrders } from "@/lib/api-client/order";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import { FreeQuoteHeader } from "./feature/FreeQuoteHeader";
-import { FreeQuoteTable } from "./feature/FreequoteTable";
+import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
 import {
   editFreeQuoteStatus,
   getAllFreeQuote,
 } from "@/lib/api-client/free-quote";
-import { FreeQuoteDto } from "@/dtos/freeQuote.dto";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { FreeQuoteHeader } from "./feature/FreeQuoteHeader";
+import { FreeQuoteTable } from "./feature/FreequoteTable";
 
 export default function FreeQuote() {
   const [freeQuotes, setFreeQuote] = useState<FreeQuoteDto[]>([]);
@@ -41,7 +38,7 @@ export default function FreeQuote() {
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await getAllFreeQuote();
-      console.log(response.data, "======================");
+
       setFreeQuote(response.data || []);
     };
     fetchOrders();

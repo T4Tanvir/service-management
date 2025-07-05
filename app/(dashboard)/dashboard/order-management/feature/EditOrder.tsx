@@ -15,6 +15,7 @@ import { OrderDto } from "@/dtos/order.dto";
 import { OrderItemDto } from "@/dtos/order_item.dto";
 import { useServiceBooking } from "@/hooks/useServiceBooking";
 import { editOrder } from "@/lib/api-client/order";
+import { NestedService } from "@/type/service.type";
 import { Edit } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -22,9 +23,11 @@ import { toast } from "react-toastify";
 export default function EditOrder({
   order,
   onUpdateOrder,
+  nestedServices,
 }: {
   order: OrderDto;
   onUpdateOrder: (updatedOrder: OrderDto) => void;
+  nestedServices: NestedService[];
 }) {
   const {
     cartItems,
@@ -50,7 +53,7 @@ export default function EditOrder({
     handleBackToServices,
     resetBooking,
     handlePriceChange,
-  } = useServiceBooking([]);
+  } = useServiceBooking(nestedServices);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
