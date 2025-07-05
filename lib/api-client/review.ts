@@ -1,7 +1,7 @@
 import { ReviewDto } from "@/dtos/review.dto";
 import axios from "axios";
 
-const getreviewLink = async (userId: string) => {
+const getreviewLink = async (userId: number) => {
   const response = await axios.get(`/api/users/${userId}`);
   return response.data;
 };

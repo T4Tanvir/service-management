@@ -17,7 +17,7 @@ import WhyChoose from "../../feature/WhyChoose";
 import Hero from "./feature/Hero";
 import { generateMetadata } from "./layout";
 import { getFeatureListByServiceId } from "@/lib/services/feature_crud_service";
-import { AddFeatureDialog } from "@/app/(dashboard)/dashboard/service-management/feature/serviceFeature/feature/FeatureAdd";
+
 import AdditionalFeature from "./feature/AdditionalFeature";
 
 type ServiceDetailPageProps = {

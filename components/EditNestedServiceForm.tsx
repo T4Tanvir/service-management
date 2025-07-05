@@ -280,7 +280,7 @@ const EditNestedServiceForm = ({
         onServiceSelect(serviceId);
       }
     }
-  }, [serviceId]);
+  }, [serviceId, onServiceSelect, services]);
 
   // Initialize form with a service path
   const initializeFormWithPath = (servicePath: NestedService[]): void => {

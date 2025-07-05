@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     const service = await serviceService.create(body);
 
     return NextResponse.json(service, { status: 201 });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    
   } catch (error: unknown) {
     console.log(error);
     const errorMessage =

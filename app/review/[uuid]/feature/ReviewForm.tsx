@@ -13,6 +13,7 @@ import { getServicesNestedInfo } from "@/lib/api-client/service";
 import { NestedService } from "@/type/service.type";
 import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 interface ReviewFormProps {
   reviewId: string;
@@ -26,7 +27,7 @@ export function ReviewForm({ reviewId }: ReviewFormProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
+
   const [services, setServices] = useState<NestedService[]>([]);
   const [selectedService, setSelectedService] = useState<number | null>(null);
 
@@ -36,10 +37,9 @@ export function ReviewForm({ reviewId }: ReviewFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     if (!formData.mobile || !formData.rating || !formData.comment) {
-      setError("Please fill in all fields!");
+      toast.error("Please fill in all fields!");
       return;
     }
 
@@ -58,8 +58,9 @@ export function ReviewForm({ reviewId }: ReviewFormProps) {
         setSubmitted(true);
       }
       setSubmitted(true);
-    } catch (error) {
-      setError("Something went wrong!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
     } finally {
       setIsSubmitting(false);
     }
@@ -87,12 +88,6 @@ export function ReviewForm({ reviewId }: ReviewFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="p-3 bg-red-100 text-red-800 rounded-md text-sm">
-          {error}
-        </div>
-      )}
-
       <div className="space-y-2">
         <Label htmlFor="mobile">Mobile Number *</Label>
         <Input

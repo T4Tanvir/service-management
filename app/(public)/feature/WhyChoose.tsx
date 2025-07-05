@@ -84,8 +84,8 @@ export default function WhyChoose() {
               Your Trusted Home Service Partner
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We're committed to providing exceptional service quality and
-              customer satisfaction. Here's what sets us apart from the
+              We&apos;re committed to providing exceptional service quality and
+              customer satisfaction. Here&apos;s what sets us apart from the
               competition.
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function WhyChoose() {
             <div>
               <h4 className="font-bold">Satisfaction Guaranteed</h4>
               <p className="text-sm text-muted-foreground">
-                100% satisfaction or we'll make it right
+                100% satisfaction or we&apos;ll make it right
               </p>
             </div>
           </div>

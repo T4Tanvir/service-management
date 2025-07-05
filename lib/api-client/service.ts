@@ -14,13 +14,13 @@ const addService = async (data: ServiceDto) => {
 const getAllServiceDetails = async () => {
   const response = await axios.get("/api/services?type=all");
 
-  return response.data.map((service: any) => new ServiceDto(service));
+  return response.data.map((service: ServiceDto) => new ServiceDto(service));
 };
 
 const getAllServiceBasicInfo = async () => {
   const response = await axios.get("/api/services?type=basic");
 
-  return response.data.map((service: any) => new ServiceDto(service));
+  return response.data.map((service: ServiceDto) => new ServiceDto(service));
 };
 
 const getServicesNestedInfo = async () => {
@@ -32,7 +32,7 @@ const getServicesNestedInfo = async () => {
 const getParentServicesBasicInfo = async () => {
   const response = await axios.get("/api/services?type=basic&parentId=0");
 
-  return response.data.map((service: any) => new ServiceDto(service));
+  return response.data.map((service: ServiceDto) => new ServiceDto(service));
 };
 
 const editService = async (data: ServiceDto) => {

@@ -37,7 +37,7 @@ export const create = async (data: FaqDto): Promise<IFaq> => {
   };
 };
 
-export const getAll = async (): Promise<Faq[]> => {
+export const getAll = async (): Promise<FaqDto[]> => {
   const faqs = await prisma.faq.findMany({
     include: {
       service: {
@@ -52,7 +52,7 @@ export const getAll = async (): Promise<Faq[]> => {
     },
   });
 
-  return faqs;
+  return faqs.map((item) => new FaqDto(item));
 };
 
 export const edit = async (id: number, data: FaqDto): Promise<IFaq> => {
@@ -113,10 +113,10 @@ export const deleteFaq = async (id: number): Promise<Faq> => {
 
 export const getFaqByServiceId = async (
   serviceId: number | null
-): Promise<Faq[]> => {
+): Promise<FaqDto[]> => {
   const faqs = await prisma.faq.findMany({
     where: { service_id: serviceId },
   });
 
-  return faqs;
+  return faqs.map((item) => new FaqDto(item));
 };

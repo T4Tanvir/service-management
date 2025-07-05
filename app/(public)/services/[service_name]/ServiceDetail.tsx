@@ -1,20 +1,16 @@
 import BookNow from "@/components/BookNow";
 import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import Testimonial from "@/components/Testimonial";
 import { serviceList } from "@/data/services";
 import { Clock, MapPin, ThumbsUp } from "lucide-react";
 import ServiceCard from "../../feature/allServices";
 import Hero from "../../feature/hero";
-import Navbar from "@/components/navbar";
 
-interface ParamsType {
-  id: string;
-}
-const ServiceDetail = ({ params }: { params: ParamsType }) => {
-  const service = serviceList.find((s) => s.id === params.id);
+const ServiceDetail = () => {
   return (
     <>
-      <Navbar scrolled={false} />
+      <Navbar />
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -62,7 +58,7 @@ const ServiceDetail = ({ params }: { params: ParamsType }) => {
                   Book a Service in 3 Simple Steps
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  We've made booking home services as easy as possible.
+                  We&apos;ve made booking home services as easy as possible.
                 </p>
               </div>
             </div>

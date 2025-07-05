@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       message: "Review Added successfully",
       data: addedReview,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    
   } catch (error: unknown) {
     console.log(error);
     const errorMessage =

@@ -135,8 +135,6 @@ function Gallery() {
 
             {/* Image Container */}
             <div className="relative">
-              {/* Use Next.js Image for optimized loading */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <Image
                 src={selectedImageData.url.replace("w=800", "w=1600")}
                 alt={selectedImageData.label}

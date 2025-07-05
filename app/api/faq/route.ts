@@ -1,8 +1,8 @@
+import { auth } from "@/auth";
 import { FaqDto } from "@/dtos/faq.dto";
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as faqService from "../../../lib/services/faq_crud_service";
-import { auth } from "@/auth";
 
 /**
  * GET /api/faq - List all Faqs
@@ -12,8 +12,7 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get("type");
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let faqList: any[] = [];
+    let faqList: FaqDto[] = [];
     if (type === "all") {
       faqList = await faqService.getAll();
     } else if (type === "filterByService") {
@@ -46,8 +45,6 @@ export async function POST(req: NextRequest) {
 
     if (!session) throw ClientError.accessDeniedError();
     const body = new FaqDto(await req.json());
-    console.log(body, "=============");
-    //if (!body.isValid()) throw ClientError.invalidError();
 
     const service = await faqService.create(body);
 
@@ -56,7 +53,6 @@ export async function POST(req: NextRequest) {
       message: "Faq Added successfully",
       data: service,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
     console.log(error);
     const errorMessage =

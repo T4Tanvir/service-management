@@ -1,5 +1,5 @@
 import { ServiceDto } from "@/dtos/service.dto";
-import { getChildServiceByParentIdId } from "@/lib/services/service_crud_service";
+
 import ServiceCard from "./component/ServiceCard";
 
 const AllServices = async ({ services }: { services: ServiceDto[] }) => {

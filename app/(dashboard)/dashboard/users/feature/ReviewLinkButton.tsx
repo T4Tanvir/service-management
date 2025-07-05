@@ -12,12 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Copy, Check, ExternalLink } from "lucide-react";
-//import { generateReviewLink } from "@/lib/actions"
-import { editUser } from "@/lib/api-client/user";
+
 import { getreviewLink } from "@/lib/api-client/review";
+import { UserDto } from "@/dtos/user.dto";
+import { toast } from "react-toastify";
 
 interface ReviewLinkButtonProps {
-  user: userDto;
+  user: UserDto;
 }
 
 export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
@@ -25,7 +26,6 @@ export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
   const [reviewUrl, setReviewUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleGenerateLink = async () => {
     setIsLoading(true);
@@ -34,11 +34,11 @@ export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
       console.log(result);
       if (result.success) {
         setReviewUrl(result.data);
-        setMessage("Review link has been generated!");
+        toast.success("Link has been copied!");
       }
-    } catch (error) {
-      console.log(error);
-      setMessage("Something went wrong!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
@@ -48,10 +48,10 @@ export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
     try {
       await navigator.clipboard.writeText(reviewUrl);
       setCopied(true);
-      setMessage("Link has been copied!");
+      toast.success("Link has been copied!");
       setTimeout(() => setCopied(false), 2000);
-    } catch (error) {
-      setMessage("Failed to copy the link!");
+    } catch (err) {
+      console.error("Failed to copy the link:", err);
     }
   };
 
@@ -67,12 +67,6 @@ export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
           <DialogTitle>Review Link for {user.full_name}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          {message && (
-            <div className="p-3 bg-green-100 text-green-800 rounded-md text-sm">
-              {message}
-            </div>
-          )}
-
           {!reviewUrl ? (
             <Button
               onClick={handleGenerateLink}

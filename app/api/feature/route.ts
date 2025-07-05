@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 /**
  * GET /api/Feature - List all Features
  */
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const services = await featureService.getAll();
     return NextResponse.json({
@@ -43,9 +43,7 @@ export async function POST(req: NextRequest) {
       message: "Feature Added successfully",
       data: service,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: unknown) {
-    console.log(error);
     const errorMessage =
       error instanceof Error ? error.message : "Failed to create service";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

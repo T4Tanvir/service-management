@@ -17,7 +17,7 @@ const How: React.FC = () => {
               Book a Service in 3 Simple Steps
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              We've made booking home services as easy as possible.
+              We&apos;ve made booking home services as easy as possible.
             </p>
           </div>
         </div>

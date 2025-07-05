@@ -24,7 +24,7 @@ const Testimonials = ({ testimonials }: { testimonials: ReviewDto[] }) => {
               What Our Customers Say
             </h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Don't just take our word for it. Here's what our customers have to
+              Don&apos;t just take our word for it. Here&apos;s what our customers have to
               say about our services.
             </p>
           </div>
@@ -87,7 +87,7 @@ const Testimonials = ({ testimonials }: { testimonials: ReviewDto[] }) => {
                   <div className="flex justify-end">
                     <div className="size-8 bg-primary-50 rounded-full flex items-center justify-center">
                       <span className="text-primary-500 text-lg font-bold">
-                        "
+                        &quot;
                       </span>
                     </div>
                   </div>

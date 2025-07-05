@@ -1,19 +1,10 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import DashboardSidebar from "./component/dahsboardSidebar";
 import DashboardHeader from "./component/dashboardHeader";
 
-interface LayoutProps {
-  children: ReactNode;
-  activePage: string;
-  setActivePage: (page: string) => void;
-}
-
-const DashboardLayout: React.FC<LayoutProps> = ({
-  children,
-  activePage,
-  setActivePage,
-}) => {
+const DashboardLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [activePage, setActivePage] = useState<string>("");
   return (
     <div className="h-screen bg-gray-50 flex overflow-hidden">
       {/* Sidebar */}

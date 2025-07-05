@@ -1,7 +1,7 @@
 "use client";
 
 import TableLoading from "@/components/TableLoading";
-import { Badge } from "@/components/ui/badge";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,18 +25,6 @@ import { Star, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-interface Review {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  customerAvatar: string;
-  productName: string;
-  rating: number;
-  comment: string;
-  date: string;
-  status: "approved" | "pending" | "rejected";
-}
-
 export default function ReviewTable() {
   const [reviews, setReviews] = useState<ReviewDto[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -44,7 +32,6 @@ export default function ReviewTable() {
     table: true,
     delete: false,
   });
-  const [searchTerm, setSearchTerm] = useState("");
   const [expandedReviews, setExpandedReviews] = useState<Set<number>>(
     new Set()
   );
@@ -75,17 +62,6 @@ export default function ReviewTable() {
     setExpandedReviews(newExpanded);
   };
 
-  //   const getStatusBadge = (status: Review["status"]) => {
-  //     switch (status) {
-  //       case "approved":
-  //         return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
-  //       case "pending":
-  //         return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
-  //       case "rejected":
-  //         return <Badge className="bg-red-100 text-red-800">Rejected</Badge>;
-  //     }
-  //   };
-
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
@@ -96,16 +72,6 @@ export default function ReviewTable() {
       />
     ));
   };
-
-  const filteredReviews = reviews.filter(
-    (review) =>
-      review.user?.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      review.user?.phone_number
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      review.service?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      review?.comment?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -146,7 +112,7 @@ export default function ReviewTable() {
                 {isLoading.table ? (
                   <TableLoading title={"Reviews"} />
                 ) : (
-                  filteredReviews.map((review, index) => (
+                  reviews.map((review, index) => (
                     <TableRow key={review.id}>
                       <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell>
@@ -225,7 +191,7 @@ export default function ReviewTable() {
             </Table>
           </div>
 
-          {!isLoading.table && filteredReviews.length === 0 && (
+          {!isLoading.table && reviews.length === 0 && (
             <div className="text-center py-8 text-gray-500">
               No reviews found
             </div>

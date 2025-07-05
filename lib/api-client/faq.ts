@@ -17,7 +17,7 @@ const getFaqByServiceId = async (serviceId: number | null) => {
   const response = await axios.get(
     `/api/faq?type=filterByService&serviceId=${serviceId}`
   );
-  return response.data.map((service: any) => new FaqDto(service));
+  return response.data.map((service: FaqDto) => new FaqDto(service));
 };
 
 const editFaq = async (data: FaqDto) => {

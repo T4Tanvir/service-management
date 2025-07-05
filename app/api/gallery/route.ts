@@ -1,4 +1,4 @@
-import { FaqDto } from "@/dtos/faq.dto";
+
 import { ClientError } from "@/errors/error";
 import { NextRequest, NextResponse } from "next/server";
 import * as galleryService from "../../../lib/services/gallery_crud_service";
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       message: "Image Added successfully",
       data: insertedImage,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    
   } catch (error: unknown) {
     console.log(error);
     const errorMessage =

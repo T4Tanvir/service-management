@@ -1,41 +1,12 @@
 "use client";
 
-import { useState } from "react";
+
 import { Edit, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EditFeatureDialog } from "./FeatureEdit";
-import { DeleteConfirmDialog } from "@/components/ui/confirmationDialog";
+
 import { IFeature } from "@/type/feature.type";
 
-// Mock data for features
-// const initialFeatures = [
-//   {
-//     id: "1",
-//     service: "Web Development",
-//     description: "Responsive design that works on all devices",
-//   },
-//   {
-//     id: "2",
-//     service: "Web Development",
-//     description: "SEO optimization for better search engine rankings",
-//   },
-//   {
-//     id: "3",
-//     service: "Mobile App Development",
-//     description: "Push notifications for user engagement",
-//   },
-//   {
-//     id: "4",
-//     service: "E-commerce Solutions",
-//     description: "Inventory management system",
-//   },
-//   {
-//     id: "5",
-//     service: "E-commerce Solutions",
-//     description: "Customer reviews and ratings",
-//   },
-// ];
 
 interface FaqsListProps {
   features: IFeature[];
@@ -43,7 +14,7 @@ interface FaqsListProps {
 }
 
 export function FeaturesList({ features, onActionIdChange }: FaqsListProps) {
-  const [editingFeature, setEditingFeature] = useState<any | null>(null);
+  
   
 
   // Group features by service
@@ -53,7 +24,7 @@ export function FeaturesList({ features, onActionIdChange }: FaqsListProps) {
     }
     acc[feature.service.id].push(feature);
     return acc;
-  }, {} as Record<string, typeof features>);
+  }, {} as Record<string, IFeature[]>);
 
   return (
     <div className="space-y-6">
