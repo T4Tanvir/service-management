@@ -5,6 +5,7 @@ import { UserDto } from "@/dtos/user.dto";
 import { ClientError } from "@/errors/error";
 import { Role } from "@/generated/prisma";
 import { ICredential } from "@/type/credentials.type";
+import { ChangePasswordData } from "@/type/user.type";
 import { prisma } from "@/uitls/db";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -43,7 +44,12 @@ const create = async (data: UserDto) => {
 };
 
 const getAll = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    orderBy: {
+      id: "desc",
+    },
+  });
+
   return users;
 };
 
@@ -167,9 +173,11 @@ const isValidUser = async (
     return {
       success: false,
     };
-  // if (isExist.role !== Role.ADMIN) {
-  //   return { success: false };
-  // }
+
+  if (isExist.role !== Role.ADMIN) {
+    return { success: false };
+  }
+
   const isMatch = await bcrypt.compare(credential.password, isExist.password);
   if (!isMatch)
     return {
@@ -183,4 +191,34 @@ const isValidUser = async (
     },
   };
 };
-export { create, getAll, edit, isValidUser };
+
+const changePass = async (id: number, data: ChangePasswordData) => {
+  if (!id || !data?.newPassword || !data?.confirmPassword) {
+    throw ClientError.invalidError();
+  }
+
+  if (data.newPassword !== data.confirmPassword) {
+    throw ClientError.invalidError();
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) {
+    throw ClientError.notExistsError("User");
+  }
+
+  // Hash the new password
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(data.newPassword, saltRounds);
+
+  // Update user's password in the database
+  await prisma.user.update({
+    where: { id },
+    data: { password: hashedPassword },
+  });
+
+  return { message: "Password updated successfully" };
+};
+
+export { create, getAll, edit, isValidUser, changePass };

@@ -41,10 +41,8 @@ export default function Faq() {
   const fetchFaqData = async () => {
     try {
       const response = await getAllFaq();
-      console.log("Response from getAllFaq:", response);
+
       setFaqList(response.data);
-      console.log("Fetched FAQs:", response);
-      // Handle the response as needed
     } catch (errr) {
       console.error("Error fetching FAQs:", errr);
     }
@@ -92,7 +90,7 @@ export default function Faq() {
         onOpenChange={setAddFaqOpen}
         nestedServices={nestedServices}
         onUpdateFaqList={(newFaq: IFaq) => {
-          setFaqList((prev) => [...prev, newFaq]);
+          setFaqList((prev) => [newFaq, ...prev]);
         }}
       />
 

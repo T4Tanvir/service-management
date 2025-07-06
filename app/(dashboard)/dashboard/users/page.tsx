@@ -26,7 +26,7 @@ export default function User() {
     try {
       const response = await addUser(new UserDto(data));
       toast.success(response.data.message);
-      setUsers([...users, response.data]);
+      setUsers([response.data, ...users]);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

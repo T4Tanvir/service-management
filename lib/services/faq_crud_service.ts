@@ -48,7 +48,7 @@ export const getAll = async (): Promise<FaqDto[]> => {
       },
     },
     orderBy: {
-      service_id: "desc",
+      id: "desc",
     },
   });
 

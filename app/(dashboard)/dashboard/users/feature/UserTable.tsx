@@ -16,6 +16,7 @@ import UserInfoForm from "../component/UserForm";
 import { toast } from "react-toastify";
 import { editUser } from "@/lib/api-client/user";
 import { ReviewLinkButton } from "./ReviewLinkButton";
+import ChangePassword from "./ChangePasswordl";
 
 interface OrderTableProps {
   users: UserDto[];
@@ -33,7 +34,6 @@ export function UserTable({ users, updateUserList }: OrderTableProps) {
 
     try {
       const response = await editUser(selectedUser.id!, new UserDto(data));
-      console.log(response.data, "==========");
       toast.success(response.message);
       updateUserList(response.data);
 
@@ -113,6 +113,7 @@ export function UserTable({ users, updateUserList }: OrderTableProps) {
                       <Edit className="h-3 w-3" />
                       Edit
                     </Button>
+                    <ChangePassword user={user} />
                     <ReviewLinkButton user={user} />
                   </div>
                 </TableCell>
