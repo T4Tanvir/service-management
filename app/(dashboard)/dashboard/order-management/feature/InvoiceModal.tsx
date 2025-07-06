@@ -203,9 +203,11 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
                 <h1 className="text-3xl font-bold text-gray-800">
                   Peace Home Empire
                 </h1>
-                <p className="text-gray-600">123 Business Area, Dhaka-1000</p>
                 <p className="text-gray-600">
-                  Phone: +880 2-1234567 | Email: info@akta.com
+                  Cyberia Crescent 1 Kondo, Cyberjaya, Selangor, Malaysia
+                </p>
+                <p className="text-gray-600">
+                  Phone: +60 11-3957 3908 | Email: peacehomeempire@gmail.com
                 </p>
               </div>
 
