@@ -6,7 +6,8 @@ import Link from "next/link";
 const Hero: React.FC = () => {
   return (
     <section
-      className="relative min-h-screen flex items-center pt-16"
+      style={{ minHeight: `calc(100vh - 5rem)` }}
+      className="relative flex items-center mt-0"
       id="home"
     >
       <div
@@ -46,8 +47,8 @@ const Hero: React.FC = () => {
           </div>
           <div className="mt-14">
             <p className="text-white font-semibold text-lg text-center sm:text-left italic max-w-2xl">
-              &quot;Peace Home Empire transformed our home with their reliable and
-              professional service!&quot;
+              &quot;Peace Home Empire transformed our home with their reliable
+              and professional service!&quot;
               <span className="block mt-2 text-yellow-400 text-base">
                 — Satisfied Client, Broga
               </span>

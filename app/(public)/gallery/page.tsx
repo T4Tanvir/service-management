@@ -43,7 +43,7 @@ function Gallery() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 ">
+    <div className="min-h-screen mt-10 bg-gradient-to-br from-slate-50 to-slate-100 ">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Section Title */}
@@ -88,6 +88,17 @@ function Gallery() {
                     <h3 className="text-white font-semibold text-lg mb-1">
                       {image.label}
                     </h3>
+                    <small className="text-warning-500 font-mono text-lg">
+                      {image?.created_at
+                        ? new Date(image.created_at)
+                            .toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })
+                            .replace(/(\d+) (\w+) (\d+)/, "$1/$2/$3")
+                        : ""}
+                    </small>
                   </div>
                 </div>
                 {/* Corner Accent */}
@@ -146,10 +157,26 @@ function Gallery() {
               />
 
               {/* Image Info */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg">
-                <h3 className="text-white text-2xl font-bold mb-2">
-                  {selectedImageData.label}
-                </h3>
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8 rounded-b-lg">
+                <div className="flex flex-col space-y-3">
+                  {/* Label Section */}
+                  <h3 className="text-white text-3xl font-bold leading-tight drop-shadow-lg">
+                    {selectedImageData.label}
+                  </h3>
+
+                  {/* Date Section */}
+                  <small className="text-warning-500 font-mono text-xl font-bold">
+                    {selectedImageData?.created_at
+                      ? new Date(selectedImageData.created_at)
+                          .toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })
+                          .replace(/(\d+) (\w+) (\d+)/, "$1/$2/$3")
+                      : ""}
+                  </small>
+                </div>
               </div>
             </div>
           </div>

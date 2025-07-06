@@ -11,7 +11,8 @@ type HeroProps = {
 const Hero: React.FC<HeroProps> = ({ service, nestedServices }) => {
   return (
     <section
-      className="relative min-h-screen flex items-center pt-16"
+      style={{ minHeight: `calc(100vh - 5rem)` }}
+      className="relative flex items-center pt-16"
       id="home"
     >
       <div
