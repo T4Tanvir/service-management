@@ -7,7 +7,7 @@ const Hero: React.FC = () => {
   return (
     <section
       style={{ minHeight: `calc(100vh - 5rem)` }}
-      className="relative flex items-center mt-0"
+      className="relative flex items-center mt-26"
       id="home"
     >
       <div
