@@ -6,3 +6,8 @@ export interface UserFormData {
   address: string;
   role: string;
 }
+
+export interface ChangePasswordData {
+  newPassword: string;
+  confirmPassword: string;
+}

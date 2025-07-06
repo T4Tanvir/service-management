@@ -1,6 +1,6 @@
 import { prisma } from "@/uitls/db";
 
-async function main() {
+async function devData() {
   try {
     // Create Users
     console.log("Seeding Users...");
@@ -1494,6 +1494,35 @@ async function main() {
   } catch (e) {
     console.error("Seeding failed:", e);
     throw e;
+  }
+}
+
+async function productionData() {
+  try {
+    await prisma.user.createMany({
+      data: [
+        {
+          full_name: "Admin User",
+          phone_number: "01777777777",
+          email: "admin@example.com",
+          city: "Dhака",
+          address: "789 Banani, Dhaka",
+          role: "ADMIN",
+        },
+      ],
+      skipDuplicates: true, // Prevent duplicate email/phone_number errors
+    });
+  } catch (e) {
+    console.error("Seeding failed:", e);
+    throw e;
+  }
+}
+
+async function main() {
+  if (process.env.NODE_ENV === "development") {
+    await devData();
+  } else {
+    await productionData();
   }
 }
 
