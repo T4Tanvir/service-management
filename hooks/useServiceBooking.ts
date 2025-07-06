@@ -14,17 +14,25 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
-  // Initialize state with localStorage values if available
+  // Initialize state with localStorage values if available (SSR-safe)
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const storedCart = localStorage.getItem("cart");
-    return storedCart ? JSON.parse(storedCart) : [];
+    if (typeof window !== 'undefined') {
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    }
+    return [];
   });
+  
   const [userInfo, setUserInfo] = useState<UserInfo>(() => {
-    const storedUserInfo = localStorage.getItem("userInfo");
-    return storedUserInfo
-      ? JSON.parse(storedUserInfo)
-      : { name: "", phone: "", email: "", address: "", city: "" };
+    if (typeof window !== 'undefined') {
+      const storedUserInfo = localStorage.getItem("userInfo");
+      return storedUserInfo
+        ? JSON.parse(storedUserInfo)
+        : { name: "", phone: "", email: "", address: "", city: "" };
+    }
+    return { name: "", phone: "", email: "", address: "", city: "" };
   });
+  
   const [currentServices, setCurrentServices] = useState<NestedService[]>([]);
   const [navigationPath, setNavigationPath] = useState<NavigationPath[]>([]);
   const [currentStep, setCurrentStep] = useState<OrderStep>("services");
@@ -33,14 +41,18 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
   const [nestedServices, setNestedServices] = useState<NestedService[]>([]);
 
   /**
-   * Save cartItems and userInfo to localStorage whenever they change
+   * Save cartItems and userInfo to localStorage whenever they change (SSR-safe)
    */
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+    }
   }, [cartItems]);
 
   useEffect(() => {
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    }
   }, [userInfo]);
 
   /**
@@ -160,7 +172,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
 
       setCartItems(updatedCart);
     },
-    [findCartItem, createCartItem]
+    [cartItems, findCartItem, createCartItem]
   );
 
   const removeFromCart = useCallback(
@@ -392,9 +404,11 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
     });
     setCurrentServices(nestedServices);
     setNavigationPath([]);
-    // Clear localStorage
-    localStorage.removeItem("cart");
-    localStorage.removeItem("userInfo");
+    // Clear localStorage (SSR-safe)
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("cart");
+      localStorage.removeItem("userInfo");
+    }
   }, [nestedServices]);
 
   // Initialize services
@@ -416,6 +430,7 @@ export const useServiceBooking = (nestedServicesS?: NestedService[]) => {
     if (nestedServicesS && nestedServicesS.length) {
       setNestedServices(nestedServicesS);
       setCurrentServices(nestedServicesS);
+      setIsLoading(false);
     } else {
       fetchNestedServices();
     }
