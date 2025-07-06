@@ -153,7 +153,6 @@ const edit = async (id: number, data: Partial<UserDto>) => {
 const isValidUser = async (
   credential: ICredential
 ): Promise<{ success: boolean; data?: User }> => {
-  console.log(credential);
   const isExist = await prisma.user.findUnique({
     where: { phone_number: String(credential.phone_number) },
     select: {
