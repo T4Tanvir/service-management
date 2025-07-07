@@ -4,7 +4,7 @@ import ServiceCard from "./component/ServiceCard";
 
 const AllServices = async ({ services }: { services: ServiceDto[] }) => {
   return (
-    <section id="services" className="py-12 md:py-24 lg:py-32">
+    <section id="services" className="py-12 md:py-24 lg:py-32 px-2 sm:px-0">
       <div className="container mx-auto">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

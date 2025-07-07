@@ -6,8 +6,8 @@ import Link from "next/link";
 const Hero: React.FC = () => {
   return (
     <section
-      style={{ minHeight: `calc(100vh - 5rem)` }}
-      className="relative flex items-center mt-26"
+      style={{ minHeight: `calc(100vh - 2rem)` }}
+      className="relative flex items-center mt-15 sm:mt-26 mx-auto border-accent-500"
       id="home"
     >
       <div
@@ -20,8 +20,8 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 to-primary-700/50" />
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="max-w-4xl">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10 w-full">
+        <div className="max-w-4xl text-center sm:text-left">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-tight">
             Peace Home Empire
             <br />
@@ -32,7 +32,7 @@ const Hero: React.FC = () => {
             residential and commercial services across Dhaka, available 24/7 for
             your peace of mind.
           </p>
-          <div className="mb-10 p-4 bg-yellow-400/20 border border-yellow-400 rounded-lg">
+          <div className="mb-10 p-4 bg-yellow-400/20 border border-yellow-400 rounded-lg max-w-2xl">
             <p className="text-lg font-semibold text-white text-center">
               Now We proudly serve all areas of ShelaNogor
             </p>
@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
               </Button>
             </Link>
           </div>
-          <div className="mt-14">
+          <div className="mt-14 pb-3">
             <p className="text-white font-semibold text-lg text-center sm:text-left italic max-w-2xl">
               &quot;Peace Home Empire transformed our home with their reliable
               and professional service!&quot;

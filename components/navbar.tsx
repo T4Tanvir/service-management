@@ -71,7 +71,7 @@ const Navbar = () => {
   }, [session]);
 
   return (
-    <header className="fixed left-0 right-0 top-10 z-50 transition-all duration-300 bg-white shadow-md py-3">
+    <header className="fixed left-0 right-0 top-8 sm:top-10 z-50 transition-all duration-300 bg-white shadow-md py-0 sm:py-3 ">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}

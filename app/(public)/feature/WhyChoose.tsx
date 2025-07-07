@@ -72,7 +72,7 @@ export default function WhyChoose() {
   return (
     <section
       id="why-choose-us"
-      className="py-12 md:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"
+      className="py-12 md:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 px-2 sm:px-0"
     >
       <div className="container mx-auto">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
