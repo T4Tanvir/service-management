@@ -2,6 +2,7 @@ interface NestedService {
   id: number;
   name: string;
   parent_id: number | null;
+  description: string | null;
   subcategory: NestedService[];
 }
 

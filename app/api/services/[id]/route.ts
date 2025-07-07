@@ -15,7 +15,7 @@ export async function PUT(
     const session = await auth();
     if (!session) throw ClientError.accessDeniedError();
 
-    const { id } = params;
+    const { id } = await params;
     const body = new ServiceDto(await request.json());
 
     // Validation

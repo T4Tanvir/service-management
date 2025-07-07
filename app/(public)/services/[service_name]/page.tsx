@@ -32,8 +32,14 @@ export default async function ServiceDetailPage({
   const { service_name } = await params;
   const service_real_name = service_name.split("-").join(" ");
 
-  generateMetadata({ params: { service_name: service_real_name } });
   const service_details = await getServiceDetailByName(service_real_name);
+
+  generateMetadata({
+    params: {
+      service_name: service_real_name,
+      description: service_details[0].description || "",
+    },
+  });
   const childServices = service_details[0]
     ? await getChildServiceByParentIdId(service_details[0].id)
     : [];

@@ -223,7 +223,7 @@ export const updateService = async (
 ): Promise<ServiceDto> => {
   return await prisma.$transaction(async (tx) => {
     // Service existence check
-    const serviceInfo = await tx.service.findFirst({
+    const serviceInfo = await tx.service.findUnique({
       where: { id },
     });
 
@@ -425,6 +425,12 @@ export const getServiceDetailByName = async (
     return [];
   }
 
+  const serviceDetail = await prisma.serviceDetail.findFirst({
+    where: { service_id: serviceInfo.id },
+  });
+
   const result = getServiceWithSubcategories(allServices, serviceInfo.id);
+  if (result) result.description = serviceDetail?.long_description ?? "";
+
   return result ? [result] : [];
 };
