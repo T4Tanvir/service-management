@@ -35,7 +35,7 @@ function Auth() {
       if (response.success) {
         router.push("/");
       } else {
-        setError(response?.error || "");
+        setError(response?.msg || "");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

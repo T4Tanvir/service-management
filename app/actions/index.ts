@@ -1,6 +1,7 @@
 "use server";
 
 import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 export async function credentialLogin(formData: {
   password: string;
@@ -18,17 +19,17 @@ export async function credentialLogin(formData: {
       data: response,
     };
   } catch (error) {
-    if (error instanceof Error && error.message.includes("CredentialsSignin")) {
-      return {
-        success: false,
-        error:
-          "Invalid phone number or password. Please check your credentials.",
-      };
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { msg: "Invalid credentials", success: false };
+        case "CredentialsSignin":
+          throw error;
+        default:
+          return { msg: "Something went wrong", success: false };
+      }
     }
 
-    return {
-      success: false,
-      error: "An authentication error occurred. Please try again.",
-    };
+    throw error;
   }
 }
