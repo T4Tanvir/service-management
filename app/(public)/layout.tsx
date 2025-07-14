@@ -18,25 +18,25 @@ export default function PublicLayout({
   return (
     <>
       <SessionProvider>
-        <EmergencyBanner />
+      <EmergencyBanner />
 
-        <Navbar />
+      <Navbar />
 
-        {children}
+      {children}
 
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Zoom}
-        />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Zoom}
+      />
       </SessionProvider>
     </>
   );

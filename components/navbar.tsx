@@ -12,7 +12,7 @@ interface NavItem {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session,} = useSession();
   const [loginSession, setLoginSession] = useState<any>(null);
 
   const navigationItems: NavItem[] = [
