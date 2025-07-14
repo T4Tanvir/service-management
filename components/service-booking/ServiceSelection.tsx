@@ -55,7 +55,7 @@ export const ServiceSelection: React.FC<ServiceSelectionProps> = ({
   handlePriceChange,
 }) => {
   return (
-    <div className="grid md:grid-cols-2 gap-6 h-[70vh]">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[70vh]">
       {/* Service Section */}
       <div className="space-y-4 overflow-y-auto pr-2">
         <BreadcrumbNavigation
@@ -64,7 +64,8 @@ export const ServiceSelection: React.FC<ServiceSelectionProps> = ({
           onNavigateToBreadcrumb={onNavigateToBreadcrumb}
           onNavigateBack={onNavigateBack}
         />
-
+        
+        
         {/* Services List */}
         <div className="space-y-3">
           {currentServices.map((service) => (

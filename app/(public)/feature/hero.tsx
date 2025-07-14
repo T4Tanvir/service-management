@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
           </p>
           <div className="mb-10 p-4 bg-yellow-400/20 border border-yellow-400 rounded-lg max-w-2xl">
             <p className="text-lg font-semibold text-white text-center">
-              Now We proudly serve all areas of ShelaNogor
+              Now We proudly serve all areas of Selangor
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">

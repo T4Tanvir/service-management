@@ -34,7 +34,7 @@ export const CartSection: React.FC<CartSectionProps> = ({
   isAdmin,
 }) => {
   return (
-    <div className="border-l pl-6 flex flex-col">
+    <div className="flex-1 overflow-y-auto space-y-3 max-h-[300px] sm:max-h-none">
       <div className="flex items-center gap-2 mb-4">
         <ShoppingCart className="h-5 w-5" />
         <h3 className="text-lg font-semibold text-gray-800">

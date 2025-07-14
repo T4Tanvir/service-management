@@ -275,13 +275,12 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
                         <tr key={index} className="border-t hover:bg-gray-50">
                           <td className="p-4">{item.service!.name}</td>
                           <td className="p-4 text-center">{item.quantity}</td>
-                          <td className="p-4 text-right">
-                            ৳{item.unit_price.toLocaleString()}
-                          </td>
-                          <td className="p-4 text-right font-medium">
-                            ৳
+                            <td className="p-4 text-right">
+                             {item.unit_price.toLocaleString()}
+                            </td>
+                            <td className="p-4 text-right font-medium">
                             {(item.quantity * item.unit_price).toLocaleString()}
-                          </td>
+                            </td>
                         </tr>
                       ))}
                     </tbody>
@@ -295,22 +294,22 @@ export function InvoiceModal({ order, isOpen, onClose }: InvoiceModalProps) {
                   <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                     <div className="flex justify-between">
                       <span>Subtotal:</span>
-                      <span>৳{getTotallPrice().toLocaleString()}</span>
+                      <span>RM {getTotallPrice().toLocaleString()}</span>
                     </div>
 
                     <div className="flex justify-between text-green-600">
                       <span>Discount:</span>
-                      <span>-৳{0}</span>
+                      <span>-RM {0}</span>
                     </div>
 
                     <div className="flex justify-between">
                       <span>Tax:</span>
-                      <span>৳{0}</span>
+                      <span>RM {0}</span>
                     </div>
                     <hr className="my-2" />
                     <div className="flex justify-between text-lg font-bold">
                       <span>Total Amount:</span>
-                      <span>৳{getTotallPrice().toLocaleString()}</span>
+                      <span>RM {getTotallPrice().toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
