@@ -3,6 +3,7 @@ import { Menu, Wrench, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ServiceBooking from "./service-booking/ServicingBook";
 
 interface NavItem {
   name: string;
@@ -12,7 +13,7 @@ interface NavItem {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session,} = useSession();
+  const { data: session } = useSession();
   const [loginSession, setLoginSession] = useState<any>(null);
 
   const navigationItems: NavItem[] = [
@@ -84,7 +85,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:block">
-            <ul className="flex space-x-8">
+            <ul className="flex space-x-5">
               {visibleNavItems.map((item) => (
                 <li key={item.name}>
                   <Link
@@ -99,7 +100,11 @@ const Navbar = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            <div className="hidden cursor-pointer md:block">
+              <ServiceBooking />
+            </div>
+
             <button
               className="hidden cursor-pointer sm:block bg-accent-500 hover:bg-accent-600 text-white px-5 py-2 rounded-md font-medium transition-colors"
               onClick={handleCallNow}
