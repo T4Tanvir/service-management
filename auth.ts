@@ -1,37 +1,83 @@
-import NextAuth from "next-auth";
+import NextAuth, { type DefaultSession } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { isValidUser } from "./lib/services/user_crud_service";
 
+// ========================
+// 🔒 Type Augmentation for Session
+// ========================
+declare module "next-auth" {
+  interface Session {
+    user: {
+      name: string;
+      phone_number: string;
+      role: string;
+      city: string;
+      address: string;
+    } & DefaultSession["user"];
+  }
+
+  interface User {
+    id: string;
+    name: string;
+    phone_number: string;
+    role: string;
+    email?: string;
+    city?: string;
+    address?: string;
+  }
+}
+
+// ========================
+// 🔒 Type Augmentation for JWT
+// ========================
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    name: string;
+    phone_number: string;
+    role: string;
+    email?: string;
+    city?: string;
+    address?: string;
+  }
+}
+
+// ========================
+// 🧠 Auth Config
+// ========================
 export const { signIn, signOut, auth, handlers } = NextAuth({
   providers: [
     Credentials({
+      name: "Credentials",
       credentials: {
-        phone_number: { label: "phone_number" },
+        phone_number: { label: "Phone Number", type: "text" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
         try {
-          if (!credentials) return null;
+          if (!credentials?.phone_number || !credentials?.password) return null;
 
           const phone_number = credentials.phone_number as string;
           const password = credentials.password as string;
 
-          if (!phone_number || !password) return null;
+          const response = await isValidUser({
+            phone_number,
+            password,
+          });
 
-          const response = await isValidUser({ phone_number, password });
+          if (!response.success || !response.data) return null;
 
-          if (!response.success || !response.data) {
-            return null;
-          }
+          const user = response.data;
 
           return {
-            id: response.data.id.toString(),
-            name: response.data.full_name,
-            phone_number: response.data.phone_number,
-            role: response.data.role,
-            email: response.data.email || "",
-            city: response.data.city || "",
-            address: response.data.address || "",
+            id: user.id.toString(),
+            name: user.full_name,
+            phone_number: user.phone_number,
+            role: user.role,
+            email: user.email || "",
+            city: user.city || "",
+            address: user.address || "",
           };
         } catch (error) {
           console.error("Authentication error:", error);
@@ -40,30 +86,43 @@ export const { signIn, signOut, auth, handlers } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.phone_number = (user as any).phone_number;
-        token.role = (user as any).role;
-        token.name = (user as any).name;
-        token.city = (user as any).city;
-        token.address = (user as any).address;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (token) {
-        (session.user as any).phone_number = token.phone_number;
-        (session.user as any).role = token.role;
-        (session.user as any).name = token.name;
-        (session.user as any).city = token.city;
-        (session.user as any).address = token.address;
-      }
-      return session;
-    },
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+
   session: {
     strategy: "jwt",
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.phone_number = user.phone_number;
+        token.role = user.role;
+        token.email = user.email;
+        token.city = user.city;
+        token.address = user.address;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      const userToken = token as JWT;
+
+      if (session.user) {
+        session.user.id = userToken.id as string;
+        session.user.name = userToken.name as string;
+        session.user.phone_number = userToken.phone_number as string;
+        session.user.role = userToken.role as string;
+        session.user.email = userToken.email as string;
+        session.user.city = userToken.city ?? "";
+        session.user.address = userToken.address ?? "";
+      }
+
+      return session;
+    },
+  },
+ trustHost: true,
+  // good to keep if using in edge/runtime
 });
