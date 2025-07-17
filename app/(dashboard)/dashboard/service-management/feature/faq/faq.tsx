@@ -32,8 +32,6 @@ export default function Faq() {
     const response = await getAllServiceBasicInfo();
     setServiceList(response);
 
-    console.log("Fetched Services:", response);
-
     const nestedInfo = await getServicesNestedInfo();
     setNestedServices(nestedInfo);
   };
@@ -60,8 +58,6 @@ export default function Faq() {
     setFaqList(updatedFaqList);
     setSelectedId({ edit: null, delete: null });
     setIsDeleteLoading(false);
-
-    console.log("FAQ deleted successfully");
   };
 
   useEffect(() => {

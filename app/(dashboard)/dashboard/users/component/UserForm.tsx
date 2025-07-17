@@ -56,7 +56,6 @@ function UserInfoForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit?.(formData);
-    console.log("Form submitted:", formData);
   };
 
   const handleInputChange = (field: keyof UserFormData, value: string) => {

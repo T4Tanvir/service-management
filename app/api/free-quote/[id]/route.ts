@@ -33,7 +33,6 @@ export async function PUT(
       data: updatedService,
     });
   } catch (error: unknown) {
-    //console.log(error, "================");
     const errorMessage =
       error instanceof ClientError ? error.message : "Failed to update Order";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

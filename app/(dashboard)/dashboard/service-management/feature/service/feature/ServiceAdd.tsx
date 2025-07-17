@@ -102,7 +102,6 @@ export function AddServiceDialog({
       // Send data to backend
       const response = await addService(dataNeedToSend);
 
-      console.log(response);
       toast.success("Service added successfully!");
 
       // Reset form and close dialog

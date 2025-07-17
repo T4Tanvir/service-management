@@ -40,7 +40,6 @@ export default function ImageManagement() {
     const nestedEffect = async () => {
       const response = await getAllImages();
       setImages(response.data);
-      console.log(response);
     };
     nestedEffect();
   }, []);

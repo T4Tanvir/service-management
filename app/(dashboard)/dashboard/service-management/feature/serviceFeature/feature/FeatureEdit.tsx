@@ -60,7 +60,6 @@ export function EditFeatureDialog({
 
     setIsLoading(true);
     try {
-      console.log(feature, formData);
       const dataNeedToUpdate = new FeatureDto({
         ...formData,
         id: feature.id,

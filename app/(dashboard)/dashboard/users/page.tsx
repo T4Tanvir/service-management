@@ -42,7 +42,6 @@ export default function User() {
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await getAllUser();
-      console.log(response.data);
       setUsers(response.data || []);
     };
     fetchOrders();

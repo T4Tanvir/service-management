@@ -22,7 +22,6 @@ export async function PUT(
         { status: 400 }
       );
     }
-    console.log(id, " id");
     // Database update
     const updatedService = await faq_service.edit(Number(id), body);
 

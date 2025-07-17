@@ -61,7 +61,6 @@ export function EditFaqDialog({
 
     setIsLoading(true);
     try {
-      console.log(faq, formData);
       const dataNeedToUpdate = new FaqDto({
         ...formData,
         id: faq.id,

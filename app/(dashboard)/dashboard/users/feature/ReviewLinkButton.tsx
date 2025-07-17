@@ -31,7 +31,6 @@ export function ReviewLinkButton({ user }: ReviewLinkButtonProps) {
     setIsLoading(true);
     try {
       const result = await getreviewLink(user.id);
-      console.log(result);
       if (result.success) {
         setReviewUrl(result.data);
         toast.success("Link has been copied!");

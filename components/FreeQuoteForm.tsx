@@ -42,8 +42,6 @@ const FreeQuoteForm: React.FC<FreeQuoteFormProps> = () => {
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    // if (!value) return;
-    console.log("Selected city:", value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,

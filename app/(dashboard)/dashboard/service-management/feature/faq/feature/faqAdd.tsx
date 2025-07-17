@@ -64,7 +64,6 @@ export function AddFaqDialog({
     try {
       setIsLoading(true);
       const response = await addFaq(dataNeedToinsert);
-      console.log(response);
 
       toast.success(response.message || "FAQ added successfully!");
 

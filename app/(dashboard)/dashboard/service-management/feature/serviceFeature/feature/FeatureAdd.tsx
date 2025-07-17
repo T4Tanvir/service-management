@@ -58,15 +58,11 @@ export function AddFeatureDialog({
     }
 
     setIsLoading(true);
-    console.log(formData);
     const dataNeedToInsert = new FeatureDto({
       ...formData,
       service_id: selectedService,
     });
     const response = await addFeature(dataNeedToInsert);
-
-    // Here you would typically save the data to your backend
-    console.log("Feature data to save:", response);
 
     // Reset form and close dialog
     setFormData(formInitialState);

@@ -26,7 +26,6 @@ export async function PUT(
       data: response,
     });
   } catch (error: unknown) {
-    console.log(error, "================");
     const errorMessage =
       error instanceof ClientError
         ? error.message

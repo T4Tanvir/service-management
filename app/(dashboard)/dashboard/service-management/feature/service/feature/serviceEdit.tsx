@@ -109,7 +109,7 @@ export function EditServiceDialog({
       onEditService(response.data);
       onOpenChange();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

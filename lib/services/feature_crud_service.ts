@@ -97,7 +97,6 @@ export const deleteFeature = async (id: number): Promise<ServiceFeature> => {
   if (!isFeatureExists) {
     throw ClientError.invalidError("Feature does not exist");
   }
-  console.log(id, " id in delete feature=========");
   return prisma.serviceFeature.delete({
     where: { id },
   });

@@ -54,8 +54,6 @@ export default async function ServiceDetailPage({
     ? await getFeatureListByServiceId(service_details[0].id)
     : [];
 
-  console.log(service_details);
-
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
