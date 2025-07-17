@@ -36,6 +36,8 @@ const Navbar = () => {
     "About",
     "Testimonials",
     "FAQ",
+    "Dashboard",
+
     "Contact",
   ];
 
@@ -143,14 +145,14 @@ const Navbar = () => {
         {isMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4">
             <ul className="space-y-2">
-              {mobileNavigationItems.map((item) => (
-                <li key={item}>
+              {visibleNavItems.map((item) => (
+                <li key={item.name}>
                   <Link
-                    href={`#${item.toLowerCase()}`}
-                    className="block py-2 px-4 font-medium hover:bg-primary-50 rounded transition-colors text-gray-800"
+                    href={item.path}
+                    className="font-medium hover:text-primary-500 transition-colors text-gray-800"
                     onClick={closeMobileMenu}
                   >
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}

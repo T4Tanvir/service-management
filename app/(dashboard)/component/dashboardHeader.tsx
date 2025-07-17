@@ -1,14 +1,9 @@
 "use client";
-import { Bell, ChevronDown, Home, LogOut } from "lucide-react";
+import { Bell, ChevronDown, LogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 import React, { useState } from "react";
 
-interface HeaderProps {
-  activePage: string;
-}
-
-const DashboardHeader: React.FC<HeaderProps> = ({ activePage }) => {
+const DashboardHeader: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { data: session } = useSession();
   const handleLogout = async () => {
@@ -23,18 +18,7 @@ const DashboardHeader: React.FC<HeaderProps> = ({ activePage }) => {
   };
   return (
     <header className="bg-white shadow-sm">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-semibold text-gray-800">{activePage}</h1>
-          <Link
-            href="/"
-            className="md:hidden flex items-center space-x-2 text-gray-600 hover:text-primary-600"
-          >
-            <Home size={20} />
-            <span>Home</span>
-          </Link>
-        </div>
-
+      <div className="flex items-center justify-end px-6 py-4">
         <div className="flex items-center space-x-4">
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <Bell size={20} />

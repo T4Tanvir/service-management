@@ -18,14 +18,17 @@ export function UserTableHeader({
   return (
     <>
       <CardHeader>
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <CardTitle className="text-2xl font-bold">User Management</CardTitle>
+        <div className="flex flex-col w-full gap-4 lg:flex-row lg:justify-between lg:items-center">
+          <CardTitle className="text-xl font-bold md:text-2xl lg:text-3xl">
+            User Management
+          </CardTitle>
           <Button
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 w-full sm:w-auto"
             onClick={() => setShowModal(true)}
           >
             <Plus className="h-4 w-4" />
-            Add User
+            <span className="hidden xs:inline">Add User</span>
+            <span className="inline xs:hidden">Add</span>
           </Button>
         </div>
       </CardHeader>

@@ -70,7 +70,7 @@ export default function Service() {
   }, []);
   return (
     <>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 mt-2">
         <h2 className="text-2xl font-semibold">Services</h2>
         <Button onClick={() => setAddServiceOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
