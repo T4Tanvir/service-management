@@ -29,7 +29,7 @@ const Hero: React.FC = () => {
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-6 max-w-3xl">
             At Peace Home Empire, our licensed professionals deliver exceptional
-            residential and commercial services across Dhaka, available 24/7 for
+            residential and commercial services across Selangor, available 24/7 for
             your peace of mind.
           </p>
           <div className="mb-10 p-4 bg-yellow-400/20 border border-yellow-400 rounded-lg max-w-2xl">

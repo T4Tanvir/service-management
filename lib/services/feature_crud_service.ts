@@ -12,7 +12,7 @@ export const create = async (data: FeatureDto): Promise<IFeature> => {
       name: true,
     },
   });
-  console.log(data, " data in create feature=========");
+
   if (!isServiceExists) {
     throw ClientError.invalidError("Service does not exist");
   }
