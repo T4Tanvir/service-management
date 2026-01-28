@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/dialog";
 import { OrderDto } from "@/dtos/order.dto";
 import { OrderItemDto } from "@/dtos/order_item.dto";
-import { useServiceBooking } from "@/hooks/useServiceBooking";
+import { useServiceBookingStore } from "@/store/serviceBookingStore";
 import { editOrder } from "@/lib/api-client/order";
 import { NestedService } from "@/type/service.type";
 import { Edit } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function EditOrder({
@@ -53,10 +53,16 @@ export default function EditOrder({
     handleBackToServices,
     resetBooking,
     handlePriceChange,
-  } = useServiceBooking(nestedServices);
+    initializeServices,
+  } = useServiceBookingStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Initialize services on mount
+  useEffect(() => {
+    initializeServices(nestedServices);
+  }, [nestedServices, initializeServices]);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);
@@ -83,7 +89,6 @@ export default function EditOrder({
         phone_number: userInfo.phone,
         email: userInfo.email,
         address: userInfo.address,
-        additional_info: userInfo.notes,
       },
       orderItems: cartItems.map(
         (item) =>

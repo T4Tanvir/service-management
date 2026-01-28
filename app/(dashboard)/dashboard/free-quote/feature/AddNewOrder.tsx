@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { UserDto } from "@/dtos/user.dto";
-import { useServiceBooking } from "@/hooks/useServiceBooking";
+import { useServiceBookingStore } from "@/store/serviceBookingStore";
 import { NestedService } from "@/type/service.type";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -26,6 +26,7 @@ export default function AddNewOrder({
   nestedServices,
 }: AddNewOrderProps) {
   const [isOpen, setIsOpen] = useState(false);
+
   const {
     cartItems,
     currentServices,
@@ -52,7 +53,13 @@ export default function AddNewOrder({
     handlePriceChange,
     getTotalPrice,
     resetBooking,
-  } = useServiceBooking(nestedServices);
+    initializeServices,
+  } = useServiceBookingStore();
+
+  // Initialize services on mount
+  useEffect(() => {
+    initializeServices(nestedServices);
+  }, [nestedServices, initializeServices]);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);

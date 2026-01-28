@@ -9,8 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { NestedService } from "@/type/service.type";
-import { useState } from "react";
-import { useServiceBooking } from "../../hooks/useServiceBooking";
+import { useEffect, useState } from "react";
+import { useServiceBookingStore } from "@/store/serviceBookingStore";
 import { OrderConfirmation } from "./OrderConfirmation";
 import { ServiceSelection } from "./ServiceSelection";
 import { UserInfoForm } from "./UserInfoForm";
@@ -21,6 +21,7 @@ export default function ServiceBooking({
   nestedService?: NestedService[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
+
   const {
     cartItems,
     currentServices,
@@ -44,7 +45,13 @@ export default function ServiceBooking({
     handleBackToServices,
     handleSubmitOrder,
     resetBooking,
-  } = useServiceBooking(nestedService);
+    initializeServices,
+  } = useServiceBookingStore();
+
+  // Initialize services on mount
+  useEffect(() => {
+    initializeServices(nestedService);
+  }, [nestedService, initializeServices]);
 
   const handleModalClose = (open: boolean) => {
     setIsOpen(open);
