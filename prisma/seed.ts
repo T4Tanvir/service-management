@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { prisma } from "@/uitls/db";
 
 async function devData() {
