@@ -31,7 +31,6 @@ export default async function ServiceDetailPage({
 }: ServiceDetailPageProps) {
   const { service_name } = await params;
   const service_real_name = service_name.split("-").join(" ");
-
   const service_details = await getServiceDetailByName(service_real_name);
 
   generateMetadata({
@@ -40,6 +39,7 @@ export default async function ServiceDetailPage({
       description: service_details[0].description || "",
     },
   });
+
   const childServices = service_details[0]
     ? await getChildServiceByParentIdId(service_details[0].id)
     : [];
@@ -61,6 +61,7 @@ export default async function ServiceDetailPage({
           service={new ServiceDto(service_details[0])}
           nestedServices={service_details}
         />
+
         {childServices.length > 0 ? (
           <AllServices
             services={childServices.map((item) => new ServiceDto(item))}
@@ -68,15 +69,11 @@ export default async function ServiceDetailPage({
         ) : (
           <AdditionalFeature featureList={featureList} />
         )}
-        <AdditionalFeature featureList={featureList} />
 
         <How />
-
         <WhyChoose />
-
         <Testimonials testimonials={reviews} />
         <FaqList faqList={faqData.map((item) => new FaqDto(item))} />
-
         <BookNow />
       </main>
       <Footer />
